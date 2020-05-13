@@ -86,9 +86,9 @@ class Device {
 
     gyroscopeEvents.listen((GyroscopeEvent event) {
       // Values are in rad/s, but we need deg/s (2pi rad/s = 360 deg/s)
-      motionX = 0.0; // -event.x * 180 / 3.14;
-      motionY = 0.0; //-event.z * 180 / 3.14;
-      motionZ = 0.0; //event.y * 180 / 3.14;
+      motionX = -event.x * 180 / 3.14;
+      motionY = -event.z * 180 / 3.14;
+      motionZ = -event.y * 180 / 3.14;
     });
   }
 
