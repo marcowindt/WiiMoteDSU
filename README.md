@@ -24,7 +24,7 @@ may be troublesome, although implemented).
 5. Select *Emulated Wii Remote* as "Wii Remote 1" and click **Configure**.
 6. While the application is open on your phone, "DSUClient/0/DualShock 3" (your phone) should be listed as possible input device, select it as input device.
 
-<img src="https://github.com/marcowindt/WiiMoteDSU/blob/master/controller-configuration.png" alt="Screenshot of controller configuration" width="300"/>
+<img src="https://github.com/marcowindt/WiiMoteDSU/blob/master/controller-configuration.png" alt="Screenshot of controller configuration" width="500"/>
 
 7. You can now either map the buttons manually or use the `WiiMoteDSU.ini` profile file in this repository:
     1. If using the profile from this repository place it within the Config folder of Dolhpin:
@@ -32,8 +32,8 @@ may be troublesome, although implemented).
         - Mac OS: `/Users/username/Library/Application Support/Dolphin/Config/Profiles/Wiimote/WiiMoteDSU.ini`
         
     2. When placed in this folder you can type "WiiMoteDSU" as profile and press 'Load' on the controller configuration screen.
-        <img src="https://github.com/marcowindt/WiiMoteDSU/blob/master/load-controller-profile.png" alt="Load custom controller profile" width="200"/>
-        **Note:** Set *Extension* to "None", something else can (like Nunchunk) can mess up the button mapping.
+        <img src="https://github.com/marcowindt/WiiMoteDSU/blob/master/load-controller-profile.png" alt="Load custom controller profile" width="300"/><br />
+        **Note:** Set *Extension* to "None", something else (like Nunchunk) can override button mappings.
 
 #### Extra: Pad Test (Windows only)
 
