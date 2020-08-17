@@ -8,7 +8,6 @@ import 'device.dart';
 import 'message.dart';
 
 class DSUServer {
-
   var timeOut = 20; // seconds
   var portNum = 26760;
   var counter = 0;
@@ -23,12 +22,14 @@ class DSUServer {
 
   init() async {
     printSlots();
-    UDP.bind(Endpoint.unicast(InternetAddress.anyIPv4, port: Port(portNum))).then((sock) {
+    UDP
+        .bind(Endpoint.unicast(InternetAddress.anyIPv4, port: Port(portNum)))
+        .then((sock) {
       socket = sock;
       this.start();
     });
   }
-  
+
   incoming(Datagram datagram) {
     Uint8List message = datagram.data;
     InternetAddress address = datagram.address;
@@ -54,12 +55,14 @@ class DSUServer {
     for (var i = 0; i < requestsCount; i++) {
       Uint8List ports = this.sendPorts(i);
 //      print(address.toString() + " " + port.toString());
-      socket.send(ports, Endpoint.unicast(address, port: Port(port))).then((value) {
+      socket
+          .send(ports, Endpoint.unicast(address, port: Port(port)))
+          .then((value) {
 //        print("Send " + value.toString() + " bytes");
       });
     }
   }
-  
+
   incomingDataRequest(Uint8List message, InternetAddress address, int port) {
     var flags = message[24];
     var regId = message[25];
@@ -67,7 +70,10 @@ class DSUServer {
 //    print("incoming data request " + flags.toString() + " " + regId.toString());
     if (flags == 0 && regId == 0) {
       if (!clients.containsKey(address)) {
-        print("[udp] Client connected: " + address.toString() + " on port " + port.toString());
+        print("[udp] Client connected: " +
+            address.toString() +
+            " on port " +
+            port.toString());
       }
 
       clients[address] = port;
@@ -116,7 +122,6 @@ class DSUServer {
   }
 
   report(Device device) {
-
     if (device == null || device.disconnected) {
       return;
     }
@@ -229,12 +234,18 @@ class DSUServer {
       (time >> 48) & 0xFF,
       (time >> 56) & 0xFF,
 
-      bdAccX.getUint8(3), bdAccX.getUint8(2), bdAccX.getUint8(1), bdAccX.getUint8(0),
-      bdAccY.getUint8(3), bdAccY.getUint8(2), bdAccY.getUint8(1), bdAccY.getUint8(0),
-      bdAccZ.getUint8(3), bdAccZ.getUint8(2), bdAccZ.getUint8(1), bdAccZ.getUint8(0),
-      bdMotionX.getUint8(3), bdMotionX.getUint8(2), bdMotionX.getUint8(1), bdMotionX.getUint8(0),
-      bdMotionY.getUint8(3), bdMotionY.getUint8(2), bdMotionY.getUint8(1), bdMotionY.getUint8(0),
-      bdMotionZ.getUint8(3), bdMotionZ.getUint8(2), bdMotionZ.getUint8(1), bdMotionZ.getUint8(0),
+      bdAccX.getUint8(3), bdAccX.getUint8(2), bdAccX.getUint8(1),
+      bdAccX.getUint8(0),
+      bdAccY.getUint8(3), bdAccY.getUint8(2), bdAccY.getUint8(1),
+      bdAccY.getUint8(0),
+      bdAccZ.getUint8(3), bdAccZ.getUint8(2), bdAccZ.getUint8(1),
+      bdAccZ.getUint8(0),
+      bdMotionX.getUint8(3), bdMotionX.getUint8(2), bdMotionX.getUint8(1),
+      bdMotionX.getUint8(0),
+      bdMotionY.getUint8(3), bdMotionY.getUint8(2), bdMotionY.getUint8(1),
+      bdMotionY.getUint8(0),
+      bdMotionZ.getUint8(3), bdMotionZ.getUint8(2), bdMotionZ.getUint8(1),
+      bdMotionZ.getUint8(0),
     ]);
 
 //    print((deviceState["button_cross"] * 127 + 128));
@@ -266,7 +277,9 @@ class DSUServer {
 //        o += element.toRadixString(16) + " ";
 //      });
 //      print(o);
-      socket.send(message, Endpoint.unicast(address, port: Port(port))).then((value) {
+      socket
+          .send(message, Endpoint.unicast(address, port: Port(port)))
+          .then((value) {
 //        print("Send " + value.toString() + " bytes");
       });
     });
@@ -282,7 +295,10 @@ class DSUServer {
 
   start() async {
     // Listen for incoming packets
-    print("Start listening for incoming datagrams on " + socket.local.address.toString() + " port " + socket.local.port.value.toString());
+    print("Start listening for incoming datagrams on " +
+        socket.local.address.toString() +
+        " port " +
+        socket.local.port.value.toString());
     bool state = await socket.listen((datagram) {
       this.incoming(datagram);
     });
@@ -303,5 +319,4 @@ class DSUServer {
       await Future.delayed(interval);
     }
   }
-
 }
