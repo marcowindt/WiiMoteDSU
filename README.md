@@ -32,7 +32,8 @@ may be troublesome, although implemented).
         - Mac OS: `/Users/username/Library/Application Support/Dolphin/Config/Profiles/Wiimote/WiiMoteDSU.ini`
         
     2. When placed in this folder you can type "WiiMoteDSU" as profile and press 'Load' on the controller configuration screen.
-        <img src="https://github.com/marcowindt/WiiMoteDSU/blob/master/load-controller-profile.png" alt="Load custom controller profile" width="300"/><br />
+        <br />
+        <img src="https://github.com/marcowindt/WiiMoteDSU/blob/master/load-controller-profile.png" alt="Load custom controller profile" width="400"/><br />
         **Note:** Set *Extension* to "None", something else (like Nunchunk) can override button mappings.
 
 #### Extra: Pad Test (Windows only)
