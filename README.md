@@ -52,7 +52,7 @@ great value
 
 ## Screenshot
 
-![Screenshot of the application](https://github.com/marcowindt/WiiMoteDSU/blob/master/screenshot.jpeg)
-
+<img src="https://github.com/marcowindt/WiiMoteDSU/blob/master/screenshot.jpeg" alt="Screenshot of the application" width="250"/>
+<img src="https://github.com/marcowindt/WiiMoteDSU/blob/master/screenshot-settings.jpeg" alt="Screenshot of the available settings" width="250"/>
 
 
