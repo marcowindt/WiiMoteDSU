@@ -1,15 +1,37 @@
 import 'dart:async';
+import 'package:wiimote_dsu/models/acc_settings.dart';
+import 'package:wiimote_dsu/models/gyro_settings.dart';
 
 import 'dsu_server.dart';
 import 'package:sensors/sensors.dart';
 
 class Device {
-
   var server;
   var name = "WiiMoteDSU";
   var disconnected = false;
   var mac = [0xFA, 0xCE, 0xB0, 0x0C, 0x00, 0x00];
   var model = 0x01;
+
+  static const double PI = 3.1415926535897932;
+
+  GyroscopeEvent previousGyroEvent;
+  GyroSettings gyroSettings;
+  AccSettings accSettings;
+
+  // Gyroscope specific
+  bool adjustToDeviceOrientation = false;
+  bool invertGyroX = false;
+  bool invertGyroY = false;
+  bool invertGyroZ = false;
+  double sensitivity = 1.0;
+
+  // Accelerometer specific
+  bool accEnabled = true;
+  bool adjustToDeviceOrientationAcc = false;
+  bool invertAccX = false;
+  bool invertAccY = false;
+  bool invertAccZ = false;
+  double accSensitivity = 3.0;
 
   double motionX = 0;
   double motionY = 0;
@@ -67,33 +89,81 @@ class Device {
     "battery": 0x05
   };
 
-  Device(DSUServer server) {
+  Device(DSUServer server, GyroSettings gyroSettings, AccSettings accSettings) {
     this.server = server;
+    this.gyroSettings = gyroSettings;
+    this.accSettings = accSettings;
+    gyroSettings.addListener(onGyroSettingsChanged);
+    accSettings.addListener(onAccSettingsChanged);
     try {
       this.start();
+      this.initGyroSettings();
+      this.initAccSettings();
     } catch (Error) {
       print("error");
     }
   }
 
-  start() {
+  void initGyroSettings() {
+    adjustToDeviceOrientation = gyroSettings.adjustToDeviceOrientation;
+    invertGyroX = gyroSettings.invertGyroX;
+    invertGyroY = gyroSettings.invertGyroY;
+    invertGyroZ = gyroSettings.invertGyroZ;
+    sensitivity = gyroSettings.sensitivity;
+  }
+
+  void initAccSettings() {
+    accEnabled = accSettings.enabled;
+    adjustToDeviceOrientationAcc = accSettings.adjustToDeviceOrientation;
+    invertAccX = accSettings.invertAccX;
+    invertAccX = accSettings.invertAccX;
+    invertAccX = accSettings.invertAccX;
+    accSensitivity = accSettings.sensitivity;
+  }
+
+  void onGyroSettingsChanged() {
+    initGyroSettings();
+    // debugPrint('gyro settings changed: \n $gyroSettings');
+  }
+
+  void onAccSettingsChanged() {
+    initAccSettings();
+    // debugPrint('acc settings changed: \n $accSettings');
+  }
+
+  void start() {
     accelerometerEvents.listen((event) {
       // Values are in m/s^2, but we need in g's (1 g approx 9.8 m/s^2)
-      accX = 3 * -event.x * 9.81 / 100;
-      accY = 3 * -event.z * 9.81 / 100;
-      accZ = 3 * -event.y * 9.81 / 100; // / 4096;
+      if (accEnabled) {
+        accX = (invertAccX ? -1 : 1) * accSensitivity * event.x * 9.81 / 100;
+        accY = (invertAccY ? -1 : 1) * accSensitivity * event.z * 9.81 / 100;
+        accZ = (invertAccZ ? -1 : 1) * accSensitivity * event.y * 9.81 / 100;
+      } else {
+        accX = 0;
+        accY = 0;
+        accZ = 0;
+      }
     });
 
     gyroscopeEvents.listen((GyroscopeEvent event) {
       // Values are in rad/s, but we need deg/s (2pi rad/s = 360 deg/s)
-      motionX = -event.x * 180 / 3.14;
-      motionY = -event.z * 180 / 3.14;
-      motionZ = -event.y * 180 / 3.14;
+      // When in portrait: x = pitch, y = yaw, z = roll
+      motionX = (invertGyroX ? -1 : 1) * radToDeg(event.x) * sensitivity;
+      motionY = (invertGyroY ? -1 : 1) * radToDeg(event.y) * sensitivity;
+      motionZ = (invertGyroZ ? -1 : 1) * radToDeg(event.z) * sensitivity;
+      previousGyroEvent = event;
     });
+  }
+
+  double radToDeg(double radians) {
+    return radians * 180 / PI;
+  }
+
+  int orientationAdjusted() {
+    throw UnimplementedError('TODO');
   }
 
   getReport() {
     return state;
   }
-
 }

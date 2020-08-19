@@ -24,6 +24,8 @@ dependencies:
   crclib: ^1.0.1
   sensors: ^0.4.2+1
   udp: ^3.0.3
+  provider:
+  shared_preferences: 
   flutter:
     sdk: flutter
 
