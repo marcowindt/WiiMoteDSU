@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_ip/get_ip.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wiimote_dsu/models/acc_settings.dart';
@@ -9,8 +10,13 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreen extends State<SettingsScreen> {
+  TextEditingController controller;
+
   @override
   void initState() {
+    controller = TextEditingController(
+      text: '26760',
+    );
     super.initState();
   }
 
@@ -89,23 +95,48 @@ class _SettingsScreen extends State<SettingsScreen> {
                   min: 1,
                   max: 50,
                   divisions: 200,
-                  label: gyroSettings.sensitivity.round().toString(),
+                  label: gyroSettings.sensitivity.toStringAsFixed(2),
                   onChanged: (double value) {
                     gyroSettings.setGyroSensitivity(value);
                   },
                 ),
-              )
+              ),
+              ListTile(
+                title: Text('IP Address'),
+                trailing: FutureBuilder(
+                  future: GetIp.ipAddress,
+                  builder: (BuildContext context, AsyncSnapshot<String> ip) {
+                    if (ip.hasData) {
+                      return Text('${ip.data}');
+                    }
+                    return CircularProgressIndicator();
+                  },
+                ),
+              ),
+              ListTile(
+                title: Text('Port'),
+                trailing: Text('${controller.text}'),
+              ),
+              Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 5.0, horizontal: 10.0),
+                  child: FlatButton(
+                      textColor: Colors.white,
+                      color: Colors.blueAccent,
+                      onPressed: () =>
+                          clearCachedSettings(accSettings, gyroSettings),
+                      child: Text('clear cache'))),
             ],
           );
         }));
   }
 
-  bool getPref(SharedPreferences prefs, String key) {
-    try {
-      bool state = prefs.getBool(key);
-      return (state != null) ? state : false;
-    } catch (e) {
-      return false;
-    }
+  Future<void> clearCachedSettings(
+      AccSettings accSettings, GyroSettings gyroSettings) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    bool cleared = await preferences.clear();
+    accSettings.clear();
+    gyroSettings.clear();
+    return cleared;
   }
 }

@@ -26,6 +26,7 @@ dependencies:
   udp: ^3.0.3
   provider:
   shared_preferences: 
+  get_ip:
   flutter:
     sdk: flutter
 

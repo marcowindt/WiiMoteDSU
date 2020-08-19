@@ -83,11 +83,21 @@ class AccSettings extends ChangeNotifier {
     preferences.setDouble('acc_sensitivity', value);
   }
 
+  void clear() {
+    enabled = false;
+    adjustToDeviceOrientation = false;
+    invertAccX = false;
+    invertAccY = false;
+    invertAccZ = false;
+    sensitivity = 1.0;
+    notifyListeners();
+  }
+
   @override
   String toString() =>
       """adjustToDeviceOrientation: $adjustToDeviceOrientation, 
-               invertGyroX: $invertAccX,
-               invertGyroY: $invertAccY,
-               invertGyroZ: $invertAccZ,
+               invertAccX: $invertAccX,
+               invertAccY: $invertAccY,
+               invertAccZ: $invertAccZ,
                sensitivity: $sensitivity""";
 }

@@ -1,5 +1,7 @@
 PODS:
   - Flutter (1.0.0)
+  - get_ip (0.0.1):
+    - Flutter
   - sensors (0.0.1):
     - Flutter
   - shared_preferences (0.0.1):
@@ -7,12 +9,15 @@ PODS:
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
+  - get_ip (from `.symlinks/plugins/get_ip/ios`)
   - sensors (from `.symlinks/plugins/sensors/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
+  get_ip:
+    :path: ".symlinks/plugins/get_ip/ios"
   sensors:
     :path: ".symlinks/plugins/sensors/ios"
   shared_preferences:
@@ -20,6 +25,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  get_ip: c063133e0a399ae4089048c90d6a232cb2344846
   sensors: 84eb7a30e47a649e4172b71d6e81be614c280336
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
 

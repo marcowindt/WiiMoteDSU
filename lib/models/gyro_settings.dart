@@ -5,7 +5,7 @@ class GyroSettings extends ChangeNotifier {
   SharedPreferences preferences;
   bool adjustToDeviceOrientation = false;
   bool invertGyroX = false;
-  bool invertGyroY = false;
+  bool invertGyroY = true;
   bool invertGyroZ = false;
   double sensitivity = 1.0;
 
@@ -73,6 +73,15 @@ class GyroSettings extends ChangeNotifier {
     sensitivity = value;
     notifyListeners();
     preferences.setDouble('gyro_sensitivity', value);
+  }
+
+  void clear() {
+    adjustToDeviceOrientation = false;
+    invertGyroX = false;
+    invertGyroY = true;
+    invertGyroZ = false;
+    sensitivity = 1.0;
+    notifyListeners();
   }
 
   @override

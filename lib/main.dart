@@ -9,6 +9,7 @@ import 'server/dsu_server.dart';
 import 'ui/button_rectangle.dart';
 import 'ui/button_round.dart';
 import 'ui/dpad_arrow.dart';
+import 'package:get_ip/get_ip.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,12 +28,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.blue,
+      statusBarBrightness: Brightness.dark,
+    ));
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'WiiMoteDSU',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+        // visualDensity: VisualDensity.adaptivePlatformDensity,
+        // appBarTheme: AppBarTheme(brightness: Theme.of(context).brightness),
       ),
       home: MyHomePage(
         title: 'WiiMoteDSU',
