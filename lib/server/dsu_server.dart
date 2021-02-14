@@ -180,7 +180,7 @@ class DSUServer {
       0x02,
       device.model,
       0x02,
-      device.mac[0], device.mac[1], device.mac[2], // Mac part 1`
+      device.mac[0], device.mac[1], device.mac[2], // Mac part 1
       device.mac[3], device.mac[4], device.mac[5], // Mac part 2
       deviceState["battery"], // Battery always full for now
       0x01, // Is active (true)
