@@ -24,7 +24,7 @@ may be troublesome, although implemented).
 5. Select _Emulated Wii Remote_ as "Wii Remote 1" and click **Configure**.
 6. While the application is open on your phone, "DSUClient/0/DualShock 3" (your phone) should be listed as possible input device, select it as input device.
 
-<img src="https://github.com/marcowindt/WiiMoteDSU/blob/master/controller-configuration.png" alt="Screenshot of controller configuration" width="500"/>
+   <img src="controller-configuration.png" alt="Screenshot of controller configuration" width="500"/>
 
 7. You can now either map the buttons manually or use the `WiiMoteDSU.ini` profile file in this repository:
    1. If using the profile from this repository place it within the Config folder of Dolhpin:
@@ -32,14 +32,14 @@ may be troublesome, although implemented).
       - Mac OS: `/Users/username/Library/Application Support/Dolphin/Config/Profiles/Wiimote/WiiMoteDSU.ini`
    2. When placed in this folder you can type "WiiMoteDSU" as profile and press 'Load' on the controller configuration screen.
       <br />
-      <img src="https://github.com/marcowindt/WiiMoteDSU/blob/master/load-controller-profile.png" alt="Load custom controller profile" width="400"/><br />
+      <img src="load-controller-profile.png" alt="Load custom controller profile" width="400"/><br />
       **Note:** Set _Extension_ to "None", something else (like Nunchunk) can override button mappings.
 
 #### Extra: Pad Test (Windows only)
 
 If you don't see your phone as controller appearing in the list while configuring an "Emulated Wii Remote" you can test whether the connection works using the [DSU Pad Test](https://files.sshnuke.net/PadTest_1011.zip) application:
 
-<img src="https://github.com/marcowindt/WiiMoteDSU/blob/master/windows-pad-test.gif" alt="Example testing connection using DSU Pad Test on Windows" width="500"/>
+<img src="windows-pad-test.gif" alt="Example testing connection using DSU Pad Test on Windows" width="500"/>
 
 ## Credits
 
@@ -49,7 +49,7 @@ implementation for Joy Con controllers at https://github.com/joaorb64/joycond-ce
 Also the specification of the DSU protocol at https://v1993.github.io/cemuhook-protocol/ is of
 great value
 
-## Screenshot
+## Screenshots
 
-<img src="https://github.com/marcowindt/WiiMoteDSU/blob/master/screenshot.jpeg" alt="Screenshot of the application" width="250"/>
-<img src="https://github.com/marcowindt/WiiMoteDSU/blob/master/screenshot-settings.jpeg" alt="Screenshot of the available settings" width="250"/>
+<img src="screenshot.jpeg" alt="Screenshot of the application" width="250"/>
+<img src="screenshot-settings.jpeg" alt="Screenshot of the available settings" width="250"/>
