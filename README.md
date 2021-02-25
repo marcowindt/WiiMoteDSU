@@ -10,31 +10,30 @@
 
 If you want to use this application with the Dolphin emulator, select other input devices and
 fill in your phones IP address and port 26760. Moreover, a controller profile configuration file
-can be found in this repository, which should work for most games  (some games using motion input
+can be found in this repository, which should work for most games (some games using motion input
 may be troublesome, although implemented).
 
 ### More detailed steps
 
 **Note:** While the screenshots are from the Dolphin application for Mac OS, the same holds (and has been tested) for the Windows version.
 
-1. Open *Controller Settings*
-2. Click *Alternate Input Sources*
-3. Check *Enable*
+1. Open _Controller Settings_
+2. Click _Alternate Input Sources_
+3. Check _Enable_
 4. Fill in your phone's IP Address and port number `26760`.
-5. Select *Emulated Wii Remote* as "Wii Remote 1" and click **Configure**.
+5. Select _Emulated Wii Remote_ as "Wii Remote 1" and click **Configure**.
 6. While the application is open on your phone, "DSUClient/0/DualShock 3" (your phone) should be listed as possible input device, select it as input device.
 
 <img src="https://github.com/marcowindt/WiiMoteDSU/blob/master/controller-configuration.png" alt="Screenshot of controller configuration" width="500"/>
 
 7. You can now either map the buttons manually or use the `WiiMoteDSU.ini` profile file in this repository:
-    1. If using the profile from this repository place it within the Config folder of Dolhpin:
-        - Windows: `(Documents/Dolphin Emulator/)Config/Profiles/Wiimote/WiiMoteDSU.ini`
-        - Mac OS: `/Users/username/Library/Application Support/Dolphin/Config/Profiles/Wiimote/WiiMoteDSU.ini`
-        
-    2. When placed in this folder you can type "WiiMoteDSU" as profile and press 'Load' on the controller configuration screen.
-        <br />
-        <img src="https://github.com/marcowindt/WiiMoteDSU/blob/master/load-controller-profile.png" alt="Load custom controller profile" width="400"/><br />
-        **Note:** Set *Extension* to "None", something else (like Nunchunk) can override button mappings.
+   1. If using the profile from this repository place it within the Config folder of Dolhpin:
+      - Windows: `(Documents/Dolphin Emulator/)Config/Profiles/Wiimote/WiiMoteDSU.ini`
+      - Mac OS: `/Users/username/Library/Application Support/Dolphin/Config/Profiles/Wiimote/WiiMoteDSU.ini`
+   2. When placed in this folder you can type "WiiMoteDSU" as profile and press 'Load' on the controller configuration screen.
+      <br />
+      <img src="https://github.com/marcowindt/WiiMoteDSU/blob/master/load-controller-profile.png" alt="Load custom controller profile" width="400"/><br />
+      **Note:** Set _Extension_ to "None", something else (like Nunchunk) can override button mappings.
 
 #### Extra: Pad Test (Windows only)
 
@@ -54,5 +53,3 @@ great value
 
 <img src="https://github.com/marcowindt/WiiMoteDSU/blob/master/screenshot.jpeg" alt="Screenshot of the application" width="250"/>
 <img src="https://github.com/marcowindt/WiiMoteDSU/blob/master/screenshot-settings.jpeg" alt="Screenshot of the available settings" width="250"/>
-
-
