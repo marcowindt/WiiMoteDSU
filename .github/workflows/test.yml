@@ -1,0 +1,25 @@
+name: Test
+
+on:
+  push:
+    branches: [master, develop]
+  pull_request:
+    branches: [master, develop]
+
+jobs:
+  test:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.API_GITHUB_TOKEN }}
+
+      # TODO: Run tests
+
+      - name: Version
+        if: github.event_name != 'pull_request'
+        uses: cycjimmy/semantic-release-action@v2.5.3
+        env:
+          GITHUB_TOKEN: ${{ secrets.API_GITHUB_TOKEN }}

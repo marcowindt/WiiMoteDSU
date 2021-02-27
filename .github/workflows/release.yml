@@ -1,0 +1,66 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  ios:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.API_GITHUB_TOKEN }}
+
+      - name: Setup environment
+        id: setup
+        run: |
+          git clone https://github.com/flutter/flutter.git -b beta --depth=1
+          flutter/bin/flutter doctor
+          echo ::set-output name=tag::${GITHUB_REF##*/}
+
+      - name: Build
+        run: |
+          flutter/bin/flutter build ios --no-codesign --release
+          cd build/ios/
+          mv iphoneos Payload
+          zip -r WiiMoteDSU-${{ steps.setup.outputs.tag }}.ipa Payload
+
+      - name: Upload assets
+        uses: AButler/upload-release-assets@v2.0
+        with:
+          files: build/ios/WiiMoteDSU-${{ steps.setup.outputs.tag }}.ipa
+          release-tag: ${{ steps.setup.outputs.tag }}
+          repo-token: ${{ secrets.API_GITHUB_TOKEN }}
+
+  android:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.API_GITHUB_TOKEN }}
+
+      - name: Setup environment
+        id: setup
+        run: |
+          git clone https://github.com/flutter/flutter.git -b beta --depth=1
+          flutter/bin/flutter doctor
+          echo ::set-output name=tag::${GITHUB_REF##*/}
+
+      - name: Build
+        run: |
+          flutter/bin/flutter build apk --release
+          cd build/app/outputs/flutter-apk/
+          mv app-release.apk WiiMoteDSU-${{ steps.setup.outputs.tag }}.apk
+
+      - name: Upload assets
+        uses: AButler/upload-release-assets@v2.0
+        with:
+          files: build/app/outputs/flutter-apk/WiiMoteDSU-${{ steps.setup.outputs.tag }}.apk
+          release-tag: ${{ steps.setup.outputs.tag }}
+          repo-token: ${{ secrets.API_GITHUB_TOKEN }}
