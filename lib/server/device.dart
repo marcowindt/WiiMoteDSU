@@ -13,6 +13,7 @@ class Device {
   var model = 0x01;
 
   static const double PI = 3.1415926535897932;
+  static const double METER_PER_SECOND_SQUARED_TO_G = 9.8066;
 
   GyroscopeEvent previousGyroEvent;
   GyroSettings gyroSettings;
@@ -31,7 +32,7 @@ class Device {
   bool invertAccX = false;
   bool invertAccY = false;
   bool invertAccZ = false;
-  double accSensitivity = 3.0;
+  double accSensitivity = 1.0;
 
   double motionX = 0;
   double motionY = 0;
@@ -116,8 +117,8 @@ class Device {
     accEnabled = accSettings.enabled;
     adjustToDeviceOrientationAcc = accSettings.adjustToDeviceOrientation;
     invertAccX = accSettings.invertAccX;
-    invertAccX = accSettings.invertAccX;
-    invertAccX = accSettings.invertAccX;
+    invertAccY = accSettings.invertAccY;
+    invertAccZ = accSettings.invertAccZ;
     accSensitivity = accSettings.sensitivity;
   }
 
@@ -132,12 +133,24 @@ class Device {
   }
 
   void start() {
-    accelerometerEvents.listen((event) {
+    accelerometerEvents.listen((AccelerometerEvent event) {
       // Values are in m/s^2, but we need in g's (1 g approx 9.8 m/s^2)
       if (accEnabled) {
-        accX = (invertAccX ? -1 : 1) * accSensitivity * event.x * 9.81 / 100;
-        accY = (invertAccY ? -1 : 1) * accSensitivity * event.z * 9.81 / 100;
-        accZ = (invertAccZ ? -1 : 1) * accSensitivity * event.y * 9.81 / 100;
+        accX = (invertAccX ? -1 : 1) *
+            accSensitivity *
+            event.x *
+            METER_PER_SECOND_SQUARED_TO_G /
+            100;
+        accY = (invertAccY ? -1 : 1) *
+            accSensitivity *
+            event.z *
+            METER_PER_SECOND_SQUARED_TO_G /
+            100;
+        accZ = (invertAccZ ? -1 : 1) *
+            accSensitivity *
+            event.y *
+            METER_PER_SECOND_SQUARED_TO_G /
+            100;
       } else {
         accX = 0;
         accY = 0;
@@ -149,8 +162,8 @@ class Device {
       // Values are in rad/s, but we need deg/s (2pi rad/s = 360 deg/s)
       // When in portrait: x = pitch, y = yaw, z = roll
       motionX = (invertGyroX ? -1 : 1) * radToDeg(event.x) * sensitivity;
-      motionY = (invertGyroY ? -1 : 1) * radToDeg(event.y) * sensitivity;
-      motionZ = (invertGyroZ ? -1 : 1) * radToDeg(event.z) * sensitivity;
+      motionY = (invertGyroY ? -1 : 1) * radToDeg(event.z) * sensitivity;
+      motionZ = (invertGyroZ ? -1 : 1) * radToDeg(event.y) * sensitivity;
       previousGyroEvent = event;
     });
   }

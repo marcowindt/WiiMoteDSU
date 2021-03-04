@@ -305,7 +305,7 @@ class DSUServer {
       this.incoming(datagram);
     });
 
-    await this.reportLoop(Duration(milliseconds: 5));
+    await this.reportLoop(Duration(milliseconds: 1));
 
     print(state);
   }

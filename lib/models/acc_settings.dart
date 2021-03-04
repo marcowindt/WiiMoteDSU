@@ -5,8 +5,8 @@ class AccSettings extends ChangeNotifier {
   bool enabled = true;
   SharedPreferences preferences;
   bool adjustToDeviceOrientation = false;
-  bool invertAccX = false;
-  bool invertAccY = false;
+  bool invertAccX = true;
+  bool invertAccY = true;
   bool invertAccZ = false;
   double sensitivity = 3.0;
 
@@ -84,10 +84,10 @@ class AccSettings extends ChangeNotifier {
   }
 
   void clear() {
-    enabled = false;
+    enabled = true;
     adjustToDeviceOrientation = false;
-    invertAccX = false;
-    invertAccY = false;
+    invertAccX = true;
+    invertAccY = true;
     invertAccZ = false;
     sensitivity = 1.0;
     notifyListeners();
