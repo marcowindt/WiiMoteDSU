@@ -119,13 +119,18 @@ class _SettingsScreen extends State<SettingsScreen> {
               ),
               Padding(
                   padding: const EdgeInsets.symmetric(
-                      vertical: 5.0, horizontal: 10.0),
-                  child: FlatButton(
+                      vertical: 10.0, horizontal: 10.0),
+                  child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 10.0),
                       textColor: Colors.white,
                       color: Colors.blueAccent,
                       onPressed: () =>
                           clearCachedSettings(accSettings, gyroSettings),
-                      child: Text('clear cache'))),
+                      child: Text('Reset to default'))),
             ],
           );
         }));
