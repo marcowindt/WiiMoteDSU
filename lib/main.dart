@@ -28,17 +28,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.blue,
-      statusBarBrightness: Brightness.dark,
-    ));
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'WiiMoteDSU',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        // visualDensity: VisualDensity.adaptivePlatformDensity,
-        // appBarTheme: AppBarTheme(brightness: Theme.of(context).brightness),
       ),
       home: MyHomePage(
         title: 'WiiMoteDSU',
@@ -102,71 +96,76 @@ class _MyHomePageState extends State<MyHomePage> {
           ChangeNotifierProvider.value(value: gyroSettings),
           ChangeNotifierProvider.value(value: accSettings),
         ],
-        child: Scaffold(
-          backgroundColor: Colors.white,
-          body: Stack(children: <Widget>[
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  DpadArrow(
-                      Icons.arrow_upward, "D_UP", true, buttonDown, buttonUp),
-                  Row(
+        child: AnnotatedRegion<SystemUiOverlayStyle>(
+            value: SystemUiOverlayStyle.dark,
+            child: Scaffold(
+              backgroundColor: Colors.white,
+              body: Stack(children: <Widget>[
+                Center(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      DpadArrow(Icons.arrow_back, "D_LEFT", false, buttonDown,
+                      DpadArrow(Icons.arrow_upward, "D_UP", true, buttonDown,
                           buttonUp),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 0.0, horizontal: 25.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          DpadArrow(Icons.arrow_back, "D_LEFT", false,
+                              buttonDown, buttonUp),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 0.0, horizontal: 25.0),
+                          ),
+                          DpadArrow(Icons.arrow_forward, "D_RIGHT", false,
+                              buttonDown, buttonUp),
+                        ],
                       ),
-                      DpadArrow(Icons.arrow_forward, "D_RIGHT", false,
+                      DpadArrow(Icons.arrow_downward, "D_DOWN", true,
                           buttonDown, buttonUp),
+                      SizedBox(
+                        height: 50.0,
+                      ),
+                      PadRoundButton(
+                          null, "A", 65.0, 65.0, buttonDown, buttonUp),
+                      SizedBox(
+                        height: 15.0,
+                      ),
+                      PadRectangleButton(
+                          null, "B", 65.0, 85.0, buttonDown, buttonUp),
+                      SizedBox(
+                        height: 50.0,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          PadRoundButton(Icons.remove, "MINUS", 30.0, 30.0,
+                              buttonDown, buttonUp),
+                          PadRoundButton(Icons.home, "HOME", 30.0, 30.0,
+                              buttonDown, buttonUp),
+                          PadRoundButton(Icons.add, "PLUS", 30.0, 30.0,
+                              buttonDown, buttonUp),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 50.0,
+                      ),
+                      PadRoundButton(
+                          null, "1", 45.0, 45.0, buttonDown, buttonUp),
+                      SizedBox(
+                        height: 15.0,
+                      ),
+                      PadRoundButton(
+                          null, "2", 45.0, 45.0, buttonDown, buttonUp),
                     ],
                   ),
-                  DpadArrow(Icons.arrow_downward, "D_DOWN", true, buttonDown,
-                      buttonUp),
-                  SizedBox(
-                    height: 50.0,
-                  ),
-                  PadRoundButton(null, "A", 65.0, 65.0, buttonDown, buttonUp),
-                  SizedBox(
-                    height: 15.0,
-                  ),
-                  PadRectangleButton(
-                      null, "B", 65.0, 85.0, buttonDown, buttonUp),
-                  SizedBox(
-                    height: 50.0,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      PadRoundButton(Icons.remove, "MINUS", 30.0, 30.0,
-                          buttonDown, buttonUp),
-                      PadRoundButton(
-                          Icons.home, "HOME", 30.0, 30.0, buttonDown, buttonUp),
-                      PadRoundButton(
-                          Icons.add, "PLUS", 30.0, 30.0, buttonDown, buttonUp),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 50.0,
-                  ),
-                  PadRoundButton(null, "1", 45.0, 45.0, buttonDown, buttonUp),
-                  SizedBox(
-                    height: 15.0,
-                  ),
-                  PadRoundButton(null, "2", 45.0, 45.0, buttonDown, buttonUp),
-                ],
-              ),
-            ),
-            Padding(
-                padding: const EdgeInsets.only(top: 30.0, left: 2.0),
-                child: IconButton(
-                    icon: Icon(Icons.settings),
-                    onPressed: () => _openSettings(context))),
-          ]),
-        ));
+                ),
+                Padding(
+                    padding: const EdgeInsets.only(top: 30.0, left: 2.0),
+                    child: IconButton(
+                        icon: Icon(Icons.settings),
+                        onPressed: () => _openSettings(context))),
+              ]),
+            )));
   }
 
   void _openSettings(BuildContext context) {
