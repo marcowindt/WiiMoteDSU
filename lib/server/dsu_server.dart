@@ -1,10 +1,11 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:collection/collection.dart';
+import 'package:flutter/widgets.dart';
 import 'package:udp/udp.dart';
 import 'package:wiimote_dsu/devices/device.dart';
-import 'package:wiimote_dsu/devices/wii_mote_device.dart';
 import 'package:wiimote_dsu/models/acc_settings.dart';
+import 'package:wiimote_dsu/models/device_settings.dart';
 import 'package:wiimote_dsu/models/gyro_settings.dart';
 
 import 'message.dart';
@@ -17,10 +18,14 @@ class DSUServer {
   List<Device> slots = [null, null, null, null];
   UDP socket;
 
-  DSUServer(GyroSettings gyroSettings, AccSettings accSettings,
-      {this.portNum = 26760, Device device}) {
-    if (device == null) device = WiiMoteDevice(this, gyroSettings, accSettings);
-    slots[0] = device;
+  GyroSettings gyroSettings;
+  AccSettings accSettings;
+  DeviceSettings deviceSettings;
+
+  DSUServer(this.gyroSettings, this.accSettings, this.deviceSettings,
+      {this.portNum = 26760}) {
+    this.slots[0] = this.deviceSettings.createDevice(this);
+    this.deviceSettings.addListener(onDeviceChange);
   }
 
   init() async {
@@ -274,7 +279,7 @@ class DSUServer {
   printSlots() {
     slots.forEach((device) {
       if (device != null) {
-        print("Slot: " + device.name);
+        print("Slot: " + device.deviceName);
       }
     });
   }
@@ -305,17 +310,29 @@ class DSUServer {
     }
   }
 
+  void onDeviceChange() {
+    Device device = this.deviceSettings.createDevice(this);
+    registerDevice(0, device);
+  }
+
+  void registerDevice(int slot, Device device) {
+    this.slots[slot] = device;
+    debugPrint("Registered device: Slot[$slot] ${device.deviceName}");
+  }
+
   factory DSUServer.make(GyroSettings gyroSettings, AccSettings accSettings,
-      {int portNum = 26760, Device device}) {
+      DeviceSettings deviceSettings,
+      {int portNum = 26760}) {
     DSUServer server =
-        DSUServer(gyroSettings, accSettings, portNum: portNum, device: device);
+        DSUServer(gyroSettings, accSettings, deviceSettings, portNum: portNum);
     server.init();
     return server;
   }
 
   factory DSUServer.mock(GyroSettings gyroSettings, AccSettings accSettings,
-      {int portNum = 26760, Device device}) {
-    return DSUServer(gyroSettings, accSettings,
-        portNum: portNum, device: device);
+      DeviceSettings deviceSettings,
+      {int portNum = 26760}) {
+    return DSUServer(gyroSettings, accSettings, deviceSettings,
+        portNum: portNum);
   }
 }

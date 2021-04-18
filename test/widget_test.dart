@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:wiimote_dsu/main.dart';
 import 'package:wiimote_dsu/models/acc_settings.dart';
+import 'package:wiimote_dsu/models/device_settings.dart';
 import 'package:wiimote_dsu/models/gyro_settings.dart';
 import 'package:wiimote_dsu/server/dsu_server.dart';
 
@@ -22,8 +23,9 @@ void main() {
     final prefs = await SharedPreferences.getInstance();
     final gyroSettings = GyroSettings.getSettings(prefs);
     final accSettings = AccSettings.getSettings(prefs);
+    final deviceSettings = DeviceSettings.getSettings(prefs);
 
-    final server = DSUServer.mock(gyroSettings, accSettings);
+    final server = DSUServer.mock(gyroSettings, accSettings, deviceSettings);
 
     await tester.pumpWidget(MultiProvider(providers: [
       ChangeNotifierProvider<GyroSettings>.value(value: gyroSettings),

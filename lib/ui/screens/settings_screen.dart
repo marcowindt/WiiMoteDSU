@@ -3,6 +3,7 @@ import 'package:get_ip/get_ip.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wiimote_dsu/models/acc_settings.dart';
+import 'package:wiimote_dsu/models/device_settings.dart';
 import 'package:wiimote_dsu/models/gyro_settings.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -26,9 +27,12 @@ class _SettingsScreen extends State<SettingsScreen> {
         appBar: AppBar(
           title: Text('Settings'),
         ),
-        body: Consumer2<GyroSettings, AccSettings>(builder:
-            (BuildContext context, GyroSettings gyroSettings,
-                AccSettings accSettings, Widget child) {
+        body: Consumer3<GyroSettings, AccSettings, DeviceSettings>(builder:
+            (BuildContext context,
+                GyroSettings gyroSettings,
+                AccSettings accSettings,
+                DeviceSettings deviceSettings,
+                Widget child) {
           return ListView(
             children: [
               // ListTile(
@@ -102,6 +106,22 @@ class _SettingsScreen extends State<SettingsScreen> {
                 ),
               ),
               ListTile(
+                title: Text("Device"),
+                trailing: DropdownButton<String>(
+                  hint: Text("Select device"),
+                  value: Provider.of<DeviceSettings>(context).deviceName,
+                  onChanged: (String name) {
+                    context.read<DeviceSettings>().setDeviceByName(name);
+                  },
+                  items: DeviceSettings.available.map((String deviceName) {
+                    return DropdownMenuItem<String>(
+                      value: deviceName,
+                      child: Text(deviceName),
+                    );
+                  }).toList(),
+                ),
+              ),
+              ListTile(
                 title: Text('IP Address'),
                 trailing: FutureBuilder(
                   future: GetIp.ipAddress,
@@ -128,20 +148,21 @@ class _SettingsScreen extends State<SettingsScreen> {
                           vertical: 15.0, horizontal: 10.0),
                       textColor: Colors.white,
                       color: Colors.blueAccent,
-                      onPressed: () =>
-                          clearCachedSettings(accSettings, gyroSettings),
+                      onPressed: () => clearCachedSettings(
+                          accSettings, gyroSettings, deviceSettings),
                       child: Text('Reset to default'))),
             ],
           );
         }));
   }
 
-  Future<void> clearCachedSettings(
-      AccSettings accSettings, GyroSettings gyroSettings) async {
+  Future<void> clearCachedSettings(AccSettings accSettings,
+      GyroSettings gyroSettings, DeviceSettings deviceSettings) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     bool cleared = await preferences.clear();
     accSettings.clear();
     gyroSettings.clear();
+    deviceSettings.clear();
     return cleared;
   }
 }

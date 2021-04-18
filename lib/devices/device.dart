@@ -8,8 +8,11 @@ import 'package:wiimote_dsu/server/dsu_server.dart';
 import 'package:wiimote_dsu/ui/layouts/wii_mote_layout.dart';
 
 class Device {
+  static const name = "WiiMoteDSU";
+
+  String get deviceName => name;
+
   var server;
-  var name = "WiiMoteDSU";
   var disconnected = false;
   var mac = [0xFA, 0xCE, 0xB0, 0x0C, 0x00, 0x00];
   var model = 0x01;
@@ -96,12 +99,12 @@ class Device {
     this.state[this.keyMap[btnType]] = state;
   }
 
-  Device(DSUServer server, GyroSettings gyroSettings, AccSettings accSettings) {
+  Device(DSUServer server) {
     this.server = server;
-    this.gyroSettings = gyroSettings;
-    this.accSettings = accSettings;
-    gyroSettings.addListener(onGyroSettingsChanged);
-    accSettings.addListener(onAccSettingsChanged);
+    this.gyroSettings = server.gyroSettings;
+    this.accSettings = server.accSettings;
+    this.gyroSettings.addListener(onGyroSettingsChanged);
+    this.accSettings.addListener(onAccSettingsChanged);
     try {
       this.start();
       this.initGyroSettings();

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wiimote_dsu/models/acc_settings.dart';
+import 'package:wiimote_dsu/models/device_settings.dart';
 import 'package:wiimote_dsu/models/gyro_settings.dart';
 import 'package:wiimote_dsu/ui/screens/device_screen.dart';
 import 'package:wiimote_dsu/ui/screens/settings_screen.dart';
@@ -12,14 +13,17 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   final prefs = await SharedPreferences.getInstance();
+
   final gyroSettings = GyroSettings.getSettings(prefs);
   final accSettings = AccSettings.getSettings(prefs);
+  final deviceSettings = DeviceSettings.getSettings(prefs);
 
-  final server = DSUServer.make(gyroSettings, accSettings);
+  final server = DSUServer.make(gyroSettings, accSettings, deviceSettings);
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider<GyroSettings>.value(value: gyroSettings),
     ChangeNotifierProvider<AccSettings>.value(value: accSettings),
+    ChangeNotifierProvider<DeviceSettings>.value(value: deviceSettings),
     Provider<DSUServer>.value(
       value: server,
     ),
