@@ -35,7 +35,7 @@ void main() {
       ),
     ], child: WiiMoteDSUApp(prefs)));
 
-    // Verify that our counter starts at 0.
+    // Verify that the settings button appears on screen
     expect(find.widgetWithIcon(IconButton, Icons.settings), findsOneWidget,
         reason: "Settings button available");
   });
