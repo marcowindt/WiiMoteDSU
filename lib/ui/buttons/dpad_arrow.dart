@@ -6,9 +6,12 @@ import 'package:wiimote_dsu/server/dsu_server.dart';
 class DpadArrow extends StatelessWidget {
   final IconData iconData;
   final String btnType;
-  final bool upOrDown;
 
-  DpadArrow(this.iconData, {this.btnType = "D_UP", this.upOrDown = false});
+  final double width;
+  final double height;
+
+  DpadArrow(this.iconData,
+      {this.btnType = "D_UP", this.width = 50.0, this.height = 80.0});
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +23,18 @@ class DpadArrow extends StatelessWidget {
       onPointerUp: (details) {
         context.read<DSUServer>().slots[0].setState(btnType, 0x00);
       },
-      child: MaterialButton(
-        onPressed: () {},
-        height: upOrDown ? 80.0 : 50.0,
-        minWidth: upOrDown ? 40.0 : 80.0,
-        child: Icon(iconData),
-        color: Colors.white70,
+      child: SizedBox(
+        width: width,
+        height: height,
+        child: MaterialButton(
+          padding: const EdgeInsets.all(0.0),
+          onPressed: () {},
+          color: Colors.white70,
+          child: Icon(
+            iconData,
+            size: (height < width ? height : width) * 0.7,
+          ),
+        ),
       ),
     );
   }
