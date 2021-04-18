@@ -4,15 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wiimote_dsu/models/acc_settings.dart';
 import 'package:wiimote_dsu/models/gyro_settings.dart';
-import 'package:wiimote_dsu/ui/a_b_buttons.dart';
-import 'package:wiimote_dsu/ui/dpad.dart';
-import 'package:wiimote_dsu/ui/layouts/wii_mote_layout.dart';
-import 'package:wiimote_dsu/ui/minus_home_plus_buttons.dart';
-import 'package:wiimote_dsu/ui/one_two_buttons.dart';
 import 'package:wiimote_dsu/ui/screens/device_screen.dart';
 import 'package:wiimote_dsu/ui/screens/settings_screen.dart';
 import 'server/dsu_server.dart';
-import 'package:get_ip/get_ip.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
