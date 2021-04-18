@@ -84,6 +84,17 @@ class GyroSettings extends ChangeNotifier {
     notifyListeners();
   }
 
+  factory GyroSettings.getSettings(SharedPreferences preferences) {
+    return GyroSettings(
+      preferences,
+      GyroSettings.getBool(preferences, 'adjust_gyro_orientation'),
+      GyroSettings.getBool(preferences, 'invert_gyro_x'),
+      GyroSettings.getBool(preferences, 'invert_gyro_y'),
+      GyroSettings.getBool(preferences, 'invert_gyro_z'),
+      GyroSettings.getDouble(preferences, 'gyro_sensitivity'),
+    );
+  }
+
   @override
   String toString() =>
       """adjustToDeviceOrientation: $adjustToDeviceOrientation, 

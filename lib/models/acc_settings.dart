@@ -93,6 +93,18 @@ class AccSettings extends ChangeNotifier {
     notifyListeners();
   }
 
+  factory AccSettings.getSettings(SharedPreferences preferences) {
+    return AccSettings(
+      preferences,
+      AccSettings.getBool(preferences, 'acc_enabled'),
+      AccSettings.getBool(preferences, 'adjust_acc_orientation'),
+      AccSettings.getBool(preferences, 'invert_acc_x'),
+      AccSettings.getBool(preferences, 'invert_acc_y'),
+      AccSettings.getBool(preferences, 'invert_acc_z'),
+      AccSettings.getDouble(preferences, 'acc_sensitivity'),
+    );
+  }
+
   @override
   String toString() =>
       """adjustToDeviceOrientation: $adjustToDeviceOrientation, 
