@@ -21,7 +21,6 @@ class DSUServer {
       {this.portNum = 26760, Device device}) {
     if (device == null) device = WiiMoteDevice(this, gyroSettings, accSettings);
     slots[0] = device;
-    this.init();
   }
 
   init() async {
@@ -304,5 +303,19 @@ class DSUServer {
       });
       await Future.delayed(interval);
     }
+  }
+
+  factory DSUServer.make(GyroSettings gyroSettings, AccSettings accSettings,
+      {int portNum = 26760, Device device}) {
+    DSUServer server =
+        DSUServer(gyroSettings, accSettings, portNum: portNum, device: device);
+    server.init();
+    return server;
+  }
+
+  factory DSUServer.mock(GyroSettings gyroSettings, AccSettings accSettings,
+      {int portNum = 26760, Device device}) {
+    return DSUServer(gyroSettings, accSettings,
+        portNum: portNum, device: device);
   }
 }

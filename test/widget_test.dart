@@ -7,24 +7,34 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:wiimote_dsu/main.dart';
+import 'package:wiimote_dsu/models/acc_settings.dart';
+import 'package:wiimote_dsu/models/gyro_settings.dart';
+import 'package:wiimote_dsu/server/dsu_server.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('Settings button available', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+    final gyroSettings = GyroSettings.getSettings(prefs);
+    final accSettings = AccSettings.getSettings(prefs);
+
+    final server = DSUServer.mock(gyroSettings, accSettings);
+
+    await tester.pumpWidget(MultiProvider(providers: [
+      ChangeNotifierProvider<GyroSettings>.value(value: gyroSettings),
+      ChangeNotifierProvider<AccSettings>.value(value: accSettings),
+      Provider<DSUServer>.value(
+        value: server,
+      ),
+    ], child: WiiMoteDSUApp(prefs)));
 
     // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    expect(find.widgetWithIcon(IconButton, Icons.settings), findsOneWidget,
+        reason: "Settings button available");
   });
 }

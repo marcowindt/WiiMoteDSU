@@ -15,7 +15,7 @@ void main() async {
   final gyroSettings = GyroSettings.getSettings(prefs);
   final accSettings = AccSettings.getSettings(prefs);
 
-  final server = DSUServer(gyroSettings, accSettings);
+  final server = DSUServer.make(gyroSettings, accSettings);
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider<GyroSettings>.value(value: gyroSettings),
