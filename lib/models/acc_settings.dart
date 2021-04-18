@@ -20,33 +20,6 @@ class AccSettings extends ChangeNotifier {
     this.sensitivity,
   );
 
-  static bool getBool(SharedPreferences preferences, String key) {
-    try {
-      bool state = preferences.getBool(key);
-      return state != null ? state : false;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  static int getInt(SharedPreferences preferences, String key) {
-    try {
-      int value = preferences.getInt(key);
-      return value > 0 ? value : 1;
-    } catch (e) {
-      return 1;
-    }
-  }
-
-  static double getDouble(SharedPreferences preferences, String key) {
-    try {
-      double value = preferences.getDouble(key);
-      return value > 0 ? value : 1.0;
-    } catch (e) {
-      return 1.0;
-    }
-  }
-
   void setAccEnabled(bool value) {
     enabled = value;
     notifyListeners();
@@ -96,12 +69,24 @@ class AccSettings extends ChangeNotifier {
   factory AccSettings.getSettings(SharedPreferences preferences) {
     return AccSettings(
       preferences,
-      AccSettings.getBool(preferences, 'acc_enabled'),
-      AccSettings.getBool(preferences, 'adjust_acc_orientation'),
-      AccSettings.getBool(preferences, 'invert_acc_x'),
-      AccSettings.getBool(preferences, 'invert_acc_y'),
-      AccSettings.getBool(preferences, 'invert_acc_z'),
-      AccSettings.getDouble(preferences, 'acc_sensitivity'),
+      preferences.getBool('acc_enabled') != null
+          ? preferences.getBool('acc_enabled')
+          : true,
+      preferences.getBool('adjust_acc_orientation') != null
+          ? preferences.getBool('adjust_acc_orientation')
+          : false,
+      preferences.getBool('invert_acc_x') != null
+          ? preferences.getBool('invert_acc_x')
+          : true,
+      preferences.getBool('invert_acc_y') != null
+          ? preferences.getBool('invert_acc_y')
+          : true,
+      preferences.getBool('invert_acc_z') != null
+          ? preferences.getBool('invert_acc_z')
+          : false,
+      preferences.getDouble('acc_sensitivity') != null
+          ? preferences.getDouble('acc_sensitivity')
+          : 1.0,
     );
   }
 

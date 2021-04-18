@@ -18,33 +18,6 @@ class GyroSettings extends ChangeNotifier {
     this.sensitivity,
   );
 
-  static bool getBool(SharedPreferences preferences, String key) {
-    try {
-      bool state = preferences.getBool(key);
-      return state != null ? state : false;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  static int getInt(SharedPreferences preferences, String key) {
-    try {
-      int value = preferences.getInt(key);
-      return value > 0 ? value : 1;
-    } catch (e) {
-      return 1;
-    }
-  }
-
-  static double getDouble(SharedPreferences preferences, String key) {
-    try {
-      double value = preferences.getDouble(key);
-      return value > 0 ? value : 1.0;
-    } catch (e) {
-      return 1.0;
-    }
-  }
-
   void setAdjustToDeviceOrientation(bool value) {
     adjustToDeviceOrientation = value;
     notifyListeners();
@@ -87,11 +60,21 @@ class GyroSettings extends ChangeNotifier {
   factory GyroSettings.getSettings(SharedPreferences preferences) {
     return GyroSettings(
       preferences,
-      GyroSettings.getBool(preferences, 'adjust_gyro_orientation'),
-      GyroSettings.getBool(preferences, 'invert_gyro_x'),
-      GyroSettings.getBool(preferences, 'invert_gyro_y'),
-      GyroSettings.getBool(preferences, 'invert_gyro_z'),
-      GyroSettings.getDouble(preferences, 'gyro_sensitivity'),
+      preferences.getBool('adjust_gyro_orientation') != null
+          ? preferences.getBool('adjust_gyro_orientation')
+          : false,
+      preferences.getBool('invert_gyro_x') != null
+          ? preferences.getBool('invert_gyro_x')
+          : false,
+      preferences.getBool('invert_gyro_y') != null
+          ? preferences.getBool('invert_gyro_y')
+          : true,
+      preferences.getBool('invert_gyro_z') != null
+          ? preferences.getBool('invert_gyro_z')
+          : false,
+      preferences.getDouble('gyro_sensitivity') != null
+          ? preferences.getDouble('gyro_sensitivity')
+          : 1.0,
     );
   }
 
