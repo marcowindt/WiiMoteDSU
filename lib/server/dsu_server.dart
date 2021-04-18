@@ -2,10 +2,11 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:collection/collection.dart';
 import 'package:udp/udp.dart';
+import 'package:wiimote_dsu/devices/device.dart';
+import 'package:wiimote_dsu/devices/wii_mote_device.dart';
 import 'package:wiimote_dsu/models/acc_settings.dart';
 import 'package:wiimote_dsu/models/gyro_settings.dart';
 
-import 'device.dart';
 import 'message.dart';
 
 class DSUServer {
@@ -17,8 +18,9 @@ class DSUServer {
   UDP socket;
 
   DSUServer(GyroSettings gyroSettings, AccSettings accSettings,
-      {this.portNum = 26760}) {
-    slots[0] = new Device(this, gyroSettings, accSettings);
+      {this.portNum = 26760, Device device}) {
+    if (device == null) device = WiiMoteDevice(this, gyroSettings, accSettings);
+    slots[0] = device;
     this.init();
   }
 

@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:wiimote_dsu/models/acc_settings.dart';
 import 'package:wiimote_dsu/models/gyro_settings.dart';
 
-import 'dsu_server.dart';
 import 'package:sensors/sensors.dart';
+import 'package:wiimote_dsu/server/dsu_server.dart';
+import 'package:wiimote_dsu/ui/layouts/wii_mote_layout.dart';
 
 class Device {
   var server;
@@ -180,5 +182,9 @@ class Device {
 
   getReport() {
     return state;
+  }
+
+  Widget getButtonLayout() {
+    return WiiMoteLayout();
   }
 }
