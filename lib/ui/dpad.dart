@@ -5,12 +5,11 @@ class Dpad extends StatelessWidget {
   final double width;
   final double height;
 
-  Dpad({this.width = 180.0, this.height = 180.0});
+  Dpad({this.width = 1.0 * 180.0, this.height = 1.0 * 180.0});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        color: Colors.amber,
         width: width,
         height: height,
         child: Stack(children: <Widget>[

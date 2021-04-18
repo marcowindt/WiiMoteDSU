@@ -7,23 +7,39 @@ import 'package:wiimote_dsu/ui/one_two_buttons.dart';
 class WiiMoteLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Dpad(),
-        SizedBox(
-          height: 50.0,
-        ),
-        ABButtons(),
-        SizedBox(
-          height: 50.0,
-        ),
-        MinusHomePlusButtons(),
-        SizedBox(
-          height: 50.0,
-        ),
-        OneTwoButtons(),
-      ],
-    );
+    final screenSize = MediaQuery.of(context).size;
+    return SizedBox(
+        width: screenSize.width,
+        height: screenSize.height,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Dpad(
+              width: screenSize.height * 0.25,
+              height: screenSize.height * 0.25,
+            ),
+            SizedBox(
+              height: screenSize.height * 0.2 / 3,
+            ),
+            ABButtons(
+              width: screenSize.height * 0.25 / 3,
+              height: screenSize.height * 0.25,
+            ),
+            SizedBox(
+              height: screenSize.height * 0.2 / 3,
+            ),
+            MinusHomePlusButtons(
+              width: screenSize.height * 0.15,
+              height: screenSize.height * 0.15 / 4,
+            ),
+            SizedBox(
+              height: screenSize.height * 0.2 / 3,
+            ),
+            OneTwoButtons(
+              width: screenSize.height * 0.15 / 2.5,
+              height: screenSize.height * 0.15,
+            ),
+          ],
+        ));
   }
 }

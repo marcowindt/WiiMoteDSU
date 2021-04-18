@@ -23,12 +23,26 @@ class PadRectangleButton extends StatelessWidget {
       onPointerUp: (details) {
         context.read<DSUServer>().slots[0].setState(btnType, 0x00);
       },
-      child: MaterialButton(
-        onPressed: () {},
-        child: icon == null ? Text(btnType) : Icon(icon),
+      child: SizedBox(
+        width: width,
         height: height,
-        minWidth: width,
-        color: Colors.white70,
+        child: MaterialButton(
+          padding: const EdgeInsets.all(0.0),
+          onPressed: () {},
+          child: icon == null
+              ? Text(
+                  btnType,
+                  style: TextStyle(
+                      fontSize: (width < height ? width : height) * 0.3),
+                )
+              : Icon(
+                  icon,
+                  size: (width < height ? width : height) * 0.7,
+                ),
+          height: height,
+          minWidth: width,
+          color: Colors.white70,
+        ),
       ),
     );
   }
