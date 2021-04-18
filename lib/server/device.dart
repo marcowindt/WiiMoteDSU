@@ -90,6 +90,10 @@ class Device {
     "battery": 0x05
   };
 
+  void setState(String btnType, int state) {
+    this.state[this.keyMap[btnType]] = state;
+  }
+
   Device(DSUServer server, GyroSettings gyroSettings, AccSettings accSettings) {
     this.server = server;
     this.gyroSettings = gyroSettings;
