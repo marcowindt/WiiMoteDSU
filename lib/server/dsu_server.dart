@@ -53,15 +53,12 @@ class DSUServer {
 
   incomingPortRequest(Uint8List message, InternetAddress address, int port) {
     var requestsCount = message.sublist(20, 24)[0];
-//    print(requestsCount.toString());
+
     for (var i = 0; i < requestsCount; i++) {
       Uint8List ports = this.sendPorts(i);
-//      print(address.toString() + " " + port.toString());
       socket
           .send(ports, Endpoint.unicast(address, port: Port(port)))
-          .then((value) {
-//        print("Send " + value.toString() + " bytes");
-      });
+          .then((value) {});
     }
   }
 
@@ -69,7 +66,6 @@ class DSUServer {
     var flags = message[24];
     var regId = message[25];
 
-//    print("incoming data request " + flags.toString() + " " + regId.toString());
     if (flags == 0 && regId == 0) {
       if (!clients.containsKey(address)) {
         print("[udp] Client connected: " +
@@ -92,7 +88,6 @@ class DSUServer {
   }
 
   sendPorts(int index) {
-//    print("sendports " + slots[index].name);
     if (slots[index] != null) {
       Device device = slots[index];
       Uint8List data = Uint8List.fromList([
@@ -155,8 +150,6 @@ class DSUServer {
     buttons2 |= (deviceState["button_circle"] / 255).round() << 6;
     buttons2 |= (deviceState["button_triangle"] / 255).round() << 7;
 
-//    print(buttons2.toRadixString(16));
-
     var time = new DateTime.now().microsecondsSinceEpoch;
 
     var bdAccY = new ByteData(4);
@@ -172,8 +165,6 @@ class DSUServer {
     bdMotionZ.setFloat32(0, device.motionZ);
     var bdMotionX = new ByteData(4);
     bdMotionX.setFloat32(0, device.motionX);
-
-//    print(bdMotionZ.getFloat32(0, Endian.little));
 
     Uint8List data = Uint8List.fromList([
       i,
@@ -250,7 +241,6 @@ class DSUServer {
       bdMotionZ.getUint8(0),
     ]);
 
-//    print((deviceState["button_cross"] * 127 + 128));
     counter += 1;
 
     this.reportToClients(new Message().make(Message.TYPE_DATA, data));
@@ -274,16 +264,9 @@ class DSUServer {
 
   reportToClients(Uint8List message) {
     clients.forEach((address, port) {
-//      var o = "";
-//      message.forEach((element) {
-//        o += element.toRadixString(16) + " ";
-//      });
-//      print(o);
       socket
           .send(message, Endpoint.unicast(address, port: Port(port)))
-          .then((value) {
-//        print("Send " + value.toString() + " bytes");
-      });
+          .then((value) {});
     });
   }
 
@@ -296,7 +279,6 @@ class DSUServer {
   }
 
   start() async {
-    // Listen for incoming packets
     print("Start listening for incoming datagrams on " +
         socket.local.address.toString() +
         " port " +
