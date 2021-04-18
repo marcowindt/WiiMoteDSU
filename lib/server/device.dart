@@ -128,12 +128,10 @@ class Device {
 
   void onGyroSettingsChanged() {
     initGyroSettings();
-    // debugPrint('gyro settings changed: \n $gyroSettings');
   }
 
   void onAccSettingsChanged() {
     initAccSettings();
-    // debugPrint('acc settings changed: \n $accSettings');
   }
 
   void start() {
