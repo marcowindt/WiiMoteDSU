@@ -1,9 +1,7 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:sensors_plus/sensors_plus.dart';
 import 'package:wiimote_dsu/models/acc_settings.dart';
 import 'package:wiimote_dsu/models/gyro_settings.dart';
-
-import 'package:sensors/sensors.dart';
 import 'package:wiimote_dsu/server/dsu_server.dart';
 import 'package:wiimote_dsu/ui/layouts/wii_mote_layout.dart';
 
@@ -46,8 +44,6 @@ class Device {
   double accX = 0;
   double accY = 0;
   double accZ = 0;
-
-  StreamSubscription<dynamic> motion;
 
   var keyMap = {
     "D_UP": "dpad_up",
@@ -143,21 +139,9 @@ class Device {
     accelerometerEvents.listen((AccelerometerEvent event) {
       // Values are in m/s^2, but we need in g's (1 g approx 9.8 m/s^2)
       if (accEnabled) {
-        accX = (invertAccX ? -1 : 1) *
-            accSensitivity *
-            event.x *
-            METER_PER_SECOND_SQUARED_TO_G /
-            100;
-        accY = (invertAccY ? -1 : 1) *
-            accSensitivity *
-            event.z *
-            METER_PER_SECOND_SQUARED_TO_G /
-            100;
-        accZ = (invertAccZ ? -1 : 1) *
-            accSensitivity *
-            event.y *
-            METER_PER_SECOND_SQUARED_TO_G /
-            100;
+        accX = (invertAccX ? -1 : 1) * accSensitivity * event.x * METER_PER_SECOND_SQUARED_TO_G / 100;
+        accY = (invertAccY ? -1 : 1) * accSensitivity * event.z * METER_PER_SECOND_SQUARED_TO_G / 100;
+        accZ = (invertAccZ ? -1 : 1) * accSensitivity * event.y * METER_PER_SECOND_SQUARED_TO_G / 100;
       } else {
         accX = 0;
         accY = 0;
