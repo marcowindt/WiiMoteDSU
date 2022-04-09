@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get_ip/get_ip.dart';
+import 'package:network_info_plus/network_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wiimote_dsu/models/acc_settings.dart';
@@ -12,6 +12,7 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreen extends State<SettingsScreen> {
   TextEditingController controller;
+  final networkInfo = NetworkInfo();
 
   @override
   void initState() {
@@ -27,12 +28,8 @@ class _SettingsScreen extends State<SettingsScreen> {
         appBar: AppBar(
           title: Text('Settings'),
         ),
-        body: Consumer3<GyroSettings, AccSettings, DeviceSettings>(builder:
-            (BuildContext context,
-                GyroSettings gyroSettings,
-                AccSettings accSettings,
-                DeviceSettings deviceSettings,
-                Widget child) {
+        body: Consumer3<GyroSettings, AccSettings, DeviceSettings>(builder: (BuildContext context,
+            GyroSettings gyroSettings, AccSettings accSettings, DeviceSettings deviceSettings, Widget child) {
           return ListView(
             children: [
               // ListTile(
@@ -72,21 +69,21 @@ class _SettingsScreen extends State<SettingsScreen> {
                 ),
               ),
               ListTile(
-                title: Text('Invert Gryo X'),
+                title: Text('Invert Gyro X'),
                 trailing: Checkbox(
                   value: gyroSettings.invertGyroX,
                   onChanged: (bool value) => gyroSettings.setInvertGyroX(value),
                 ),
               ),
               ListTile(
-                title: Text('Invert Gryo Y'),
+                title: Text('Invert Gyro Y'),
                 trailing: Checkbox(
                   value: gyroSettings.invertGyroY,
                   onChanged: (bool value) => gyroSettings.setInvertGyroY(value),
                 ),
               ),
               ListTile(
-                title: Text('Invert Gryo Z'),
+                title: Text('Invert Gyro Z'),
                 trailing: Checkbox(
                   value: gyroSettings.invertGyroZ,
                   onChanged: (bool value) => gyroSettings.setInvertGyroZ(value),
@@ -124,7 +121,7 @@ class _SettingsScreen extends State<SettingsScreen> {
               ListTile(
                 title: Text('IP Address'),
                 trailing: FutureBuilder(
-                  future: GetIp.ipAddress,
+                  future: networkInfo.getWifiIP(),
                   builder: (BuildContext context, AsyncSnapshot<String> ip) {
                     if (ip.hasData) {
                       return Text('${ip.data}');
@@ -138,26 +135,23 @@ class _SettingsScreen extends State<SettingsScreen> {
                 trailing: Text('${controller.text}'),
               ),
               Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 10.0, horizontal: 10.0),
+                  padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
                   child: RaisedButton(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18.0),
                       ),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 10.0),
+                      padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
                       textColor: Colors.white,
                       color: Colors.blueAccent,
-                      onPressed: () => clearCachedSettings(
-                          accSettings, gyroSettings, deviceSettings),
+                      onPressed: () => clearCachedSettings(accSettings, gyroSettings, deviceSettings),
                       child: Text('Reset to default'))),
             ],
           );
         }));
   }
 
-  Future<void> clearCachedSettings(AccSettings accSettings,
-      GyroSettings gyroSettings, DeviceSettings deviceSettings) async {
+  Future<void> clearCachedSettings(
+      AccSettings accSettings, GyroSettings gyroSettings, DeviceSettings deviceSettings) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     bool cleared = await preferences.clear();
     accSettings.clear();

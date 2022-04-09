@@ -1,34 +1,34 @@
 PODS:
   - Flutter (1.0.0)
-  - get_ip (0.0.1):
+  - network_info_plus (0.0.1):
     - Flutter
-  - sensors (0.0.1):
+  - sensors_plus (0.0.1):
     - Flutter
-  - shared_preferences (0.0.1):
+  - shared_preferences_ios (0.0.1):
     - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
-  - get_ip (from `.symlinks/plugins/get_ip/ios`)
-  - sensors (from `.symlinks/plugins/sensors/ios`)
-  - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
+  - network_info_plus (from `.symlinks/plugins/network_info_plus/ios`)
+  - sensors_plus (from `.symlinks/plugins/sensors_plus/ios`)
+  - shared_preferences_ios (from `.symlinks/plugins/shared_preferences_ios/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
-  get_ip:
-    :path: ".symlinks/plugins/get_ip/ios"
-  sensors:
-    :path: ".symlinks/plugins/sensors/ios"
-  shared_preferences:
-    :path: ".symlinks/plugins/shared_preferences/ios"
+  network_info_plus:
+    :path: ".symlinks/plugins/network_info_plus/ios"
+  sensors_plus:
+    :path: ".symlinks/plugins/sensors_plus/ios"
+  shared_preferences_ios:
+    :path: ".symlinks/plugins/shared_preferences_ios/ios"
 
 SPEC CHECKSUMS:
-  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
-  get_ip: c063133e0a399ae4089048c90d6a232cb2344846
-  sensors: 84eb7a30e47a649e4172b71d6e81be614c280336
-  shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
+  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
+  network_info_plus: b78876159360f5580608c2cea620d6ceffabd0ad
+  sensors_plus: 5717760720f7e6acd96fdbd75b7428f5ad755ec2
+  shared_preferences_ios: 548a61f8053b9b8a49ac19c1ffbc8b92c50d68ad
 
 PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.3
