@@ -167,3 +167,7 @@ modules.xml
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/flutter,visualstudiocode,intellij+all
+
+
+### Mac OS
+.DS_Store
