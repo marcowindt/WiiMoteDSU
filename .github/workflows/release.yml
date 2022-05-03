@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.API_GITHUB_TOKEN }}
 
       - name: Setup environment
         id: setup
@@ -32,7 +34,7 @@ jobs:
         with:
           files: build/ios/WiiMoteDSU-${{ steps.setup.outputs.tag }}.ipa
           release-tag: ${{ steps.setup.outputs.tag }}
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.API_GITHUB_TOKEN }}
 
   android:
     runs-on: macos-latest
@@ -40,6 +42,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.API_GITHUB_TOKEN }}
 
       - name: Setup environment
         id: setup
@@ -59,4 +63,4 @@ jobs:
         with:
           files: build/app/outputs/flutter-apk/WiiMoteDSU-${{ steps.setup.outputs.tag }}.apk
           release-tag: ${{ steps.setup.outputs.tag }}
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.API_GITHUB_TOKEN }}
