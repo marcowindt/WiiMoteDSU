@@ -1,9 +1,17 @@
 version: 2
+enable-beta-ecosystems: true
 updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "daily"
+    commit-message:
+      prefix: "fix"
+      include: "scope"
+  - package-ecosystem: "pub"
+    directory: "/"
+    schedule:
+      interval: "weekly"
     commit-message:
       prefix: "fix"
       include: "scope"
