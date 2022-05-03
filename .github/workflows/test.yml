@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.API_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
 
       # TODO: Run tests
 
@@ -20,4 +22,4 @@ jobs:
         if: github.event_name != 'pull_request'
         uses: cycjimmy/semantic-release-action@v3.0.0
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.API_GITHUB_TOKEN }}
