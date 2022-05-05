@@ -20,7 +20,6 @@ jobs:
         run: |
           git clone https://github.com/flutter/flutter.git -b stable --depth=1
           flutter/bin/flutter doctor
-          flutter/bin/flutter doctor --android-licenses
           echo ::set-output name=tag::${GITHUB_REF##*/}
 
       - name: Build
@@ -38,7 +37,11 @@ jobs:
           repo-token: ${{ secrets.API_GITHUB_TOKEN }}
 
   android:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
+
+    env:
+      JAVA_VERSION: "11.0"
+      FLUTTER_VERSION: "2.10.5"
 
     steps:
       - name: Checkout
@@ -46,17 +49,20 @@ jobs:
         with:
           token: ${{ secrets.API_GITHUB_TOKEN }}
 
-      - name: Setup environment
-        id: setup
-        run: |
-          git clone https://github.com/flutter/flutter.git -b stable --depth=1
-          flutter/bin/flutter doctor
-          flutter/bin/flutter doctor --android-licenses
-          echo ::set-output name=tag::${GITHUB_REF##*/}
+      - name: Setup
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{env.JAVA_VERSION}}
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{env.FLUTTER_VERSION}}
+
+      - name: Deps
+        run: flutter pub get
 
       - name: Build
         run: |
-          flutter/bin/flutter build apk --release
+          flutter build apk --release
           cd build/app/outputs/flutter-apk/
           mv app-release.apk WiiMoteDSU-${{ steps.setup.outputs.tag }}.apk
 
