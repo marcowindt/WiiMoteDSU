@@ -11,14 +11,52 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout 🛎️
         uses: actions/checkout@v3
         with:
           token: ${{ secrets.API_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
 
       # TODO: Run tests
 
-      - name: Version
+  build:
+    runs-on: macos-latest
+
+    env:
+      JAVA_VERSION: "11.0"
+      FLUTTER_VERSION: "3.0.1"
+
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.API_GITHUB_TOKEN }}
+
+      - name: Setup Java 📐
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{env.JAVA_VERSION}}
+
+      - name: Setup Flutter 📐
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{env.FLUTTER_VERSION}}
+
+      - name: Deps 📝
+        run: flutter pub get
+
+      - name: Build iOS 🏗️
+        run: flutter build ios --no-codesign --release
+      
+      - name: Build Android 🏗️
+        run: flutter build apk --release
+
+  release:
+    needs: [ test, build ]
+  
+    runs-on: macos-latest
+
+    steps:
+      - name: Version 📦
         if: github.event_name != 'pull_request'
         uses: cycjimmy/semantic-release-action@v3.0.0
         env:
