@@ -56,6 +56,11 @@ jobs:
     runs-on: macos-latest
 
     steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.API_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+
       - name: Version 📦
         if: github.event_name != 'pull_request'
         uses: cycjimmy/semantic-release-action@v3.1.0
