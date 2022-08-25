@@ -34,6 +34,7 @@ jobs:
       - name: Setup Java 📐
         uses: actions/setup-java@v3
         with:
+          distribution: 'temurin'
           java-version: ${{env.JAVA_VERSION}}
 
       - name: Setup Flutter 📐
