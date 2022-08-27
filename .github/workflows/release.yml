@@ -61,7 +61,10 @@ jobs:
           flutter-version: ${{env.FLUTTER_VERSION}}
 
       - name: Deps
-        run: flutter pub get
+        id: setup
+        run: |
+          flutter pub get
+          echo ::set-output name=tag::${GITHUB_REF##*/}
 
       - name: Build
         run: |
