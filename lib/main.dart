@@ -1,13 +1,15 @@
+import 'dart:isolate';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wiimote_dsu/devices/device.dart';
 import 'package:wiimote_dsu/models/acc_settings.dart';
 import 'package:wiimote_dsu/models/device_settings.dart';
 import 'package:wiimote_dsu/models/gyro_settings.dart';
+import 'package:wiimote_dsu/server/server_isolate.dart';
 import 'package:wiimote_dsu/ui/screens/device_screen.dart';
 import 'package:wiimote_dsu/ui/screens/settings_screen.dart';
-import 'server/dsu_server.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,15 +20,17 @@ void main() async {
   final accSettings = AccSettings.getSettings(prefs);
   final deviceSettings = DeviceSettings.getSettings(prefs);
 
-  final server = DSUServer.make(gyroSettings, accSettings, deviceSettings);
+  final mainToIsolateStream = await ServerIsolate.init();
+
+  final dsuDevice = Device(gyroSettings, accSettings, mainToIsolateStream);
+  mainToIsolateStream.send(dsuDevice);
+  dsuDevice.start();
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider<GyroSettings>.value(value: gyroSettings),
     ChangeNotifierProvider<AccSettings>.value(value: accSettings),
     ChangeNotifierProvider<DeviceSettings>.value(value: deviceSettings),
-    Provider<DSUServer>.value(
-      value: server,
-    ),
+    Provider<SendPort>.value(value: mainToIsolateStream),
   ], child: WiiMoteDSUApp(prefs)));
 }
 

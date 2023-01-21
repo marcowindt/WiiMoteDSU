@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:wiimote_dsu/ui/a_b_buttons.dart';
 import 'package:wiimote_dsu/ui/dpad.dart';
+import 'package:wiimote_dsu/ui/layouts/device_layout.dart';
 import 'package:wiimote_dsu/ui/minus_home_plus_buttons.dart';
 import 'package:wiimote_dsu/ui/one_two_buttons.dart';
 
-class WiiMoteLayout extends StatelessWidget {
+class WiiMoteLayout extends StatelessWidget implements DeviceLayout {
+  static const String name = "WiiMoteDSU";
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;

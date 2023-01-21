@@ -5,9 +5,6 @@ import 'package:collection/collection.dart';
 import 'package:flutter/widgets.dart';
 import 'package:udp/udp.dart';
 import 'package:wiimote_dsu/devices/device.dart';
-import 'package:wiimote_dsu/models/acc_settings.dart';
-import 'package:wiimote_dsu/models/device_settings.dart';
-import 'package:wiimote_dsu/models/gyro_settings.dart';
 
 import 'message.dart';
 
@@ -19,18 +16,13 @@ class DSUServer {
   List<Device> slots = [null, null, null, null];
   UDP socket;
 
-  GyroSettings gyroSettings;
-  AccSettings accSettings;
-  DeviceSettings deviceSettings;
-
-  DSUServer(this.gyroSettings, this.accSettings, this.deviceSettings, {this.portNum = 26760}) {
-    this.slots[0] = this.deviceSettings.createDevice(this);
-    this.deviceSettings.addListener(onDeviceChange);
-  }
+  DSUServer({this.portNum = 26760});
 
   init() async {
     printSlots();
-    UDP.bind(Endpoint.unicast(InternetAddress.anyIPv4, port: Port(portNum))).then((sock) {
+    UDP
+        .bind(Endpoint.unicast(InternetAddress.anyIPv4, port: Port(portNum)))
+        .then((sock) {
       socket = sock;
       this.start();
     });
@@ -55,22 +47,29 @@ class DSUServer {
     }
   }
 
-  incomingPortRequest(Uint8List message, InternetAddress address, int port) {
+  incomingPortRequest(
+      Uint8List message, InternetAddress address, int port) async {
     var requestsCount = message.sublist(20, 24)[0];
 
     for (var i = 0; i < requestsCount; i++) {
       Uint8List ports = this.sendPorts(i);
-      socket.send(ports, Endpoint.unicast(address, port: Port(port))).then((value) {});
+      socket
+          .send(ports, Endpoint.unicast(address, port: Port(port)))
+          .then((value) {});
     }
   }
 
-  incomingDataRequest(Uint8List message, InternetAddress address, int port) {
+  incomingDataRequest(
+      Uint8List message, InternetAddress address, int port) async {
     var flags = message[24];
     var regId = message[25];
 
     if (flags == 0 && regId == 0) {
       if (!clients.containsKey(address)) {
-        print("[udp] Client connected: " + address.toString() + " on port " + port.toString());
+        print("[udp] Client connected: " +
+            address.toString() +
+            " on port " +
+            port.toString());
       }
 
       clients[address] = port;
@@ -263,7 +262,9 @@ class DSUServer {
 
   reportToClients(Uint8List message) {
     clients.forEach((address, port) {
-      socket.send(message, Endpoint.unicast(address, port: Port(port))).then((value) {});
+      socket
+          .send(message, Endpoint.unicast(address, port: Port(port)))
+          .then((value) {});
     });
   }
 
@@ -300,25 +301,12 @@ class DSUServer {
     }
   }
 
-  void onDeviceChange() {
-    Device device = this.deviceSettings.createDevice(this);
-    registerDevice(0, device);
-  }
-
   void registerDevice(int slot, Device device) {
     this.slots[slot] = device;
     debugPrint("Registered device: Slot[$slot] ${device.deviceName}");
   }
 
-  factory DSUServer.make(GyroSettings gyroSettings, AccSettings accSettings, DeviceSettings deviceSettings,
-      {int portNum = 26760}) {
-    DSUServer server = DSUServer(gyroSettings, accSettings, deviceSettings, portNum: portNum);
-    server.init();
-    return server;
-  }
-
-  factory DSUServer.mock(GyroSettings gyroSettings, AccSettings accSettings, DeviceSettings deviceSettings,
-      {int portNum = 26760}) {
-    return DSUServer(gyroSettings, accSettings, deviceSettings, portNum: portNum);
+  factory DSUServer.make({int portNum = 26760}) {
+    return DSUServer(portNum: portNum);
   }
 }

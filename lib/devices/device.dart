@@ -1,16 +1,17 @@
-import 'package:flutter/material.dart';
+import 'dart:isolate';
+
 import 'package:sensors_plus/sensors_plus.dart';
 import 'package:wiimote_dsu/models/acc_settings.dart';
 import 'package:wiimote_dsu/models/gyro_settings.dart';
-import 'package:wiimote_dsu/server/dsu_server.dart';
-import 'package:wiimote_dsu/ui/layouts/wii_mote_layout.dart';
+import 'package:wiimote_dsu/server/acc_event.dart';
+import 'package:wiimote_dsu/server/gyro_event.dart';
 
 class Device {
   static const name = "WiiMoteDSU";
 
   String get deviceName => name;
 
-  var server;
+  SendPort serverSendPort;
   var disconnected = false;
   var mac = [0xFA, 0xCE, 0xB0, 0x0C, 0x00, 0x00];
   var model = 0x01;
@@ -95,17 +96,16 @@ class Device {
     this.state[this.keyMap[btnType]] = state;
   }
 
-  Device(DSUServer server) {
-    this.server = server;
-    this.gyroSettings = server.gyroSettings;
-    this.accSettings = server.accSettings;
+  Device(GyroSettings gyroSettings, AccSettings accSettings, SendPort stream) {
+    this.gyroSettings = gyroSettings;
+    this.accSettings = accSettings;
+    this.serverSendPort = stream;
     this.gyroSettings.addListener(onGyroSettingsChanged);
     this.accSettings.addListener(onAccSettingsChanged);
     try {
-      this.start();
       this.initGyroSettings();
       this.initAccSettings();
-    } catch (Error) {
+    } catch (error) {
       print("error");
     }
   }
@@ -139,14 +139,28 @@ class Device {
     accelerometerEvents.listen((AccelerometerEvent event) {
       // Values are in m/s^2, but we need in g's (1 g approx 9.8 m/s^2)
       if (accEnabled) {
-        accX = (invertAccX ? -1 : 1) * accSensitivity * event.x * METER_PER_SECOND_SQUARED_TO_G / 100;
-        accY = (invertAccY ? -1 : 1) * accSensitivity * event.z * METER_PER_SECOND_SQUARED_TO_G / 100;
-        accZ = (invertAccZ ? -1 : 1) * accSensitivity * event.y * METER_PER_SECOND_SQUARED_TO_G / 100;
+        accX = (invertAccX ? -1 : 1) *
+            accSensitivity *
+            event.x *
+            METER_PER_SECOND_SQUARED_TO_G /
+            100;
+        accY = (invertAccY ? -1 : 1) *
+            accSensitivity *
+            event.z *
+            METER_PER_SECOND_SQUARED_TO_G /
+            100;
+        accZ = (invertAccZ ? -1 : 1) *
+            accSensitivity *
+            event.y *
+            METER_PER_SECOND_SQUARED_TO_G /
+            100;
       } else {
         accX = 0;
         accY = 0;
         accZ = 0;
       }
+
+      serverSendPort.send(AccEvent(accX, accY, accZ));
     });
 
     gyroscopeEvents.listen((GyroscopeEvent event) {
@@ -156,7 +170,21 @@ class Device {
       motionY = (invertGyroY ? -1 : 1) * radToDeg(event.z) * sensitivity;
       motionZ = (invertGyroZ ? -1 : 1) * radToDeg(event.y) * sensitivity;
       previousGyroEvent = event;
+
+      serverSendPort.send(GyroEvent(motionX, motionY, motionZ));
     });
+  }
+
+  void setAcc(AccEvent accEvent) {
+    accX = accEvent.x;
+    accY = accEvent.y;
+    accZ = accEvent.z;
+  }
+
+  void setGyro(GyroEvent gyroEvent) {
+    motionX = gyroEvent.x;
+    motionY = gyroEvent.y;
+    motionZ = gyroEvent.z;
   }
 
   double radToDeg(double radians) {
@@ -169,9 +197,5 @@ class Device {
 
   getReport() {
     return state;
-  }
-
-  Widget getButtonLayout() {
-    return WiiMoteLayout();
   }
 }
