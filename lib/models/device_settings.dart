@@ -1,14 +1,12 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wiimote_dsu/devices/device.dart';
-import 'package:wiimote_dsu/devices/only_dpad_device.dart';
-import 'package:wiimote_dsu/devices/wii_mote_device.dart';
-import 'package:wiimote_dsu/server/dsu_server.dart';
+import 'package:wiimote_dsu/ui/layouts/only_dpad_layout.dart';
+import 'package:wiimote_dsu/ui/layouts/wii_mote_layout.dart';
 
 class DeviceSettings extends ChangeNotifier {
   static const List<String> available = [
-    WiiMoteDevice.name,
-    OnlyDpadDevice.name
+    WiiMoteLayout.name,
+    OnlyDpadLayout.name
   ];
 
   SharedPreferences preferences;
@@ -20,35 +18,35 @@ class DeviceSettings extends ChangeNotifier {
     if (DeviceSettings.available.contains(deviceName)) {
       this.deviceName = deviceName;
     } else {
-      this.deviceName = WiiMoteDevice.name;
+      this.deviceName = WiiMoteLayout.name;
     }
     notifyListeners();
   }
 
-  Device createDevice(DSUServer server) {
+  Widget getButtonLayout() {
     switch (this.deviceName) {
-      case WiiMoteDevice.name:
-        return WiiMoteDevice(server);
+      case WiiMoteLayout.name:
+        return WiiMoteLayout();
         break;
-      case OnlyDpadDevice.name:
-        return OnlyDpadDevice(server);
+      case OnlyDpadLayout.name:
+        return OnlyDpadLayout();
         break;
       default:
-        return WiiMoteDevice(server);
+        return WiiMoteLayout();
     }
   }
 
   void clear() {
-    this.setDeviceByName(WiiMoteDevice.name);
+    this.setDeviceByName(WiiMoteLayout.name);
   }
 
   factory DeviceSettings.getSettings(SharedPreferences preferences) {
     String currentDevice =
-        preferences.getString("current_device") ?? WiiMoteDevice.name;
+        preferences.getString("current_device") ?? WiiMoteLayout.name;
 
     if (DeviceSettings.available.contains(currentDevice)) {
       return DeviceSettings(preferences, currentDevice);
     }
-    return DeviceSettings(preferences, WiiMoteDevice.name);
+    return DeviceSettings(preferences, WiiMoteLayout.name);
   }
 }
