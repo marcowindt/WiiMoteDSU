@@ -22,6 +22,7 @@ environment:
 
 dependencies:
   platform: ^3.1.0
+  synchronized: ^3.0.1
   crclib: ^3.0.0
   sensors_plus: ^2.0.1
   udp: ^5.0.3
