@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:udp/udp.dart';
 import 'package:wiimote_dsu/devices/device.dart';
 import 'package:synchronized/extension.dart';
+import 'package:wiimote_dsu/server/dsu_client.dart';
 
 import 'message.dart';
 
@@ -13,7 +14,7 @@ class DSUServer {
   var timeOut = 20; // seconds
   var portNum = 26760;
   var counter = 0;
-  Map<InternetAddress, int> clients = new Map();
+  Map<DsuClient, int> clients = new Map();
   List<Device> slots = [null, null, null, null];
   UDP socket;
 
@@ -66,14 +67,16 @@ class DSUServer {
     var regId = message[25];
 
     if (flags == 0 && regId == 0) {
-      if (!clients.containsKey(address)) {
+      final client = DsuClient(address, port);
+
+      if (!clients.containsKey(client)) {
         print("[udp] Client connected: " +
             address.toString() +
             " on port " +
             port.toString());
       }
 
-      clients[address] = port;
+      clients[client] = port;
     }
   }
 
@@ -262,9 +265,9 @@ class DSUServer {
   }
 
   reportToClients(Uint8List message) {
-    clients.forEach((address, port) {
+    clients.forEach((dusClient, port) {
       socket
-          .send(message, Endpoint.unicast(address, port: Port(port)))
+          .send(message, Endpoint.unicast(dusClient.address, port: Port(port)))
           .then((value) {});
     });
   }
