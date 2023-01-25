@@ -42,7 +42,6 @@ class DSUServer {
     } else if (eq(type, Message.TYPE_PORTS)) {
       this.incomingPortRequest(message, address, port);
     } else if (eq(type, Message.TYPE_DATA)) {
-      // print('${DateTime.now().millisecondsSinceEpoch} incoming');
       this.incomingDataRequest(message, address, port);
     } else {
       print("[udp] Unknown message type: " + (type.toString()));
