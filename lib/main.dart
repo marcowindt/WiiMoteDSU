@@ -22,7 +22,8 @@ void main() async {
 
   final mainToIsolateStream = await ServerIsolate.init();
 
-  final dsuDevice = Device(gyroSettings, accSettings, mainToIsolateStream);
+  final dsuDevice =
+      Device(gyroSettings, accSettings, deviceSettings, mainToIsolateStream);
   mainToIsolateStream.send(dsuDevice);
   dsuDevice.start();
 

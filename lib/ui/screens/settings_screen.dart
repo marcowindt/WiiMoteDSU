@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:network_info_plus/network_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -36,14 +37,24 @@ class _SettingsScreen extends State<SettingsScreen> {
                 Widget child) {
           return ListView(
             children: [
-              // ListTile(
-              //   title: Text('Auto adjust to device orientation'),
-              //   trailing: Checkbox(
-              //     value: gyroSettings.adjustToDeviceOrientation,
-              //     onChanged: (bool value) =>
-              //         gyroSettings.setAdjustToDeviceOrientation(value),
-              //   ),
-              // ),
+              ListTile(
+                title: Text('Device Orientation'),
+                trailing: DropdownButton<DeviceOrientation>(
+                  hint: Text("Select orientation"),
+                  value: Provider.of<DeviceSettings>(context).orientation,
+                  onChanged: (DeviceOrientation orientation) {
+                    context
+                        .read<DeviceSettings>()
+                        .setDeviceOrientation(orientation);
+                  },
+                  items: DeviceOrientation.values.map((orientation) {
+                    return DropdownMenuItem<DeviceOrientation>(
+                      value: orientation,
+                      child: Text(orientation.toString().split(".")[1]),
+                    );
+                  }).toList(),
+                ),
+              ),
               ListTile(
                 title: Text('Acc Enabled'),
                 trailing: Checkbox(
@@ -143,7 +154,7 @@ class _SettingsScreen extends State<SettingsScreen> {
                       vertical: 10.0, horizontal: 10.0),
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.blueAccent,
+                        backgroundColor: Colors.blueAccent,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(18.0),
                         ),
@@ -151,12 +162,6 @@ class _SettingsScreen extends State<SettingsScreen> {
                             vertical: 15.0, horizontal: 10.0),
                         textStyle: TextStyle(color: Colors.white),
                       ),
-                      // shape: RoundedRectangleBorder(
-                      //   borderRadius: BorderRadius.circular(18.0),
-                      // ),
-                      // padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                      // textColor: Colors.white,
-                      // color: Colors.blueAccent,
                       onPressed: () => clearCachedSettings(
                           accSettings, gyroSettings, deviceSettings),
                       child: Text('Reset to default'))),
