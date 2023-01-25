@@ -20,7 +20,7 @@ class ServerIsolate {
         final mainToIsolateStream = data;
         completer.complete(mainToIsolateStream);
       } else {
-        print('[isolateToMainStream] $data');
+        print('[isolate->main] $data');
       }
     });
 
@@ -47,9 +47,9 @@ class ServerIsolate {
       } else if (data is ButtonPress) {
         server.slots[0].setState(data.btnType, data.value);
         debugPrint(
-            '[mainToIsolateStream] pressed ${data.btnType}, value: ${data.value}');
+            '${DateTime.now().millisecondsSinceEpoch} [main->isolate] pressed ${data.btnType}, value: ${data.value}');
       } else {
-        print('[mainToIsolateStream] $data');
+        print('${DateTime.now().millisecondsSinceEpoch} [main->isolate] $data');
       }
     });
   }
