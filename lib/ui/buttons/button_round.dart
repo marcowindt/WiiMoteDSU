@@ -1,7 +1,9 @@
+import 'dart:isolate';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:wiimote_dsu/server/dsu_server.dart';
+import 'package:wiimote_dsu/server/button_press.dart';
 
 class PadRoundButton extends StatelessWidget {
   final IconData icon;
@@ -18,10 +20,10 @@ class PadRoundButton extends StatelessWidget {
     return Listener(
       onPointerDown: (details) {
         HapticFeedback.mediumImpact();
-        context.read<DSUServer>().slots[0].setState(btnType, 0xFF);
+        context.read<SendPort>().send(ButtonPress(btnType, 0xFF));
       },
       onPointerUp: (details) {
-        context.read<DSUServer>().slots[0].setState(btnType, 0x00);
+        context.read<SendPort>().send(ButtonPress(btnType, 0x00));
       },
       child: SizedBox(
         width: width,
