@@ -1,7 +1,7 @@
 import 'dart:isolate';
 
 import 'package:flutter/services.dart';
-import 'package:sensors_plus/sensors_plus.dart';
+import 'package:motion_sensors/motion_sensors.dart';
 import 'package:wiimote_dsu/models/acc_settings.dart';
 import 'package:wiimote_dsu/models/device_settings.dart';
 import 'package:wiimote_dsu/models/gyro_settings.dart';
@@ -153,7 +153,9 @@ class Device {
   }
 
   void start() {
-    accelerometerEvents.listen((AccelerometerEvent event) {
+    motionSensors.accelerometerUpdateInterval = 10000;
+    motionSensors.gyroscopeUpdateInterval = 10000;
+    motionSensors.accelerometer.listen((AccelerometerEvent event) {
       // Values are in m/s^2, but we need in g's (1 g approx 9.8 m/s^2)
       if (!accEnabled) {
         return;
@@ -177,7 +179,7 @@ class Device {
       serverSendPort.send(AccEvent(accX, accY, accZ));
     });
 
-    gyroscopeEvents.listen((GyroscopeEvent event) {
+    motionSensors.gyroscope.listen((GyroscopeEvent event) {
       // Values are in rad/s, but we need deg/s (2pi rad/s = 360 deg/s)
       // When in portrait: x = pitch, y = yaw, z = roll
       if (orientation == DeviceOrientation.portraitUp ||
