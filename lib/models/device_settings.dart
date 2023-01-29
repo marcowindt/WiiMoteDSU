@@ -2,12 +2,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wiimote_dsu/ui/layouts/only_dpad_layout.dart';
+import 'package:wiimote_dsu/ui/layouts/wii_classic_layout.dart';
 import 'package:wiimote_dsu/ui/layouts/wii_mote_layout.dart';
 
 class DeviceSettings extends ChangeNotifier {
   static const List<String> available = [
     WiiMoteLayout.name,
-    OnlyDpadLayout.name
+    OnlyDpadLayout.name,
+    WiiClassicLayout.name
   ];
 
   SharedPreferences preferences;
@@ -44,6 +46,9 @@ class DeviceSettings extends ChangeNotifier {
         break;
       case OnlyDpadLayout.name:
         return OnlyDpadLayout();
+        break;
+      case WiiClassicLayout.name:
+        return WiiClassicLayout();
         break;
       default:
         return WiiMoteLayout();

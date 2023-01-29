@@ -63,6 +63,18 @@ class Device {
     "MINUS": "button_share",
     "PLUS": "button_options",
     "HOME": "button_ps",
+    "LEFT_ANALOG_X": "left_analog_x",
+    "LEFT_ANALOG_Y": "left_analog_y",
+    "RIGHT_ANALOG_X": "right_analog_x",
+    "RIGHT_ANALOG_Y": "right_analog_y",
+    "L": "button_l1",
+    "ZL": "button_l2",
+    "R": "button_r1",
+    "ZR": "button_r2",
+    "y": "button_square",
+    "x": "button_triangle",
+    "a": "button_cross",
+    "b": "button_circle",
   };
 
   var state = {
