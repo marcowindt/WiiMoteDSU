@@ -186,10 +186,10 @@ class DSUServer {
         (deviceState["button_ps"] * 127 + 128), // PS
         0x00, // Touch (unused)
 
-        (deviceState["left_analog_x"] * 127 + 128), // position left x
-        (deviceState["left_analog_y"] * 127 + 128), // position left y
-        (deviceState["right_analog_x"] * 127 + 128), // position right x
-        (deviceState["right_analog_x"] * 127 + 128), // position right y
+        (deviceState["left_analog_x"]), // position left x
+        (deviceState["left_analog_y"]), // position left y
+        (deviceState["right_analog_x"]), // position right x
+        (deviceState["right_analog_y"]), // position right y
 
         absToButton(deviceState["dpad_left"] * 127 + 128), // dpad left
         absToButton(deviceState["dpad_down"] * 127 + 128), // dpad down
