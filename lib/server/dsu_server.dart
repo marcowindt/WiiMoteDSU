@@ -7,6 +7,7 @@ import 'package:udp/udp.dart';
 import 'package:wiimote_dsu/devices/device.dart';
 import 'package:synchronized/extension.dart';
 import 'package:wiimote_dsu/server/dsu_client.dart';
+import 'package:wiimote_dsu/server/events/change_slot_event.dart';
 
 import 'message.dart';
 
@@ -305,9 +306,20 @@ class DSUServer {
     }
   }
 
-  void registerDevice(int slot, Device device) {
-    this.slots[slot] = device;
-    debugPrint("Registered device: Slot[$slot] ${device.deviceName}");
+  void changeSlot(ChangeSlotEvent changeSlotEvent) {
+    final swapDevice = this.slots[changeSlotEvent.oldSlot];
+    this.slots[changeSlotEvent.newSlot] = swapDevice;
+    this.slots[changeSlotEvent.oldSlot] = null;
+    debugPrint("Slot changed: $changeSlotEvent");
+  }
+
+  void registerDevice(Device device) {
+    final currentIndex = this.slots.indexOf(device);
+    if (currentIndex > -1) {
+      this.slots[currentIndex] = null;
+    }
+    this.slots[device.slot] = device;
+    debugPrint("Registered device: Slot[${device.slot}] ${device.deviceName}");
   }
 
   factory DSUServer.make({int portNum = 26760}) {

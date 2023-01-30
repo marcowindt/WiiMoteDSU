@@ -5,8 +5,9 @@ import 'package:motion_sensors/motion_sensors.dart';
 import 'package:wiimote_dsu/models/acc_settings.dart';
 import 'package:wiimote_dsu/models/device_settings.dart';
 import 'package:wiimote_dsu/models/gyro_settings.dart';
-import 'package:wiimote_dsu/server/acc_event.dart';
-import 'package:wiimote_dsu/server/gyro_event.dart';
+import 'package:wiimote_dsu/server/events/acc_event.dart';
+import 'package:wiimote_dsu/server/events/change_slot_event.dart';
+import 'package:wiimote_dsu/server/events/gyro_event.dart';
 
 class Device {
   static const name = "WiiMoteDSU";
@@ -50,6 +51,7 @@ class Device {
   double accZ = 0;
 
   DeviceOrientation orientation = DeviceOrientation.portraitUp;
+  int slot = 0;
 
   var keyMap = {
     "D_UP": "dpad_up",
@@ -150,6 +152,10 @@ class Device {
 
   void initDeviceSettings() {
     orientation = deviceSettings.orientation;
+    final prevSlot = slot;
+    slot = deviceSettings.slot;
+
+    serverSendPort.send(ChangeSlotEvent(prevSlot, slot));
   }
 
   void onGyroSettingsChanged() {
@@ -188,7 +194,7 @@ class Device {
       accY *= (invertAccY ? -1 : 1) * accSensitivity;
       accZ *= (invertAccZ ? -1 : 1) * accSensitivity;
 
-      serverSendPort.send(AccEvent(accX, accY, accZ));
+      serverSendPort.send(AccEvent(slot, accX, accY, accZ));
     });
 
     motionSensors.gyroscope.listen((GyroscopeEvent event) {
@@ -211,7 +217,7 @@ class Device {
 
       previousGyroEvent = event;
 
-      serverSendPort.send(GyroEvent(motionX, motionY, motionZ));
+      serverSendPort.send(GyroEvent(slot, motionX, motionY, motionZ));
     });
   }
 

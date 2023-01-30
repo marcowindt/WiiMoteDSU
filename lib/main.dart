@@ -80,11 +80,28 @@ class _MyHomePageState extends State<MyHomePage> {
           backgroundColor: Colors.white,
           body: Stack(children: <Widget>[
             DeviceScreen(),
-            Padding(
-                padding: const EdgeInsets.only(top: 30.0, left: 2.0),
+            Positioned(
+                top: 30.0,
+                left: 2.0,
                 child: IconButton(
                     icon: Icon(Icons.settings),
                     onPressed: () => _openSettings(context))),
+            Positioned(
+              top: 30.0,
+              right: 2.0,
+              child: Consumer<DeviceSettings>(
+                builder: (context, settings, child) {
+                  return IconButton(
+                    icon: Text(
+                      "${settings.slot}",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 16.0),
+                    ),
+                    onPressed: null,
+                  );
+                },
+              ),
+            )
           ]),
         ));
   }
