@@ -15,8 +15,10 @@ class DeviceSettings extends ChangeNotifier {
   SharedPreferences preferences;
   String deviceName;
   DeviceOrientation orientation;
+  int slot;
 
-  DeviceSettings(this.preferences, this.deviceName, this.orientation);
+  DeviceSettings(this.preferences, this.deviceName, this.orientation,
+      {this.slot = 0});
 
   void setDeviceByName(String deviceName) {
     if (DeviceSettings.available.contains(deviceName)) {
@@ -36,6 +38,12 @@ class DeviceSettings extends ChangeNotifier {
     }
     this.preferences.setString(
         "device_orientation", this.orientation.toString().split(".")[1]);
+    notifyListeners();
+  }
+
+  void setSlot(int slot) {
+    this.slot = slot;
+    this.preferences.setInt("device_slot", slot);
     notifyListeners();
   }
 
@@ -86,9 +94,13 @@ class DeviceSettings extends ChangeNotifier {
             "DeviceOrientation." +
                 (preferences.getString("device_orientation") ?? "portraitUp"));
 
+    int slot = preferences.getInt("device_slot") ?? 0;
+
     if (DeviceSettings.available.contains(currentDevice)) {
-      return DeviceSettings(preferences, currentDevice, deviceOrientation);
+      return DeviceSettings(preferences, currentDevice, deviceOrientation,
+          slot: slot);
     }
-    return DeviceSettings(preferences, WiiMoteLayout.name, deviceOrientation);
+    return DeviceSettings(preferences, WiiMoteLayout.name, deviceOrientation,
+        slot: slot);
   }
 }
