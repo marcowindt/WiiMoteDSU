@@ -12,8 +12,14 @@ class PadRoundButton extends StatelessWidget {
   final double width;
   final double height;
 
+  final Color color;
+
   PadRoundButton(
-      {this.icon, this.btnType = "A", this.width = 65.0, this.height = 65.0});
+      {this.icon,
+      this.btnType = "A",
+      this.width = 65.0,
+      this.height = 65.0,
+      this.color = Colors.white70});
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +50,7 @@ class PadRoundButton extends StatelessWidget {
           shape: CircleBorder(),
           height: height,
           minWidth: width,
-          color: Colors.white70,
+          color: color,
         ),
       ),
     );

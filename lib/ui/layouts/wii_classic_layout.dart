@@ -7,64 +7,52 @@ import 'package:wiimote_dsu/ui/layouts/device_layout.dart';
 import 'package:wiimote_dsu/ui/minus_home_plus_buttons.dart';
 import 'package:wiimote_dsu/ui/x_y_a_b_buttons.dart';
 
-class WiiClassicLayout extends StatefulWidget implements DeviceLayout {
+class WiiClassicLayout extends StatelessWidget implements DeviceLayout {
   static const String name = "WiiClassic";
 
   @override
-  State<StatefulWidget> createState() => _WiiClassicLayout();
-}
-
-class _WiiClassicLayout extends State<WiiClassicLayout> {
-  @override
-  void initState() {
-    super.initState();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft,
-    ]);
-  }
-
-  @override
-  dispose() {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      LZLRZRButtons(),
-      Flex(
-        direction: Axis.horizontal,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Dpad(
-            width: 120,
-            height: 120,
-          ),
+    final screenSize = MediaQuery.of(context).size;
+    return SizedBox(
+        width: screenSize.width,
+        height: screenSize.height,
+        child: Column(children: [
           SizedBox(
-            width: 65,
+            height: 20,
           ),
-          MinusHomePlusButtons(),
+          LZLRZRButtons(),
           SizedBox(
-            width: 65,
+            height: 35,
           ),
-          XYABButtons(),
-        ],
-      ),
-      Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-        AnalogThumbStick(radius: 50.0, stickRadius: 35),
-        SizedBox(
-          width: 50.0,
-        ),
-        AnalogThumbStick(
-            btnType: "RIGHT_ANALOG", radius: 50.0, stickRadius: 35),
-      ])
-    ]);
+          Flex(
+            direction: Axis.horizontal,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Dpad(
+                width: 120,
+                height: 120,
+              ),
+              SizedBox(
+                width: 85,
+              ),
+              MinusHomePlusButtons(),
+              SizedBox(
+                width: 85,
+              ),
+              XYABButtons(),
+            ],
+          ),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            AnalogThumbStick(radius: 50.0, stickRadius: 35),
+            SizedBox(
+              width: 150.0,
+            ),
+            AnalogThumbStick(
+                btnType: "RIGHT_ANALOG", radius: 50.0, stickRadius: 35),
+          ])
+        ]));
   }
+
+  static const DeviceOrientation preferredOrientation =
+      DeviceOrientation.landscapeRight;
 }
