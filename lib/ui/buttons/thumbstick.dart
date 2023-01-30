@@ -22,16 +22,6 @@ class _ThumbStickState extends State<ThumbStick> {
   @override
   void initState() {
     super.initState();
-
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      final RenderBox renderBoxWidget =
-          _thumbStickContainer.currentContext?.findRenderObject() as RenderBox;
-      final offset = renderBoxWidget.localToGlobal(Offset.zero);
-
-      xOff = offset.dx;
-      yOff = offset.dy;
-    });
-
     _centerStick();
   }
 
@@ -45,6 +35,13 @@ class _ThumbStickState extends State<ThumbStick> {
   }
 
   void _onPointerMove(PointerEvent details) {
+    final RenderBox renderBoxWidget =
+        _thumbStickContainer.currentContext?.findRenderObject() as RenderBox;
+    final offset = renderBoxWidget.localToGlobal(Offset.zero);
+
+    xOff = offset.dx;
+    yOff = offset.dy;
+
     final x = details.position.dx - xOff;
     final y = details.position.dy - yOff;
 

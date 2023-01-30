@@ -7,14 +7,14 @@ class LZLRZRButtons extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Column(
+        Row(
           children: [
             PadRectangleButton(
               btnType: "ZL",
               height: 35,
             ),
             SizedBox(
-              height: 10,
+              width: 20,
             ),
             PadRectangleButton(
               btnType: "L",
@@ -23,19 +23,19 @@ class LZLRZRButtons extends StatelessWidget {
           ],
         ),
         SizedBox(
-          width: 500,
+          width: 300,
         ),
-        Column(
+        Row(
           children: [
             PadRectangleButton(
-              btnType: "ZR",
+              btnType: "R",
               height: 35,
             ),
             SizedBox(
-              height: 10,
+              width: 20,
             ),
             PadRectangleButton(
-              btnType: "R",
+              btnType: "ZR",
               height: 35,
             ),
           ],

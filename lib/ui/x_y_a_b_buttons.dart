@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:wiimote_dsu/ui/buttons/button_round.dart';
 
 class XYABButtons extends StatelessWidget {
@@ -10,10 +10,16 @@ class XYABButtons extends StatelessWidget {
           btnType: "x",
           width: 45,
           height: 45,
+          color: Colors.white,
         ),
         Row(
           children: [
-            PadRoundButton(btnType: "y", width: 45, height: 45),
+            PadRoundButton(
+              btnType: "y",
+              width: 45,
+              height: 45,
+              color: Colors.white,
+            ),
             SizedBox(
               width: 45,
             ),
