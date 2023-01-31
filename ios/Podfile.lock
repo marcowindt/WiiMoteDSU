@@ -1,34 +1,35 @@
 PODS:
   - Flutter (1.0.0)
+  - motion_sensors (0.0.1):
+    - Flutter
   - network_info_plus (0.0.1):
     - Flutter
-  - sensors_plus (0.0.1):
+  - shared_preferences_foundation (0.0.1):
     - Flutter
-  - shared_preferences_ios (0.0.1):
-    - Flutter
+    - FlutterMacOS
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
+  - motion_sensors (from `.symlinks/plugins/motion_sensors/ios`)
   - network_info_plus (from `.symlinks/plugins/network_info_plus/ios`)
-  - sensors_plus (from `.symlinks/plugins/sensors_plus/ios`)
-  - shared_preferences_ios (from `.symlinks/plugins/shared_preferences_ios/ios`)
+  - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
+  motion_sensors:
+    :path: ".symlinks/plugins/motion_sensors/ios"
   network_info_plus:
     :path: ".symlinks/plugins/network_info_plus/ios"
-  sensors_plus:
-    :path: ".symlinks/plugins/sensors_plus/ios"
-  shared_preferences_ios:
-    :path: ".symlinks/plugins/shared_preferences_ios/ios"
+  shared_preferences_foundation:
+    :path: ".symlinks/plugins/shared_preferences_foundation/ios"
 
 SPEC CHECKSUMS:
-  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  motion_sensors: 03f55b7c637a7e365a0b5f9697a449f9059d5d91
   network_info_plus: b78876159360f5580608c2cea620d6ceffabd0ad
-  sensors_plus: 5717760720f7e6acd96fdbd75b7428f5ad755ec2
-  shared_preferences_ios: 548a61f8053b9b8a49ac19c1ffbc8b92c50d68ad
+  shared_preferences_foundation: 297b3ebca31b34ec92be11acd7fb0ba932c822ca
 
-PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+PODFILE CHECKSUM: ef19549a9bc3046e7bb7d2fab4d021637c0c58a3
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.11.2

@@ -8,7 +8,7 @@ class AccSettings extends ChangeNotifier {
   bool invertAccX = true;
   bool invertAccY = true;
   bool invertAccZ = false;
-  double sensitivity = 3.0;
+  double sensitivity = 1.0;
 
   AccSettings(
     this.preferences,

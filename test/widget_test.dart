@@ -5,6 +5,8 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'dart:isolate';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +16,6 @@ import 'package:wiimote_dsu/main.dart';
 import 'package:wiimote_dsu/models/acc_settings.dart';
 import 'package:wiimote_dsu/models/device_settings.dart';
 import 'package:wiimote_dsu/models/gyro_settings.dart';
-import 'package:wiimote_dsu/server/dsu_server.dart';
 
 void main() {
   testWidgets('Settings button available', (WidgetTester tester) async {
@@ -25,13 +26,12 @@ void main() {
     final accSettings = AccSettings.getSettings(prefs);
     final deviceSettings = DeviceSettings.getSettings(prefs);
 
-    final server = DSUServer.mock(gyroSettings, accSettings, deviceSettings);
-
     await tester.pumpWidget(MultiProvider(providers: [
       ChangeNotifierProvider<GyroSettings>.value(value: gyroSettings),
       ChangeNotifierProvider<AccSettings>.value(value: accSettings),
-      Provider<DSUServer>.value(
-        value: server,
+      ChangeNotifierProvider<DeviceSettings>.value(value: deviceSettings),
+      Provider<SendPort>.value(
+        value: ReceivePort().sendPort,
       ),
     ], child: WiiMoteDSUApp(prefs)));
 

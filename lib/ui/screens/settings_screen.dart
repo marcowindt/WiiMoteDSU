@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:network_info_plus/network_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,18 +29,48 @@ class _SettingsScreen extends State<SettingsScreen> {
         appBar: AppBar(
           title: Text('Settings'),
         ),
-        body: Consumer3<GyroSettings, AccSettings, DeviceSettings>(builder: (BuildContext context,
-            GyroSettings gyroSettings, AccSettings accSettings, DeviceSettings deviceSettings, Widget child) {
+        body: Consumer3<GyroSettings, AccSettings, DeviceSettings>(builder:
+            (BuildContext context,
+                GyroSettings gyroSettings,
+                AccSettings accSettings,
+                DeviceSettings deviceSettings,
+                Widget child) {
           return ListView(
             children: [
-              // ListTile(
-              //   title: Text('Auto adjust to device orientation'),
-              //   trailing: Checkbox(
-              //     value: gyroSettings.adjustToDeviceOrientation,
-              //     onChanged: (bool value) =>
-              //         gyroSettings.setAdjustToDeviceOrientation(value),
-              //   ),
-              // ),
+              ListTile(
+                title: Text('Slot'),
+                trailing: DropdownButton<int>(
+                  hint: Text("Select slot"),
+                  value: Provider.of<DeviceSettings>(context).slot,
+                  onChanged: (int slot) {
+                    context.read<DeviceSettings>().setSlot(slot);
+                  },
+                  items: [0, 1, 2, 3].map((slot) {
+                    return DropdownMenuItem<int>(
+                      value: slot,
+                      child: Text("$slot"),
+                    );
+                  }).toList(),
+                ),
+              ),
+              ListTile(
+                title: Text('Device Orientation'),
+                trailing: DropdownButton<DeviceOrientation>(
+                  hint: Text("Select orientation"),
+                  value: Provider.of<DeviceSettings>(context).orientation,
+                  onChanged: (DeviceOrientation orientation) {
+                    context
+                        .read<DeviceSettings>()
+                        .setDeviceOrientation(orientation);
+                  },
+                  items: DeviceOrientation.values.map((orientation) {
+                    return DropdownMenuItem<DeviceOrientation>(
+                      value: orientation,
+                      child: Text(orientation.toString().split(".")[1]),
+                    );
+                  }).toList(),
+                ),
+              ),
               ListTile(
                 title: Text('Acc Enabled'),
                 trailing: Checkbox(
@@ -135,23 +166,28 @@ class _SettingsScreen extends State<SettingsScreen> {
                 trailing: Text('${controller.text}'),
               ),
               Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                  child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 10.0, horizontal: 10.0),
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blueAccent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 15.0, horizontal: 10.0),
+                        textStyle: TextStyle(color: Colors.white),
                       ),
-                      padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                      textColor: Colors.white,
-                      color: Colors.blueAccent,
-                      onPressed: () => clearCachedSettings(accSettings, gyroSettings, deviceSettings),
+                      onPressed: () => clearCachedSettings(
+                          accSettings, gyroSettings, deviceSettings),
                       child: Text('Reset to default'))),
             ],
           );
         }));
   }
 
-  Future<void> clearCachedSettings(
-      AccSettings accSettings, GyroSettings gyroSettings, DeviceSettings deviceSettings) async {
+  Future<void> clearCachedSettings(AccSettings accSettings,
+      GyroSettings gyroSettings, DeviceSettings deviceSettings) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     bool cleared = await preferences.clear();
     accSettings.clear();

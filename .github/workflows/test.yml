@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [master, develop]
 
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     runs-on: macos-latest
@@ -23,7 +27,7 @@ jobs:
 
     env:
       JAVA_VERSION: "11.0"
-      FLUTTER_VERSION: "3.0.1"
+      FLUTTER_VERSION: "3.3.10"
 
     steps:
       - name: Checkout 🛎️
