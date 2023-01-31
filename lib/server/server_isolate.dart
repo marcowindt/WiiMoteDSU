@@ -3,10 +3,11 @@ import 'dart:isolate';
 
 import 'package:flutter/widgets.dart';
 import 'package:wiimote_dsu/devices/device.dart';
-import 'package:wiimote_dsu/server/acc_event.dart';
-import 'package:wiimote_dsu/server/button_press.dart';
 import 'package:wiimote_dsu/server/dsu_server.dart';
-import 'package:wiimote_dsu/server/gyro_event.dart';
+import 'package:wiimote_dsu/server/events/acc_event.dart';
+import 'package:wiimote_dsu/server/events/button_event.dart';
+import 'package:wiimote_dsu/server/events/change_slot_event.dart';
+import 'package:wiimote_dsu/server/events/gyro_event.dart';
 
 class ServerIsolate {
   static Future<SendPort> init() async {
@@ -39,13 +40,15 @@ class ServerIsolate {
 
     mainToIsolateStream.listen((data) {
       if (data is Device) {
-        server.registerDevice(0, data);
+        server.registerDevice(data);
+      } else if (data is ChangeSlotEvent) {
+        server.changeSlot(data);
       } else if (data is GyroEvent) {
-        server.slots[0].setGyro(data);
+        server.slots[data.slot]?.setGyro(data);
       } else if (data is AccEvent) {
-        server.slots[0].setAcc(data);
-      } else if (data is ButtonPress) {
-        server.slots[0].setState(data.btnType, data.value);
+        server.slots[data.slot]?.setAcc(data);
+      } else if (data is ButtonEvent) {
+        server.slots[data.slot]?.setState(data.btnType, data.value);
         debugPrint(
             '${DateTime.now().millisecondsSinceEpoch} [main->isolate] pressed ${data.btnType}, value: ${data.value}');
       } else {

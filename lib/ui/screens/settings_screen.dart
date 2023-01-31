@@ -38,6 +38,22 @@ class _SettingsScreen extends State<SettingsScreen> {
           return ListView(
             children: [
               ListTile(
+                title: Text('Slot'),
+                trailing: DropdownButton<int>(
+                  hint: Text("Select slot"),
+                  value: Provider.of<DeviceSettings>(context).slot,
+                  onChanged: (int slot) {
+                    context.read<DeviceSettings>().setSlot(slot);
+                  },
+                  items: [0, 1, 2, 3].map((slot) {
+                    return DropdownMenuItem<int>(
+                      value: slot,
+                      child: Text("$slot"),
+                    );
+                  }).toList(),
+                ),
+              ),
+              ListTile(
                 title: Text('Device Orientation'),
                 trailing: DropdownButton<DeviceOrientation>(
                   hint: Text("Select orientation"),
