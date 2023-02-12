@@ -16,7 +16,7 @@ class Device {
 
   SendPort serverSendPort;
   var disconnected = false;
-  var mac = [0xFA, 0xCE, 0xB0, 0x0C, 0x00, 0x00];
+  var mac = [0xFA, 0xCE, 0xB0, 0x0C, 0x00, 0x11];
   var model = 0x01;
 
   static const double PI = 3.1415926535897932;
