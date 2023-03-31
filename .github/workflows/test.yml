@@ -68,6 +68,6 @@ jobs:
 
       - name: Version 📦
         if: github.event_name != 'pull_request'
-        uses: cycjimmy/semantic-release-action@v3.3.0
+        uses: cycjimmy/semantic-release-action@v3.4.2
         env:
           GITHUB_TOKEN: ${{ secrets.API_GITHUB_TOKEN }}
