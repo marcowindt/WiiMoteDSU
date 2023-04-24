@@ -22,7 +22,7 @@ environment:
 
 dependencies:
   platform: ^3.1.0
-  synchronized: ^3.0.1
+  synchronized: ^3.1.0
   crclib: ^3.0.0
   motion_sensors: ^0.1.0
   udp: ^5.0.3
