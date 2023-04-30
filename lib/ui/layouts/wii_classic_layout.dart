@@ -29,8 +29,7 @@ class WiiClassicLayout extends StatelessWidget implements DeviceLayout {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Dpad(
-                width: 120,
-                height: 120,
+                size: 120,
               ),
               SizedBox(
                 width: 85,

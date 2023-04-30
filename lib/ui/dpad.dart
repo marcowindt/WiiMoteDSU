@@ -1,55 +1,48 @@
+import 'dart:isolate';
+
 import 'package:flutter/material.dart';
-import 'package:wiimote_dsu/ui/buttons/dpad_arrow.dart';
+import 'package:provider/provider.dart';
+import 'package:wiimote_dsu/models/device_settings.dart';
+import 'package:wiimote_dsu/server/events/multi_button_event.dart';
+import 'package:wiimote_dsu/ui/buttons/multi_dpad.dart';
 
 class Dpad extends StatelessWidget {
-  final double width;
-  final double height;
+  final double size;
 
-  Dpad({this.width = 1.0 * 180.0, this.height = 1.0 * 180.0});
+  Dpad({this.size = 120.0});
+
+  static const DSUButtons = {
+    Direction.up: "D_UP",
+    Direction.right: "D_RIGHT",
+    Direction.down: "D_DOWN",
+    Direction.left: "D_LEFT"
+  };
+
+  static const offState = {
+    "D_UP": 0x00,
+    "D_RIGHT": 0x00,
+    "D_DOWN": 0x00,
+    "D_LEFT": 0x00,
+  };
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        width: width,
-        height: height,
-        child: Stack(children: <Widget>[
-          Positioned(
-            left: width * 0.5 - 0.125 * width,
-            top: 0,
-            child: DpadArrow(
-              Icons.arrow_upward,
-              btnType: "D_UP",
-              width: 0.25 * width,
-              height: 0.4 * height,
-            ),
-          ),
-          Positioned(
-              left: 0,
-              top: height * 0.5 - 0.125 * height,
-              child: DpadArrow(
-                Icons.arrow_back,
-                btnType: "D_LEFT",
-                width: 0.4 * width,
-                height: 0.25 * height,
-              )),
-          Positioned(
-              right: 0,
-              top: height * 0.5 - 0.125 * height,
-              child: DpadArrow(
-                Icons.arrow_forward,
-                btnType: "D_RIGHT",
-                width: 0.4 * width,
-                height: 0.25 * height,
-              )),
-          Positioned(
-              bottom: 0,
-              left: width * 0.5 - 0.125 * width,
-              child: DpadArrow(
-                Icons.arrow_downward,
-                btnType: "D_DOWN",
-                width: 0.25 * width,
-                height: 0.4 * height,
-              )),
-        ]));
+    return Consumer<DeviceSettings>(
+        builder: (BuildContext context, DeviceSettings settings, Widget child) {
+      return DPad(
+          size: size,
+          onUpdate: (Set<Direction> directionsPressed) {
+            final mappedDirections =
+                directionsPressed.map((direction) => DSUButtons[direction]);
+            context.read<SendPort>().send(MultiButtonEvent(settings.slot,
+                    offState.map((dArrow, state) {
+                  if (mappedDirections.contains(dArrow)) {
+                    return MapEntry(dArrow, 0xFF);
+                  } else {
+                    return MapEntry(dArrow, 0x00);
+                  }
+                })));
+          });
+    });
   }
 }
