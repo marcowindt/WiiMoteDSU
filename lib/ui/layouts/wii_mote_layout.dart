@@ -21,8 +21,7 @@ class WiiMoteLayout extends StatelessWidget implements DeviceLayout {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Dpad(
-              width: screenSize.height * 0.25,
-              height: screenSize.height * 0.25,
+              size: screenSize.height * 0.25,
             ),
             SizedBox(
               height: screenSize.height * 0.2 / 3,

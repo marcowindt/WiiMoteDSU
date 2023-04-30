@@ -8,6 +8,7 @@ import 'package:wiimote_dsu/server/events/acc_event.dart';
 import 'package:wiimote_dsu/server/events/button_event.dart';
 import 'package:wiimote_dsu/server/events/change_slot_event.dart';
 import 'package:wiimote_dsu/server/events/gyro_event.dart';
+import 'package:wiimote_dsu/server/events/multi_button_event.dart';
 
 class ServerIsolate {
   static Future<SendPort> init() async {
@@ -47,6 +48,10 @@ class ServerIsolate {
         server.slots[data.slot]?.setGyro(data);
       } else if (data is AccEvent) {
         server.slots[data.slot]?.setAcc(data);
+      } else if (data is MultiButtonEvent) {
+        server.slots[data.slot]?.setStates(data.value);
+        debugPrint(
+            '${DateTime.now().millisecondsSinceEpoch} [main->isolate] value: ${data.value}');
       } else if (data is ButtonEvent) {
         server.slots[data.slot]?.setState(data.btnType, data.value);
         debugPrint(

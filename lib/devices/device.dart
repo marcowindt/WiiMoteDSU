@@ -115,6 +115,11 @@ class Device {
     this.state[this.keyMap[btnType]] = state;
   }
 
+  void setStates(Map<String, int> btnTypeStates) {
+    this.state.addAll(
+        btnTypeStates.map((key, value) => MapEntry(this.keyMap[key], value)));
+  }
+
   Device(GyroSettings gyroSettings, AccSettings accSettings,
       DeviceSettings deviceSettings, SendPort stream) {
     this.gyroSettings = gyroSettings;
