@@ -64,17 +64,47 @@ jobs:
         id: setup
         run: |
           flutter pub get
-          echo ::set-output name=tag::${GITHUB_REF##*/}
+          echo "tag=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
+          echo "version=${GITHUB_REF##*/v}" >> $GITHUB_OUTPUT
+
+      - name: Set Version
+        run: sed -i 's/1337.42.1337+42/${{ steps.setup.outputs.version }}+${{ github.run_number }}/g' pubspec.yaml
+      
+      - name: Download Android keystore
+        id: android_keystore
+        uses: timheuer/base64-to-file@v1.0.3
+        with:
+          fileName: android/upload-keystore.jks
+          encodedString: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+      
+      - name: Create key.properties
+        run: |
+          echo "storeFile=${{ steps.android_keystore.outputs.filePath }}" > android/key.properties
+          echo "storePassword=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" >> android/key.properties
+          echo "keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}" >> android/key.properties
+          echo "keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}" >> android/key.properties
 
       - name: Build
         run: |
           flutter build apk --release
+          flutter build appbundle --release
           cd build/app/outputs/flutter-apk/
           mv app-release.apk WiiMoteDSU-${{ steps.setup.outputs.tag }}.apk
+          cd ../release/app-release.aab
+          mv app-release.aab WiiMoteDSU-${{ steps.setup.outputs.tag }}.aab
 
       - name: Upload assets
         uses: AButler/upload-release-assets@v2.0
         with:
-          files: build/app/outputs/flutter-apk/WiiMoteDSU-${{ steps.setup.outputs.tag }}.apk
+          files: 'build/app/outputs/flutter-apk/WiiMoteDSU-${{ steps.setup.outputs.tag }}.apk;build/app/outputs/release/WiiMoteDSU-${{ steps.setup.outputs.tag }}.aab'
           release-tag: ${{ steps.setup.outputs.tag }}
           repo-token: ${{ secrets.API_GITHUB_TOKEN }}
+
+      - name: Release app to Play Store
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+          packageName: nl.dijkitech.DSU_Remote
+          releaseFiles: build/app/outputs/release/WiiMoteDSU-${{ steps.setup.outputs.tag }}.aab
+          track: production
+          status: inProgress
