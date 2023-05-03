@@ -75,12 +75,12 @@ jobs:
           flutter build apk --release
           flutter build appbundle --release
           mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/WiiMoteDSU-${{ steps.setup.outputs.tag }}.apk
-          mv build/app/outputs/release/app-release.aab build/app/outputs/release/WiiMoteDSU-${{ steps.setup.outputs.tag }}.aab
+          mv build/app/outputs/bundle/release/app-release.aab build/app/outputs/bundle/release/WiiMoteDSU-${{ steps.setup.outputs.tag }}.aab
 
       - name: Upload assets
         uses: AButler/upload-release-assets@v2.0
         with:
-          files: 'build/app/outputs/flutter-apk/WiiMoteDSU-${{ steps.setup.outputs.tag }}.apk;build/app/outputs/release/WiiMoteDSU-${{ steps.setup.outputs.tag }}.aab'
+          files: 'build/app/outputs/flutter-apk/WiiMoteDSU-${{ steps.setup.outputs.tag }}.apk;build/app/outputs/bundle/release/WiiMoteDSU-${{ steps.setup.outputs.tag }}.aab'
           release-tag: ${{ steps.setup.outputs.tag }}
           repo-token: ${{ secrets.API_GITHUB_TOKEN }}
 
