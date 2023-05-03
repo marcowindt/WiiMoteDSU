@@ -1,0 +1,59 @@
+name: Release iOS
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to release, 0.5.1 (without 'v')"
+        required: true
+
+jobs:
+  ios:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.API_GITHUB_TOKEN }}
+          # default is '', i.e. commit that triggered this event
+          ref: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.version != '' && format('refs/tags/v{0}', github.event.inputs.version) || ''}}
+
+      - name: Setup environment
+        id: setup
+        run: |
+          git clone https://github.com/flutter/flutter.git -b stable --depth=1
+          flutter/bin/flutter doctor
+
+      - name: Deps
+        id: deps
+        run: flutter pub get
+      
+      - name: Setup version and tag from commit
+        if: github.event_name != 'workflow_dispatch'
+        run: |
+          echo "tag=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
+          echo "version=${GITHUB_REF##*/v}" >> $GITHUB_OUTPUT
+
+      - name: Setup version and tag from workflow_dispatch
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.version != ''
+        run: |
+          echo "tag=v${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+
+      - name: Build
+        run: |
+          flutter/bin/flutter build ios --no-codesign --release
+          cd build/ios/
+          mv iphoneos Payload
+          zip -r WiiMoteDSU-${{ steps.setup.outputs.tag }}.ipa Payload
+
+      - name: Upload assets
+        uses: AButler/upload-release-assets@v2.0
+        with:
+          files: build/ios/WiiMoteDSU-${{ steps.setup.outputs.tag }}.ipa
+          release-tag: ${{ steps.setup.outputs.tag }}
+          repo-token: ${{ secrets.API_GITHUB_TOKEN }}
