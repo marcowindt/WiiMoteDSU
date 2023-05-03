@@ -89,6 +89,6 @@ jobs:
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
           packageName: nl.dijkitech.DSU_Remote
-          releaseFiles: build/app/outputs/release/WiiMoteDSU-${{ steps.setup.outputs.tag }}.aab
+          releaseFiles: build/app/outputs/bundle/release/WiiMoteDSU-${{ steps.setup.outputs.tag }}.aab
           track: production
           status: completed
