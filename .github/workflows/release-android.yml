@@ -41,22 +41,23 @@ jobs:
       - name: Deps
         run: flutter pub get
       
-      - name: Setup version and tag from commit
-        if: github.event_name != 'workflow_dispatch'
+      - name: Setup version and tag
         id: setup
+        env:
+          VERSION_CODE: ${{ github.run_number }}
         run: |
-          echo "tag=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
-          echo "version=${GITHUB_REF##*/v}" >> $GITHUB_OUTPUT
-
-      - name: Setup version and tag from workflow_dispatch
-        if: github.event_name == 'workflow_dispatch' && github.event.inputs.version != ''
-        id: setup
-        run: |
-          echo "tag=v${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
-          echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          if [ ${{ github.event_name }} != 'workflow_dispatch' ]; then
+            echo "tag=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
+            echo "version=${GITHUB_REF##*/v}" >> $GITHUB_OUTPUT
+          else
+            echo "tag=v${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+            echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          fi
+          echo "version_code=$(($VERSION_CODE+42))" >> $GITHUB_OUTPUT
+        shell: bash
 
       - name: Set Version
-        run: sed -i 's/1337.42.1337+42/${{ steps.setup.outputs.version }}+${{ github.run_number }}/g' pubspec.yaml
+        run: sed -i 's/1337.42.1337+42/${{ steps.setup.outputs.version }}+${{ steps.setup.outputs.version_code }}/g' pubspec.yaml
       
       - name: Download Android keystore
         id: android_keystore
@@ -68,7 +69,7 @@ jobs:
       - name: Create key.properties
         run: |
           echo "storeFile=${{ steps.android_keystore.outputs.filePath }}" > android/key.properties
-          echo "storePassword=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" >> android/key.properties
+          echo "storePassword=${{ secrets.ANDROID_STORE_PASSWORD }}" >> android/key.properties
           echo "keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}" >> android/key.properties
           echo "keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}" >> android/key.properties
 
@@ -76,15 +77,13 @@ jobs:
         run: |
           flutter build apk --release
           flutter build appbundle --release
-          cd build/app/outputs/flutter-apk/
-          mv app-release.apk WiiMoteDSU-${{ steps.setup.outputs.tag }}.apk
-          cd ../release/
-          mv app-release.aab WiiMoteDSU-${{ steps.setup.outputs.tag }}.aab
+          mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/WiiMoteDSU-${{ steps.setup.outputs.tag }}.apk
+          mv build/app/outputs/bundle/release/app-release.aab build/app/outputs/bundle/release/WiiMoteDSU-${{ steps.setup.outputs.tag }}.aab
 
       - name: Upload assets
         uses: AButler/upload-release-assets@v2.0
         with:
-          files: 'build/app/outputs/flutter-apk/WiiMoteDSU-${{ steps.setup.outputs.tag }}.apk;build/app/outputs/release/WiiMoteDSU-${{ steps.setup.outputs.tag }}.aab'
+          files: 'build/app/outputs/flutter-apk/WiiMoteDSU-${{ steps.setup.outputs.tag }}.apk;build/app/outputs/bundle/release/WiiMoteDSU-${{ steps.setup.outputs.tag }}.aab'
           release-tag: ${{ steps.setup.outputs.tag }}
           repo-token: ${{ secrets.API_GITHUB_TOKEN }}
 
@@ -92,7 +91,7 @@ jobs:
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
-          packageName: nl.dijkitech.DSU_Remote
-          releaseFiles: build/app/outputs/release/WiiMoteDSU-${{ steps.setup.outputs.tag }}.aab
+          packageName: nl.dijkitech.wiimote_dsu
+          releaseFiles: build/app/outputs/bundle/release/WiiMoteDSU-${{ steps.setup.outputs.tag }}.aab
           track: production
-          status: inProgress
+          status: completed
