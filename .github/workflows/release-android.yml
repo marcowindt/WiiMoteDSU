@@ -41,22 +41,20 @@ jobs:
       - name: Deps
         run: flutter pub get
       
-      - name: Setup version and tag from commit
-        if: github.event_name != 'workflow_dispatch'
-        id: setup_commit
+      - name: Setup version and tag
+        id: setup
         run: |
-          echo "tag=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
-          echo "version=${GITHUB_REF##*/v}" >> $GITHUB_OUTPUT
-
-      - name: Setup version and tag from workflow_dispatch
-        if: github.event_name == 'workflow_dispatch' && github.event.inputs.version != ''
-        id: setup_workflow_dispatch
-        run: |
-          echo "tag=v${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
-          echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          if [ ${{ github.event_name }} != 'workflow_dispatch' ]; then
+            echo "tag=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
+            echo "version=${GITHUB_REF##*/v}" >> $GITHUB_OUTPUT
+          else
+            echo "tag=v${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+            echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          fi
+        shell: bash
 
       - name: Set Version
-        run: sed -i 's/1337.42.1337+42/${{ steps.setup_commit.outputs.version || steps.setup_workflow_dispatch.outputs.version }}+${{ github.run_number }}/g' pubspec.yaml
+        run: sed -i 's/1337.42.1337+42/${{ steps.setup.outputs.version }}+${{ github.run_number }}/g' pubspec.yaml
       
       - name: Download Android keystore
         id: android_keystore
@@ -76,10 +74,8 @@ jobs:
         run: |
           flutter build apk --release
           flutter build appbundle --release
-          cd build/app/outputs/flutter-apk/
-          mv app-release.apk WiiMoteDSU-${{ steps.setup.outputs.tag }}.apk
-          cd ../release/
-          mv app-release.aab WiiMoteDSU-${{ steps.setup.outputs.tag }}.aab
+          mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/WiiMoteDSU-${{ steps.setup.outputs.tag }}.apk
+          mv build/app/outputs/release/app-release.aab build/app/outputs/release/WiiMoteDSU-${{ steps.setup.outputs.tag }}.aab
 
       - name: Upload assets
         uses: AButler/upload-release-assets@v2.0
