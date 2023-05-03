@@ -43,6 +43,8 @@ jobs:
       
       - name: Setup version and tag
         id: setup
+        env:
+          VERSION_CODE: ${{ github.run_number }}
         run: |
           if [ ${{ github.event_name }} != 'workflow_dispatch' ]; then
             echo "tag=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
@@ -51,10 +53,11 @@ jobs:
             echo "tag=v${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
             echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
           fi
+          echo "version_code=$(($VERSION_CODE+42))" >> $GITHUB_OUTPUT
         shell: bash
 
       - name: Set Version
-        run: sed -i 's/1337.42.1337+42/${{ steps.setup.outputs.version }}+${{ github.run_number }}/g' pubspec.yaml
+        run: sed -i 's/1337.42.1337+42/${{ steps.setup.outputs.version }}+${{ steps.setup.outputs.version_code }}/g' pubspec.yaml
       
       - name: Download Android keystore
         id: android_keystore
