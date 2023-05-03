@@ -88,7 +88,7 @@ jobs:
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
-          packageName: nl.dijkitech.DSU_Remote
+          packageName: nl.dijkitech.wiimote_dsu
           releaseFiles: build/app/outputs/bundle/release/WiiMoteDSU-${{ steps.setup.outputs.tag }}.aab
           track: production
           status: completed
