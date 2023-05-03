@@ -30,7 +30,7 @@ jobs:
 
       - name: Deps
         id: deps
-        run: flutter pub get
+        run: flutter/bin/flutter pub get
       
       - name: Setup version and tag from commit
         if: github.event_name != 'workflow_dispatch'
