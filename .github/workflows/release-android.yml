@@ -91,4 +91,4 @@ jobs:
           packageName: nl.dijkitech.DSU_Remote
           releaseFiles: build/app/outputs/release/WiiMoteDSU-${{ steps.setup.outputs.tag }}.aab
           track: production
-          status: inProgress
+          status: completed
