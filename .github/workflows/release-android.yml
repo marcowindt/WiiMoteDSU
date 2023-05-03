@@ -43,20 +43,20 @@ jobs:
       
       - name: Setup version and tag from commit
         if: github.event_name != 'workflow_dispatch'
-        id: setup
+        id: setup_commit
         run: |
           echo "tag=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
           echo "version=${GITHUB_REF##*/v}" >> $GITHUB_OUTPUT
 
       - name: Setup version and tag from workflow_dispatch
         if: github.event_name == 'workflow_dispatch' && github.event.inputs.version != ''
-        id: setup
+        id: setup_workflow_dispatch
         run: |
           echo "tag=v${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
           echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
 
       - name: Set Version
-        run: sed -i 's/1337.42.1337+42/${{ steps.setup.outputs.version }}+${{ github.run_number }}/g' pubspec.yaml
+        run: sed -i 's/1337.42.1337+42/${{ steps.setup_commit.outputs.version || steps.setup_workflow_dispatch.outputs.version }}+${{ github.run_number }}/g' pubspec.yaml
       
       - name: Download Android keystore
         id: android_keystore
