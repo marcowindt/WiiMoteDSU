@@ -92,7 +92,7 @@ jobs:
       - name: Update Bundle identifier
         uses: damienaicheh/update-ios-bundle-identifier-action@v1.0.0
         with:
-          info-plist-path: 'ios/Info.plist'
+          info-plist-path: 'ios/Runner/Info.plist'
           bundle-identifier: 'nl.dijkitech.wiimote-dsu'
           bundle-name: 'DSU Remote'
           bundle-display-name: 'DSU Remote'
