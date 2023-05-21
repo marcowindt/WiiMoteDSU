@@ -34,7 +34,7 @@ jobs:
         run: |
           # create variables
           CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
-          PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
+          PP_PATH=$RUNNER_TEMP/DSU_Remote_Distribution.mobileprovision
           KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
 
           # import certificate and provisioning profile from secrets
@@ -75,19 +75,20 @@ jobs:
           fi
         shell: bash
 
-      - name: Build (GitHub)
-        run: |
-          flutter build ios --no-codesign --release
-          cd build/ios/
-          mv iphoneos Payload
-          zip -r WiiMoteDSU-${{ steps.setup.outputs.tag }}.ipa Payload
+      # skip to test quicker
+      # - name: Build (GitHub)
+      #   run: |
+      #     flutter build ios --no-codesign --release
+      #     cd build/ios/
+      #     mv iphoneos Payload
+      #     zip -r WiiMoteDSU-${{ steps.setup.outputs.tag }}.ipa Payload
 
-      - name: Upload assets
-        uses: AButler/upload-release-assets@v2.0
-        with:
-          files: build/ios/WiiMoteDSU-${{ steps.setup.outputs.tag }}.ipa
-          release-tag: ${{ steps.setup.outputs.tag }}
-          repo-token: ${{ secrets.API_GITHUB_TOKEN }}
+      # - name: Upload assets
+      #   uses: AButler/upload-release-assets@v2.0
+      #   with:
+      #     files: build/ios/WiiMoteDSU-${{ steps.setup.outputs.tag }}.ipa
+      #     release-tag: ${{ steps.setup.outputs.tag }}
+      #     repo-token: ${{ secrets.API_GITHUB_TOKEN }}
 
       # - name: Update Bundle identifier
       #   uses: damienaicheh/update-ios-bundle-identifier-action@v1.0.0
@@ -103,6 +104,8 @@ jobs:
           BUILD_EXPORT_OPTIONS_BASE64: ${{ secrets.BUILD_EXPORT_OPTIONS_BASE64 }}
         run: |
           flutter clean
+          sed -i '' 's/DEVELOPMENT_TEAM = .*;/DEVELOPMENT_TEAM = "";/g' ios/Runner.xcodeproj/project.pbxproj
+          sed -i '' 's/nl.sample.wiimoteDsu/nl.dijkitech.wiimote-dsu/g' ios/Runner.xcodeproj/project.pbxproj
           echo -n "$BUILD_EXPORT_OPTIONS_BASE64" | base64 --decode -o $RUNNER_TEMP/ExportOptions.plist
           flutter build ipa --release --export-options-plist=$RUNNER_TEMP/ExportOptions.plist
 
@@ -118,4 +121,4 @@ jobs:
         if: ${{ always() }}
         run: |
           security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
-          rm ~/Library/MobileDevice/Provisioning\ Profiles/build_pp.mobileprovision
+          rm ~/Library/MobileDevice/Provisioning\ Profiles/DSU_Remote_Distribution.mobileprovision
