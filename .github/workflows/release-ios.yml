@@ -106,7 +106,7 @@ jobs:
           sed -i '' 's/DEVELOPMENT_TEAM = .*;/DEVELOPMENT_TEAM = ${{ secrets.APPLE_DEVELOPMENT_TEAM_ID }};/g' ios/Runner.xcodeproj/project.pbxproj
           sed -i '' 's/nl.sample.wiimoteDsu/nl.dijkitech.wiimote-dsu/g' ios/Runner.xcodeproj/project.pbxproj
           echo -n "$BUILD_EXPORT_OPTIONS_BASE64" | base64 --decode -o $RUNNER_TEMP/ExportOptions.plist
-          flutter build ipa --release --export-options-plist=$RUNNER_TEMP/ExportOptions.plist
+          flutter build ipa --export-options-plist=$RUNNER_TEMP/ExportOptions.plist
 
       - name: Setup App Store API key
         env:
