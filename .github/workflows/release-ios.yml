@@ -89,19 +89,20 @@ jobs:
           release-tag: ${{ steps.setup.outputs.tag }}
           repo-token: ${{ secrets.API_GITHUB_TOKEN }}
 
-      - name: Update Bundle identifier
-        uses: damienaicheh/update-ios-bundle-identifier-action@v1.0.0
-        with:
-          info-plist-path: 'ios/Runner/Info.plist'
-          bundle-identifier: 'nl.dijkitech.wiimote-dsu'
-          bundle-name: 'DSU Remote'
-          bundle-display-name: 'DSU Remote'
-          print-file: true
+      # - name: Update Bundle identifier
+      #   uses: damienaicheh/update-ios-bundle-identifier-action@v1.0.0
+      #   with:
+      #     info-plist-path: 'ios/Runner/Info.plist'
+      #     bundle-identifier: 'nl.dijkitech.wiimote-dsu'
+      #     bundle-name: 'DSU Remote'
+      #     bundle-display-name: 'DSU Remote'
+      #     print-file: true
 
       - name: Build (App Store)
         env:
           BUILD_EXPORT_OPTIONS_BASE64: ${{ secrets.BUILD_EXPORT_OPTIONS_BASE64 }}
         run: |
+          flutter clean
           echo -n "$BUILD_EXPORT_OPTIONS_BASE64" | base64 --decode -o $RUNNER_TEMP/ExportOptions.plist
           flutter build ipa --release --export-options-plist=$RUNNER_TEMP/ExportOptions.plist
 
