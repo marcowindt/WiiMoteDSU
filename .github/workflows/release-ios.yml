@@ -74,30 +74,23 @@ jobs:
             echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
           fi
         shell: bash
+      
+      - name: Set Version
+        run: sed -i '' 's/1337.42.1337+42/${{ steps.setup.outputs.version }}+${{ steps.setup.outputs.version_code }}/g' pubspec.yaml
 
-      # skip to test quicker
-      # - name: Build (GitHub)
-      #   run: |
-      #     flutter build ios --no-codesign --release
-      #     cd build/ios/
-      #     mv iphoneos Payload
-      #     zip -r WiiMoteDSU-${{ steps.setup.outputs.tag }}.ipa Payload
+      - name: Build (GitHub)
+        run: |
+          flutter build ios --no-codesign --release
+          cd build/ios/
+          mv iphoneos Payload
+          zip -r WiiMoteDSU-${{ steps.setup.outputs.tag }}.ipa Payload
 
-      # - name: Upload assets
-      #   uses: AButler/upload-release-assets@v2.0
-      #   with:
-      #     files: build/ios/WiiMoteDSU-${{ steps.setup.outputs.tag }}.ipa
-      #     release-tag: ${{ steps.setup.outputs.tag }}
-      #     repo-token: ${{ secrets.API_GITHUB_TOKEN }}
-
-      # - name: Update Bundle identifier
-      #   uses: damienaicheh/update-ios-bundle-identifier-action@v1.0.0
-      #   with:
-      #     info-plist-path: 'ios/Runner/Info.plist'
-      #     bundle-identifier: 'nl.dijkitech.wiimote-dsu'
-      #     bundle-name: 'DSU Remote'
-      #     bundle-display-name: 'DSU Remote'
-      #     print-file: true
+      - name: Upload assets
+        uses: AButler/upload-release-assets@v2.0
+        with:
+          files: build/ios/WiiMoteDSU-${{ steps.setup.outputs.tag }}.ipa
+          release-tag: ${{ steps.setup.outputs.tag }}
+          repo-token: ${{ secrets.API_GITHUB_TOKEN }}
 
       - name: Build (App Store)
         env:
