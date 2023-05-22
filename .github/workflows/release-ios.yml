@@ -119,7 +119,7 @@ jobs:
           echo -n "$APP_STORE_API_KEY_BASE64" | base64 --decode -o ~/private_keys/AuthKey_${{ secrets.APP_STORE_API_KEY_ID }}.p8
       
       - name: Upload to App Store
-        run: xcrun altool --upload-app --type ios -f build/ios/ipa/wiimote_dsu.ipa --apiKey "${{ secrets.APP_STORE_API_KEY_ID }}" --apiIssuer "${{ secrets.APP_STORE_ISSUER_ID }}"
+        run: xcrun altool --upload-app --type ios -f build/ios/ipa/*.ipa --apiKey "${{ secrets.APP_STORE_API_KEY_ID }}" --apiIssuer "${{ secrets.APP_STORE_ISSUER_ID }}"
 
       - name: Clean up keychain and provisioning profile
         if: ${{ always() }}
