@@ -98,7 +98,7 @@ jobs:
       - name: Update Info.plist
         uses: damienaicheh/update-ios-bundle-identifier-action@v1.0.0
         with:
-          info-plist-path: 'ios/Info.plist'
+          info-plist-path: 'ios/Runner/Info.plist'
           bundle-name: 'DSU Remote'
           bundle-display-name: 'DSU Remote'
 
