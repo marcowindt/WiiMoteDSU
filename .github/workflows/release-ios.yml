@@ -94,6 +94,13 @@ jobs:
           files: build/ios/WiiMoteDSU-${{ steps.setup.outputs.tag }}.ipa
           release-tag: ${{ steps.setup.outputs.tag }}
           repo-token: ${{ secrets.API_GITHUB_TOKEN }}
+      
+      - name: Update Info.plist
+        uses: damienaicheh/update-ios-bundle-identifier-action@v1.0.0
+        with:
+          info-plist-path: 'ios/Info.plist'
+          bundle-name: 'DSU Remote'
+          bundle-display-name: 'DSU Remote'
 
       - name: Build (App Store)
         env:
