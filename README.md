@@ -1,6 +1,12 @@
 # WiiMoteDSU
 
-## Installation
+## Download via App Store or Play Store
+
+<a href="https://apps.apple.com/us/app/dsu-remote/id6448928057?itsct=apps_box_badge&amp;itscg=30200" style="display: inline-block; overflow: hidden; border-radius: 13px; width: 250px; height: 123px;"><img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&amp;releaseDate=1684972800" alt="Download on the App Store" style="border-radius: 13px; width: 250px; height: 123px;"></a><a href='https://play.google.com/store/apps/details?id=nl.dijkitech.wiimote_dsu&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1' style="line-height: 83px;"><img alt='Get it on Google Play' style="width: 320px;" src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/></a>
+
+Read the full README to know how to setup the connection between your mobile device and Dolphin
+
+## Installation (without App Store or Play Store)
 
 ### Android
 
