@@ -28,7 +28,7 @@ SPEC CHECKSUMS:
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   motion_sensors: 03f55b7c637a7e365a0b5f9697a449f9059d5d91
   network_info_plus: b78876159360f5580608c2cea620d6ceffabd0ad
-  shared_preferences_foundation: 986fc17f3d3251412d18b0265f9c64113a8c2472
+  shared_preferences_foundation: 5b919d13b803cadd15ed2dc053125c68730e5126
 
 PODFILE CHECKSUM: ef19549a9bc3046e7bb7d2fab4d021637c0c58a3
 
