@@ -81,7 +81,7 @@ jobs:
           mv build/app/outputs/bundle/release/app-release.aab build/app/outputs/bundle/release/WiiMoteDSU-${{ steps.setup.outputs.tag }}.aab
 
       - name: Upload assets
-        uses: AButler/upload-release-assets@v2.0
+        uses: AButler/upload-release-assets@v3.0
         with:
           files: 'build/app/outputs/flutter-apk/WiiMoteDSU-${{ steps.setup.outputs.tag }}.apk;build/app/outputs/bundle/release/WiiMoteDSU-${{ steps.setup.outputs.tag }}.aab'
           release-tag: ${{ steps.setup.outputs.tag }}
