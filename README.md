@@ -47,7 +47,7 @@ may be troublesome, although implemented).
    <img src="controller-configuration.png" alt="Screenshot of controller configuration" width="500"/>
 
 7. You can now either map the buttons manually or use the `WiiMoteDSU.ini` profile file in this repository:
-   1. If using the profile from this repository place it within the Config folder of Dolhpin:
+   1. If using the profile from this repository place it within the Config folder of Dolphin:
       - Windows: `(Documents/Dolphin Emulator/)Config/Profiles/Wiimote/WiiMoteDSU.ini`
       - Mac OS: `/Users/username/Library/Application Support/Dolphin/Config/Profiles/Wiimote/WiiMoteDSU.ini`
    2. When placed in this folder you can type "WiiMoteDSU" as profile and press 'Load' on the controller configuration screen.
