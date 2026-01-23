@@ -190,7 +190,7 @@ class DSUServer {
         buttons1,
         buttons2,
         (deviceState["button_ps"] * 127 + 128), // PS
-        0x00, // Touch (unused)
+        deviceState["touch_button"] > 0 ? 1 : 0, // recenter //0x00, // Touch (unused)
 
         (deviceState["left_analog_x"]), // position left x
         (deviceState["left_analog_y"]), // position left y

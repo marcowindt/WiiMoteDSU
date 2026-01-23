@@ -174,3 +174,5 @@ modules.xml
 
 # KeyStore
 *.jks
+
+.fvmrc
