@@ -15,8 +15,8 @@ class DSUServer {
   var portNum = 26760;
   var counter = 0;
   Map<InternetAddress, int> clients = new Map();
-  List<Device> slots = [null, null, null, null];
-  UDP socket;
+  List<Device?> slots = [null, null, null, null];
+  late UDP socket;
 
   DSUServer({this.portNum = 26760});
 
@@ -25,9 +25,9 @@ class DSUServer {
     UDP
         .bind(Endpoint.unicast(InternetAddress.anyIPv4, port: Port(portNum)))
         .then((sock) {
-      socket = sock;
-      this.start();
-    });
+          socket = sock;
+          this.start();
+        });
   }
 
   incoming(Datagram datagram) {
@@ -50,7 +50,10 @@ class DSUServer {
   }
 
   incomingPortRequest(
-      Uint8List message, InternetAddress address, int port) async {
+    Uint8List message,
+    InternetAddress address,
+    int port,
+  ) async {
     var requestsCount = message.sublist(20, 24)[0];
 
     for (var i = 0; i < requestsCount; i++) {
@@ -62,16 +65,21 @@ class DSUServer {
   }
 
   incomingDataRequest(
-      Uint8List message, InternetAddress address, int port) async {
+    Uint8List message,
+    InternetAddress address,
+    int port,
+  ) async {
     var flags = message[24];
     var regId = message[25];
 
     if (flags == 0 && regId == 0) {
       if (!clients.containsKey(address)) {
-        print("[udp] Client connected: " +
-            address.toString() +
-            " on port " +
-            port.toString());
+        print(
+          "[udp] Client connected: " +
+              address.toString() +
+              " on port " +
+              port.toString(),
+        );
       }
 
       clients[address] = port;
@@ -87,7 +95,7 @@ class DSUServer {
 
   sendPorts(int index) {
     if (slots[index] != null) {
-      Device device = slots[index];
+      Device device = slots[index]!;
       Uint8List data = Uint8List.fromList([
         index, // pad id
         0x02, // state (connected)
@@ -118,7 +126,7 @@ class DSUServer {
 
   report(Device device) {
     synchronized(() async {
-      if (device == null || device.disconnected) {
+      if (device.disconnected) {
         return;
       }
 
@@ -279,13 +287,15 @@ class DSUServer {
   }
 
   start() async {
-    print("Start listening for incoming datagrams on " +
-        socket.local.address.toString() +
-        " port " +
-        socket.local.port.value.toString());
+    print(
+      "Start listening for incoming datagrams on " +
+          socket.local.address.toString() +
+          " port " +
+          socket.local.port!.value.toString(),
+    );
 
     socket.asStream().listen((datagram) {
-      this.incoming(datagram);
+      this.incoming(datagram!);
     });
 
     await this.reportLoop(Duration(milliseconds: 1));

@@ -61,19 +61,19 @@ class GyroSettings extends ChangeNotifier {
     return GyroSettings(
       preferences,
       preferences.getBool('adjust_gyro_orientation') != null
-          ? preferences.getBool('adjust_gyro_orientation')
+          ? preferences.getBool('adjust_gyro_orientation')!
           : false,
       preferences.getBool('invert_gyro_x') != null
-          ? preferences.getBool('invert_gyro_x')
+          ? preferences.getBool('invert_gyro_x')!
           : false,
       preferences.getBool('invert_gyro_y') != null
-          ? preferences.getBool('invert_gyro_y')
+          ? preferences.getBool('invert_gyro_y')!
           : true,
       preferences.getBool('invert_gyro_z') != null
-          ? preferences.getBool('invert_gyro_z')
+          ? preferences.getBool('invert_gyro_z')!
           : false,
       preferences.getDouble('gyro_sensitivity') != null
-          ? preferences.getDouble('gyro_sensitivity')
+          ? preferences.getDouble('gyro_sensitivity')!
           : 1.0,
     );
   }

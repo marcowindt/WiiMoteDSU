@@ -36,7 +36,7 @@ class _DeviceScreenState extends State<DeviceScreen> {
   @override
   Widget build(BuildContext context) {
     return Center(child: Consumer<DeviceSettings>(
-        builder: (BuildContext context, DeviceSettings settings, Widget child) {
+        builder: (BuildContext context, DeviceSettings settings, Widget? child) {
       return settings.getButtonLayout();
     }));
   }

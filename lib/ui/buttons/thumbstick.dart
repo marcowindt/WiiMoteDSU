@@ -7,7 +7,7 @@ class ThumbStick extends StatefulWidget {
   final double stickRadius;
   final Function callback;
 
-  const ThumbStick({Key key, this.radius, this.stickRadius, this.callback})
+  const ThumbStick({Key? key, required this.radius, required this.stickRadius, required this.callback})
       : super(key: key);
 
   @override

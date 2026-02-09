@@ -19,7 +19,7 @@ class DpadArrow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<DeviceSettings>(
-        builder: (BuildContext context, DeviceSettings settings, Widget child) {
+        builder: (BuildContext context, DeviceSettings settings, Widget? child) {
       return Listener(
         onPointerDown: (details) {
           HapticFeedback.mediumImpact();
