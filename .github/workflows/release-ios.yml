@@ -14,9 +14,6 @@ jobs:
   ios:
     runs-on: macos-latest
 
-    env:
-      FLUTTER_VERSION: "3.3.10"
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -54,10 +51,14 @@ jobs:
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
 
+      - name: Read .fvmrc
+        run: echo "FVMRC=$(jq -c . < .fvmrc)" >> $GITHUB_ENV
+        shell: bash
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
+          flutter-version: ${{ fromJson(env.FVMRC).flutter }}
 
       - name: Deps
         id: deps

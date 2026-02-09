@@ -22,12 +22,8 @@ jobs:
 
       # TODO: Run tests
 
-  build:
+  build-ios:
     runs-on: macos-latest
-
-    env:
-      JAVA_VERSION: "11.0"
-      FLUTTER_VERSION: "3.3.10"
 
     steps:
       - name: Checkout 🛎️
@@ -35,28 +31,56 @@ jobs:
         with:
           token: ${{ secrets.API_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
 
-      - name: Setup Java 📐
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: ${{env.JAVA_VERSION}}
+      - name: Read .fvmrc
+        run: echo "FVMRC=$(jq -c . < .fvmrc)" >> $GITHUB_ENV
+        shell: bash
 
       - name: Setup Flutter 📐
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: ${{env.FLUTTER_VERSION}}
+          flutter-version: ${{ fromJson(env.FVMRC).flutter }}
 
       - name: Deps 📝
         run: flutter pub get
 
       - name: Build iOS 🏗️
         run: flutter build ios --no-codesign --release
-      
+
+  build-android:
+    runs-on: macos-latest
+
+    env:
+      JAVA_VERSION: "11.0"
+
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.API_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Read .fvmrc
+        run: echo "FVMRC=$(jq -c . < .fvmrc)" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Setup Flutter 📐
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ fromJson(env.FVMRC).flutter }}
+
+      - name: Setup Java 📐
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: ${{ env.JAVA_VERSION }}
+
+      - name: Deps 📝
+        run: flutter pub get
+
       - name: Build Android 🏗️
         run: flutter build apk --release
 
   release:
-    needs: [ test, build ]
+    needs: [ test, build-ios, build-android ]
   
     runs-on: macos-latest
 
