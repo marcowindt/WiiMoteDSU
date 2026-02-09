@@ -103,31 +103,34 @@ class _SettingsScreen extends State<SettingsScreen> {
                 title: Text('Invert Gyro X'),
                 trailing: Checkbox(
                   value: gyroSettings.invertGyroX,
-                  onChanged: (bool? value) => gyroSettings.setInvertGyroX(value!),
+                  onChanged: (bool? value) =>
+                      gyroSettings.setInvertGyroX(value!),
                 ),
               ),
               ListTile(
                 title: Text('Invert Gyro Y'),
                 trailing: Checkbox(
                   value: gyroSettings.invertGyroY,
-                  onChanged: (bool? value) => gyroSettings.setInvertGyroY(value!),
+                  onChanged: (bool? value) =>
+                      gyroSettings.setInvertGyroY(value!),
                 ),
               ),
               ListTile(
                 title: Text('Invert Gyro Z'),
                 trailing: Checkbox(
                   value: gyroSettings.invertGyroZ,
-                  onChanged: (bool? value) => gyroSettings.setInvertGyroZ(value!),
+                  onChanged: (bool? value) =>
+                      gyroSettings.setInvertGyroZ(value!),
                 ),
               ),
               ListTile(
                 title: Text('Gyroscope Sensitivity'),
                 subtitle: Slider(
-                  value: gyroSettings.sensitivity,
+                  value: gyroSettings.sensitivity!,
                   min: 0,
                   max: 2,
                   divisions: 200,
-                  label: gyroSettings.sensitivity.toStringAsFixed(2),
+                  label: gyroSettings.sensitivity!.toStringAsFixed(2),
                   onChanged: (double value) {
                     gyroSettings.setGyroSensitivity(value);
                   },
@@ -139,7 +142,7 @@ class _SettingsScreen extends State<SettingsScreen> {
                   hint: Text("Select device"),
                   value: Provider.of<DeviceSettings>(context).deviceName,
                   onChanged: (String? name) {
-                    context.read<DeviceSettings>().setDeviceByName(name!);
+                    context.read<DeviceSettings>().setDeviceByName(name);
                   },
                   items: DeviceSettings.available.map((String deviceName) {
                     return DropdownMenuItem<String>(

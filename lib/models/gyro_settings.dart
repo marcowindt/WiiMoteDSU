@@ -3,11 +3,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class GyroSettings extends ChangeNotifier {
   SharedPreferences preferences;
-  bool adjustToDeviceOrientation = false;
-  bool invertGyroX = false;
-  bool invertGyroY = true;
-  bool invertGyroZ = false;
-  double sensitivity = 1.0;
+  bool? adjustToDeviceOrientation = false;
+  bool? invertGyroX = false;
+  bool? invertGyroY = true;
+  bool? invertGyroZ = false;
+  double? sensitivity = 1.0;
 
   GyroSettings(
     this.preferences,

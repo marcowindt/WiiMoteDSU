@@ -13,24 +13,24 @@ class DeviceSettings extends ChangeNotifier {
   ];
 
   SharedPreferences preferences;
-  String deviceName;
-  DeviceOrientation orientation;
+  String? deviceName;
+  DeviceOrientation? orientation;
   int slot;
 
   DeviceSettings(this.preferences, this.deviceName, this.orientation,
       {this.slot = 0});
 
-  void setDeviceByName(String deviceName) {
+  void setDeviceByName(String? deviceName) {
     if (DeviceSettings.available.contains(deviceName)) {
       this.deviceName = deviceName;
     } else {
       this.deviceName = WiiMoteLayout.name;
     }
-    this.preferences.setString("current_device", this.deviceName);
+    this.preferences.setString("current_device", this.deviceName!);
     notifyListeners();
   }
 
-  void setDeviceOrientation(DeviceOrientation orientation) {
+  void setDeviceOrientation(DeviceOrientation? orientation) {
     if (DeviceOrientation.values.contains(orientation)) {
       this.orientation = orientation;
     } else {

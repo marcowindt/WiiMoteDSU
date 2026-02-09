@@ -287,12 +287,10 @@ class DSUServer {
   }
 
   start() async {
-    print(
-      "Start listening for incoming datagrams on " +
-          socket.local.address.toString() +
-          " port " +
-          socket.local.port!.value.toString(),
-    );
+    print("Start listening for incoming datagrams on " +
+        socket.local.address.toString() +
+        " port " +
+        socket.local.port!.value.toString());
 
     socket.asStream().listen((datagram) {
       this.incoming(datagram!);
