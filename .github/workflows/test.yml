@@ -50,7 +50,7 @@ jobs:
     runs-on: macos-latest
 
     env:
-      JAVA_VERSION: "11.0"
+      JAVA_VERSION: "17.0"
 
     steps:
       - name: Checkout 🛎️
