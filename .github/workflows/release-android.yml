@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      JAVA_VERSION: "11.0"
+      JAVA_VERSION: "17.0"
       ANDROID_CODE_SIGN_ENABLED: true
 
     steps:
