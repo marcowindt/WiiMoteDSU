@@ -1,7 +1,7 @@
 PODS:
-  - Flutter (1.0.0)
-  - motion_sensors (0.0.1):
+  - dchs_motion_sensors (0.0.1):
     - Flutter
+  - Flutter (1.0.0)
   - network_info_plus (0.0.1):
     - Flutter
   - shared_preferences_foundation (0.0.1):
@@ -9,24 +9,24 @@ PODS:
     - FlutterMacOS
 
 DEPENDENCIES:
+  - dchs_motion_sensors (from `.symlinks/plugins/dchs_motion_sensors/ios`)
   - Flutter (from `Flutter`)
-  - motion_sensors (from `.symlinks/plugins/motion_sensors/ios`)
   - network_info_plus (from `.symlinks/plugins/network_info_plus/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
 
 EXTERNAL SOURCES:
+  dchs_motion_sensors:
+    :path: ".symlinks/plugins/dchs_motion_sensors/ios"
   Flutter:
     :path: Flutter
-  motion_sensors:
-    :path: ".symlinks/plugins/motion_sensors/ios"
   network_info_plus:
     :path: ".symlinks/plugins/network_info_plus/ios"
   shared_preferences_foundation:
     :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
 
 SPEC CHECKSUMS:
+  dchs_motion_sensors: 05f5afbcacad0e3d5059c0390aa51c949298d1e7
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
-  motion_sensors: 741e702c17467b9569a92165dda8d4d88c6167f1
   network_info_plus: cf61925ab5205dce05a4f0895989afdb6aade5fc
   shared_preferences_foundation: 7036424c3d8ec98dfe75ff1667cb0cd531ec82bb
 
