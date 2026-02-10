@@ -7,7 +7,7 @@ import 'package:wiimote_dsu/server/events/button_event.dart';
 import 'package:wiimote_dsu/ui/buttons/thumbstick.dart';
 
 class AnalogThumbStick extends StatelessWidget {
-  final IconData icon;
+  final IconData? icon;
   final String btnType;
 
   final double radius;
@@ -22,7 +22,7 @@ class AnalogThumbStick extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<DeviceSettings>(
-        builder: (BuildContext context, DeviceSettings settings, Widget child) {
+        builder: (BuildContext context, DeviceSettings settings, Widget? child) {
       return ThumbStick(
         radius: this.radius,
         stickRadius: this.stickRadius,

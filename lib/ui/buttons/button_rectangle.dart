@@ -7,7 +7,7 @@ import 'package:wiimote_dsu/models/device_settings.dart';
 import 'package:wiimote_dsu/server/events/button_event.dart';
 
 class PadRectangleButton extends StatelessWidget {
-  final IconData icon;
+  final IconData? icon;
   final String btnType;
 
   final double width;
@@ -19,7 +19,7 @@ class PadRectangleButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<DeviceSettings>(
-        builder: (BuildContext context, DeviceSettings settings, Widget child) {
+        builder: (BuildContext context, DeviceSettings settings, Widget? child) {
       return Listener(
         onPointerDown: (details) {
           HapticFeedback.mediumImpact();

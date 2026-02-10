@@ -12,7 +12,7 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreen extends State<SettingsScreen> {
-  TextEditingController controller;
+  late TextEditingController controller;
   final networkInfo = NetworkInfo();
 
   @override
@@ -34,7 +34,7 @@ class _SettingsScreen extends State<SettingsScreen> {
                 GyroSettings gyroSettings,
                 AccSettings accSettings,
                 DeviceSettings deviceSettings,
-                Widget child) {
+                Widget? child) {
           return ListView(
             children: [
               ListTile(
@@ -42,8 +42,8 @@ class _SettingsScreen extends State<SettingsScreen> {
                 trailing: DropdownButton<int>(
                   hint: Text("Select slot"),
                   value: Provider.of<DeviceSettings>(context).slot,
-                  onChanged: (int slot) {
-                    context.read<DeviceSettings>().setSlot(slot);
+                  onChanged: (int? slot) {
+                    context.read<DeviceSettings>().setSlot(slot!);
                   },
                   items: [0, 1, 2, 3].map((slot) {
                     return DropdownMenuItem<int>(
@@ -58,10 +58,10 @@ class _SettingsScreen extends State<SettingsScreen> {
                 trailing: DropdownButton<DeviceOrientation>(
                   hint: Text("Select orientation"),
                   value: Provider.of<DeviceSettings>(context).orientation,
-                  onChanged: (DeviceOrientation orientation) {
+                  onChanged: (DeviceOrientation? orientation) {
                     context
                         .read<DeviceSettings>()
-                        .setDeviceOrientation(orientation);
+                        .setDeviceOrientation(orientation!);
                   },
                   items: DeviceOrientation.values.map((orientation) {
                     return DropdownMenuItem<DeviceOrientation>(
@@ -75,49 +75,49 @@ class _SettingsScreen extends State<SettingsScreen> {
                 title: Text('Acc Enabled'),
                 trailing: Checkbox(
                   value: accSettings.enabled,
-                  onChanged: (bool value) => accSettings.setAccEnabled(value),
+                  onChanged: (bool? value) => accSettings.setAccEnabled(value!),
                 ),
               ),
               ListTile(
                 title: Text('Invert Acc X'),
                 trailing: Checkbox(
                   value: accSettings.invertAccX,
-                  onChanged: (bool value) => accSettings.setInvertAccX(value),
+                  onChanged: (bool? value) => accSettings.setInvertAccX(value!),
                 ),
               ),
               ListTile(
                 title: Text('Invert Acc Y'),
                 trailing: Checkbox(
                   value: accSettings.invertAccY,
-                  onChanged: (bool value) => accSettings.setInvertAccY(value),
+                  onChanged: (bool? value) => accSettings.setInvertAccY(value!),
                 ),
               ),
               ListTile(
                 title: Text('Invert Acc Z'),
                 trailing: Checkbox(
                   value: accSettings.invertAccZ,
-                  onChanged: (bool value) => accSettings.setInvertAccZ(value),
+                  onChanged: (bool? value) => accSettings.setInvertAccZ(value!),
                 ),
               ),
               ListTile(
                 title: Text('Invert Gyro X'),
                 trailing: Checkbox(
                   value: gyroSettings.invertGyroX,
-                  onChanged: (bool value) => gyroSettings.setInvertGyroX(value),
+                  onChanged: (bool? value) => gyroSettings.setInvertGyroX(value!),
                 ),
               ),
               ListTile(
                 title: Text('Invert Gyro Y'),
                 trailing: Checkbox(
                   value: gyroSettings.invertGyroY,
-                  onChanged: (bool value) => gyroSettings.setInvertGyroY(value),
+                  onChanged: (bool? value) => gyroSettings.setInvertGyroY(value!),
                 ),
               ),
               ListTile(
                 title: Text('Invert Gyro Z'),
                 trailing: Checkbox(
                   value: gyroSettings.invertGyroZ,
-                  onChanged: (bool value) => gyroSettings.setInvertGyroZ(value),
+                  onChanged: (bool? value) => gyroSettings.setInvertGyroZ(value!),
                 ),
               ),
               ListTile(
@@ -138,8 +138,8 @@ class _SettingsScreen extends State<SettingsScreen> {
                 trailing: DropdownButton<String>(
                   hint: Text("Select device"),
                   value: Provider.of<DeviceSettings>(context).deviceName,
-                  onChanged: (String name) {
-                    context.read<DeviceSettings>().setDeviceByName(name);
+                  onChanged: (String? name) {
+                    context.read<DeviceSettings>().setDeviceByName(name!);
                   },
                   items: DeviceSettings.available.map((String deviceName) {
                     return DropdownMenuItem<String>(
@@ -153,9 +153,9 @@ class _SettingsScreen extends State<SettingsScreen> {
                 title: Text('IP Address'),
                 trailing: FutureBuilder(
                   future: networkInfo.getWifiIP(),
-                  builder: (BuildContext context, AsyncSnapshot<String> ip) {
+                  builder: (BuildContext context, AsyncSnapshot<String?> ip) {
                     if (ip.hasData) {
-                      return Text('${ip.data}');
+                      return Text('${ip.data!}');
                     }
                     return CircularProgressIndicator();
                   },
@@ -186,7 +186,7 @@ class _SettingsScreen extends State<SettingsScreen> {
         }));
   }
 
-  Future<void> clearCachedSettings(AccSettings accSettings,
+  Future<bool> clearCachedSettings(AccSettings accSettings,
       GyroSettings gyroSettings, DeviceSettings deviceSettings) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     bool cleared = await preferences.clear();

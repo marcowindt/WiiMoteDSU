@@ -14,7 +14,7 @@ class DPad extends StatefulWidget {
   final double size;
   final Function onUpdate;
 
-  const DPad({Key key, @required this.size, @required this.onUpdate})
+  const DPad({Key? key, required this.size, required this.onUpdate})
       : super(key: key);
 
   @override

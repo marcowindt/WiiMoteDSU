@@ -6,7 +6,7 @@ class OneTwoButtons extends StatelessWidget {
   final double height;
 
   const OneTwoButtons(
-      {Key key, this.width = 1.0 * 45.0, this.height = 2.5 * 45.0})
+      {Key? key, this.width = 1.0 * 45.0, this.height = 2.5 * 45.0})
       : super(key: key);
 
   @override

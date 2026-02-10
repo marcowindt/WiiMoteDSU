@@ -15,8 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      JAVA_VERSION: "11.0"
-      FLUTTER_VERSION: "3.3.10"
+      JAVA_VERSION: "17.0"
       ANDROID_CODE_SIGN_ENABLED: true
 
     steps:
@@ -33,10 +32,14 @@ jobs:
           distribution: 'temurin'
           java-version: ${{env.JAVA_VERSION}}
 
+      - name: Read .fvmrc
+        run: echo "FVMRC=$(jq -c . < .fvmrc)" >> $GITHUB_ENV
+        shell: bash
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: ${{env.FLUTTER_VERSION}}
+          flutter-version: ${{ fromJson(env.FVMRC).flutter }}
 
       - name: Deps
         run: flutter pub get

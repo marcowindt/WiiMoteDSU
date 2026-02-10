@@ -6,7 +6,7 @@ class MinusHomePlusButtons extends StatelessWidget {
   final double height;
 
   const MinusHomePlusButtons(
-      {Key key, this.width = 4.0 * 30, this.height = 1.0 * 30})
+      {Key? key, this.width = 4.0 * 30, this.height = 1.0 * 30})
       : super(key: key);
 
   @override

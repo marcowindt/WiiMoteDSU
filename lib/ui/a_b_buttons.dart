@@ -6,7 +6,7 @@ class ABButtons extends StatelessWidget {
   final double width;
   final double height;
 
-  const ABButtons({Key key, this.width = 1.0 * 60, this.height = 3.0 * 60})
+  const ABButtons({Key? key, this.width = 1.0 * 60, this.height = 3.0 * 60})
       : super(key: key);
 
   @override
