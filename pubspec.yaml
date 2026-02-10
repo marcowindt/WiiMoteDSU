@@ -24,7 +24,7 @@ dependencies:
   platform: ^3.1.0
   synchronized: ^3.1.0
   crclib: ^3.0.0
-  motion_sensors: ^0.1.0
+  dchs_motion_sensors: ^2.0.1
   udp: ^5.0.3
   provider: ^6.0.5
   shared_preferences: ^2.1.2

@@ -1,7 +1,7 @@
 import 'dart:isolate';
 
 import 'package:flutter/services.dart';
-import 'package:motion_sensors/motion_sensors.dart';
+import 'package:dchs_motion_sensors/dchs_motion_sensors.dart';
 import 'package:wiimote_dsu/models/acc_settings.dart';
 import 'package:wiimote_dsu/models/device_settings.dart';
 import 'package:wiimote_dsu/models/gyro_settings.dart';
