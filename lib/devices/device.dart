@@ -31,7 +31,6 @@ class Device {
 
   StreamSubscription<AccelerometerEvent>? accSubscription;
   StreamSubscription<GyroscopeEvent>? gyroSubscription;
-  StreamSubscription<FGBGType>? fgbgSubscription;
 
   // Gyroscope specific
   bool? adjustToDeviceOrientation = false;
@@ -234,20 +233,6 @@ class Device {
 
       serverSendPort.send(GyroEvent(slot, motionX, motionY, motionZ));
     });
-
-    // fgbgSubscription = FGBGEvents.instance.stream.listen((event) {
-    //   switch (event) {
-    //     case FGBGType.foreground:
-    //       {
-    //         break;
-    //       }
-    //     case FGBGType.background:
-    //       {
-    // throw "Test";
-    //         break;
-    //       }
-    //   }
-    // });
   }
 
   void setAcc(AccEvent accEvent) {
