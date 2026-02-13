@@ -33,19 +33,19 @@ class Device {
   StreamSubscription<GyroscopeEvent>? gyroSubscription;
 
   // Gyroscope specific
-  bool? adjustToDeviceOrientation = false;
-  bool? invertGyroX = false;
-  bool? invertGyroY = false;
-  bool? invertGyroZ = false;
-  double? sensitivity = 1.0;
+  bool adjustToDeviceOrientation = false;
+  bool invertGyroX = false;
+  bool invertGyroY = false;
+  bool invertGyroZ = false;
+  double sensitivity = 1.0;
 
   // Accelerometer specific
-  bool? accEnabled = true;
-  bool? adjustToDeviceOrientationAcc = false;
-  bool? invertAccX = false;
-  bool? invertAccY = false;
-  bool? invertAccZ = false;
-  double? accSensitivity = 1.0;
+  bool accEnabled = true;
+  bool adjustToDeviceOrientationAcc = false;
+  bool invertAccX = false;
+  bool invertAccY = false;
+  bool invertAccZ = false;
+  double accSensitivity = 1.0;
 
   double motionX = 0;
   double motionY = 0;
@@ -55,7 +55,7 @@ class Device {
   double accY = 0;
   double accZ = 0;
 
-  DeviceOrientation? orientation = DeviceOrientation.portraitUp;
+  DeviceOrientation orientation = DeviceOrientation.portraitUp;
   int slot = 0;
 
   var keyMap = {
