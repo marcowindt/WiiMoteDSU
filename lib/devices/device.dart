@@ -3,7 +3,6 @@ import 'dart:isolate';
 
 import 'package:flutter/services.dart';
 import 'package:dchs_motion_sensors/dchs_motion_sensors.dart';
-import 'package:flutter_fgbg/flutter_fgbg.dart';
 import 'package:wiimote_dsu/models/acc_settings.dart';
 import 'package:wiimote_dsu/models/device_settings.dart';
 import 'package:wiimote_dsu/models/gyro_settings.dart';
@@ -189,7 +188,7 @@ class Device {
     accSubscription =
         motionSensors.accelerometer.listen((AccelerometerEvent event) {
       // Values are in m/s^2, but we need in g's (1 g approx 9.8 m/s^2)
-      if (!accEnabled!) {
+      if (!accEnabled) {
         return;
       }
 
@@ -204,9 +203,9 @@ class Device {
         accZ = meterSquaredToGs(event.x);
       }
 
-      accX *= (invertAccX! ? -1 : 1) * accSensitivity!;
-      accY *= (invertAccY! ? -1 : 1) * accSensitivity!;
-      accZ *= (invertAccZ! ? -1 : 1) * accSensitivity!;
+      accX *= (invertAccX ? -1 : 1) * accSensitivity;
+      accY *= (invertAccY ? -1 : 1) * accSensitivity;
+      accZ *= (invertAccZ ? -1 : 1) * accSensitivity;
 
       serverSendPort.send(AccEvent(slot, accX, accY, accZ));
     });
@@ -225,9 +224,9 @@ class Device {
         motionZ = radToDeg(event.x);
       }
 
-      motionX *= (invertGyroX! ? -1 : 1) * sensitivity!;
-      motionY *= (invertGyroY! ? -1 : 1) * sensitivity!;
-      motionZ *= (invertGyroZ! ? -1 : 1) * sensitivity!;
+      motionX *= (invertGyroX ? -1 : 1) * sensitivity;
+      motionY *= (invertGyroY ? -1 : 1) * sensitivity;
+      motionZ *= (invertGyroZ ? -1 : 1) * sensitivity;
 
       previousGyroEvent = event;
 

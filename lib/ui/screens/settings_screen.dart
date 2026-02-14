@@ -126,11 +126,11 @@ class _SettingsScreen extends State<SettingsScreen> {
               ListTile(
                 title: Text('Gyroscope Sensitivity'),
                 subtitle: Slider(
-                  value: gyroSettings.sensitivity!,
+                  value: gyroSettings.sensitivity,
                   min: 0,
                   max: 2,
                   divisions: 200,
-                  label: gyroSettings.sensitivity!.toStringAsFixed(2),
+                  label: gyroSettings.sensitivity.toStringAsFixed(2),
                   onChanged: (double value) {
                     gyroSettings.setGyroSensitivity(value);
                   },

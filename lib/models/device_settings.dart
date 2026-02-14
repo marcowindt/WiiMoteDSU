@@ -14,7 +14,7 @@ class DeviceSettings extends ChangeNotifier {
 
   SharedPreferences preferences;
   String? deviceName;
-  DeviceOrientation? orientation;
+  DeviceOrientation orientation;
   int slot;
 
   DeviceSettings(this.preferences, this.deviceName, this.orientation,
@@ -30,7 +30,7 @@ class DeviceSettings extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setDeviceOrientation(DeviceOrientation? orientation) {
+  void setDeviceOrientation(DeviceOrientation orientation) {
     if (DeviceOrientation.values.contains(orientation)) {
       this.orientation = orientation;
     } else {

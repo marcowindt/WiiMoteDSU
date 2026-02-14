@@ -2,8 +2,6 @@ PODS:
   - dchs_motion_sensors (0.0.1):
     - Flutter
   - Flutter (1.0.0)
-  - flutter_fgbg (0.0.1):
-    - Flutter
   - network_info_plus (0.0.1):
     - Flutter
   - package_info_plus (0.4.5):
@@ -17,7 +15,6 @@ PODS:
 DEPENDENCIES:
   - dchs_motion_sensors (from `.symlinks/plugins/dchs_motion_sensors/ios`)
   - Flutter (from `Flutter`)
-  - flutter_fgbg (from `.symlinks/plugins/flutter_fgbg/ios`)
   - network_info_plus (from `.symlinks/plugins/network_info_plus/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
@@ -28,8 +25,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/dchs_motion_sensors/ios"
   Flutter:
     :path: Flutter
-  flutter_fgbg:
-    :path: ".symlinks/plugins/flutter_fgbg/ios"
   network_info_plus:
     :path: ".symlinks/plugins/network_info_plus/ios"
   package_info_plus:
@@ -42,7 +37,6 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   dchs_motion_sensors: 05f5afbcacad0e3d5059c0390aa51c949298d1e7
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
-  flutter_fgbg: d3da78df78454b1808f0829a5da9cd17dfe16444
   network_info_plus: cf61925ab5205dce05a4f0895989afdb6aade5fc
   package_info_plus: af8e2ca6888548050f16fa2f1938db7b5a5df499
   shared_preferences_foundation: 7036424c3d8ec98dfe75ff1667cb0cd531ec82bb

@@ -2,13 +2,13 @@ import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AccSettings extends ChangeNotifier {
-  bool? enabled = true;
+  bool enabled = true;
   SharedPreferences preferences;
-  bool? adjustToDeviceOrientation = false;
-  bool? invertAccX = true;
-  bool? invertAccY = true;
-  bool? invertAccZ = false;
-  double? sensitivity = 1.0;
+  bool adjustToDeviceOrientation = false;
+  bool invertAccX = true;
+  bool invertAccY = true;
+  bool invertAccZ = false;
+  double sensitivity = 1.0;
 
   AccSettings(
     this.preferences,
