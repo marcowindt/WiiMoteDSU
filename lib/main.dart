@@ -62,8 +62,8 @@ class WiiMoteDSUApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, required this.title, required this.preferences}) : super(key: key);
 
-  final String? title;
-  final SharedPreferences? preferences;
+  final String title;
+  final SharedPreferences preferences;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();

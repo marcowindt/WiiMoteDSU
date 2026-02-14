@@ -3,11 +3,11 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class ThumbStick extends StatefulWidget {
-  final double? radius;
-  final double? stickRadius;
-  final Function? callback;
+  final double radius;
+  final double stickRadius;
+  final Function callback;
 
-  const ThumbStick({Key? key, this.radius, this.stickRadius, this.callback})
+  const ThumbStick({Key? key, required this.radius, required this.stickRadius, required this.callback})
       : super(key: key);
 
   @override
@@ -17,7 +17,7 @@ class ThumbStick extends StatefulWidget {
 class _ThumbStickState extends State<ThumbStick> {
   final GlobalKey _thumbStickContainer = GlobalKey();
   double yOff = 0, xOff = 0;
-  double? _x = 0, _y = 0;
+  double _x = 0, _y = 0;
 
   @override
   void initState() {
@@ -45,23 +45,23 @@ class _ThumbStickState extends State<ThumbStick> {
     final x = details.position.dx - xOff;
     final y = details.position.dy - yOff;
 
-    var xPos = x - widget.radius!;
-    var yPos = y - widget.radius!;
+    var xPos = x - widget.radius;
+    var yPos = y - widget.radius;
 
     final angle = atan2(xPos, yPos);
     final distance = sqrt(pow(xPos, 2) + pow(yPos, 2));
 
-    if (distance > widget.radius!) {
-      xPos = widget.radius! * sin(angle);
-      yPos = widget.radius! * cos(angle);
+    if (distance > widget.radius) {
+      xPos = widget.radius * sin(angle);
+      yPos = widget.radius * cos(angle);
     }
 
     debugPrint(
         "x ${xPos.floor()}, y ${yPos.floor()}, distance $distance, angle $angle");
 
     setState(() {
-      _x = xPos + widget.radius!;
-      _y = yPos + widget.radius!;
+      _x = xPos + widget.radius;
+      _y = yPos + widget.radius;
     });
 
     _sendCoordinates(xPos, yPos);
@@ -72,10 +72,10 @@ class _ThumbStickState extends State<ThumbStick> {
   }
 
   void _sendCoordinates(double x, double y) {
-    final xInput = ((x + widget.radius!) * 255 / (widget.radius! * 2)).floor();
-    final yInput = ((y + widget.radius!) * 255 / (widget.radius! * 2)).floor();
+    final xInput = ((x + widget.radius) * 255 / (widget.radius * 2)).floor();
+    final yInput = ((y + widget.radius) * 255 / (widget.radius * 2)).floor();
 
-    widget.callback!(xInput, yInput);
+    widget.callback(xInput, yInput);
   }
 
   Widget build(BuildContext context) {
@@ -85,25 +85,25 @@ class _ThumbStickState extends State<ThumbStick> {
       onPointerUp: _onPointerUp,
       child: Container(
         key: _thumbStickContainer,
-        width: widget.radius! * 2,
-        height: widget.radius! * 2,
+        width: widget.radius * 2,
+        height: widget.radius * 2,
         clipBehavior: Clip.none,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(widget.radius!),
+          borderRadius: BorderRadius.circular(widget.radius),
           color: Colors.grey.shade100,
         ),
         child: Stack(
           clipBehavior: Clip.none,
           children: [
             Positioned(
-              left: _x! - widget.stickRadius!,
-              top: _y! - widget.stickRadius!,
+              left: _x - widget.stickRadius,
+              top: _y - widget.stickRadius,
               child: Container(
-                width: widget.stickRadius! * 2,
-                height: widget.stickRadius! * 2,
+                width: widget.stickRadius * 2,
+                height: widget.stickRadius * 2,
                 decoration: BoxDecoration(
                   color: Colors.black12,
-                  borderRadius: BorderRadius.circular(widget.stickRadius!),
+                  borderRadius: BorderRadius.circular(widget.stickRadius),
                 ),
               ),
             ),

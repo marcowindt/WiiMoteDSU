@@ -142,7 +142,7 @@ class _SettingsScreen extends State<SettingsScreen> {
                   hint: Text("Select device"),
                   value: Provider.of<DeviceSettings>(context).deviceName,
                   onChanged: (String? name) {
-                    context.read<DeviceSettings>().setDeviceByName(name);
+                    context.read<DeviceSettings>().setDeviceByName(name!);
                   },
                   items: DeviceSettings.available.map((String deviceName) {
                     return DropdownMenuItem<String>(
