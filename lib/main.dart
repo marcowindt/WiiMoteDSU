@@ -10,6 +10,7 @@ import 'package:wiimote_dsu/models/gyro_settings.dart';
 import 'package:wiimote_dsu/server/server_isolate.dart';
 import 'package:wiimote_dsu/ui/screens/device_screen.dart';
 import 'package:wiimote_dsu/ui/screens/settings_screen.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,6 +27,8 @@ void main() async {
       Device(gyroSettings, accSettings, deviceSettings, mainToIsolateStream);
   mainToIsolateStream.send(dsuDevice);
   dsuDevice.start();
+
+  WakelockPlus.enable();
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider<GyroSettings>.value(value: gyroSettings),

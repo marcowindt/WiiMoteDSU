@@ -103,21 +103,24 @@ class _SettingsScreen extends State<SettingsScreen> {
                 title: Text('Invert Gyro X'),
                 trailing: Checkbox(
                   value: gyroSettings.invertGyroX,
-                  onChanged: (bool? value) => gyroSettings.setInvertGyroX(value!),
+                  onChanged: (bool? value) =>
+                      gyroSettings.setInvertGyroX(value!),
                 ),
               ),
               ListTile(
                 title: Text('Invert Gyro Y'),
                 trailing: Checkbox(
                   value: gyroSettings.invertGyroY,
-                  onChanged: (bool? value) => gyroSettings.setInvertGyroY(value!),
+                  onChanged: (bool? value) =>
+                      gyroSettings.setInvertGyroY(value!),
                 ),
               ),
               ListTile(
                 title: Text('Invert Gyro Z'),
                 trailing: Checkbox(
                   value: gyroSettings.invertGyroZ,
-                  onChanged: (bool? value) => gyroSettings.setInvertGyroZ(value!),
+                  onChanged: (bool? value) =>
+                      gyroSettings.setInvertGyroZ(value!),
                 ),
               ),
               ListTile(

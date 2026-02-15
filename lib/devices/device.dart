@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:isolate';
 
 import 'package:flutter/services.dart';
@@ -22,10 +23,13 @@ class Device {
   static const double PI = 3.1415926535897932;
   static const double METER_PER_SECOND_SQUARED_TO_G = 9.8066;
 
-  late GyroscopeEvent previousGyroEvent;
+  GyroscopeEvent? previousGyroEvent;
   late GyroSettings gyroSettings;
   late AccSettings accSettings;
   late DeviceSettings deviceSettings;
+
+  StreamSubscription<AccelerometerEvent>? accSubscription;
+  StreamSubscription<GyroscopeEvent>? gyroSubscription;
 
   // Gyroscope specific
   bool adjustToDeviceOrientation = false;
@@ -77,6 +81,7 @@ class Device {
     "x": "button_triangle",
     "a": "button_cross",
     "b": "button_circle",
+    "recenter": "touch_button"
   };
 
   var state = {
@@ -109,6 +114,7 @@ class Device {
     "orientation_pitch": 0x00,
     "timestamp": 0x00,
     "battery": 0x05,
+    "touch_button": 0x00
   };
 
   void setState(String btnType, int state) {
@@ -179,7 +185,8 @@ class Device {
   void start() {
     motionSensors.accelerometerUpdateInterval = 10000;
     motionSensors.gyroscopeUpdateInterval = 10000;
-    motionSensors.accelerometer.listen((AccelerometerEvent event) {
+    accSubscription =
+        motionSensors.accelerometer.listen((AccelerometerEvent event) {
       // Values are in m/s^2, but we need in g's (1 g approx 9.8 m/s^2)
       if (!accEnabled) {
         return;
@@ -203,7 +210,7 @@ class Device {
       serverSendPort.send(AccEvent(slot, accX, accY, accZ));
     });
 
-    motionSensors.gyroscope.listen((GyroscopeEvent event) {
+    gyroSubscription = motionSensors.gyroscope.listen((GyroscopeEvent event) {
       // Values are in rad/s, but we need deg/s (2pi rad/s = 360 deg/s)
       // When in portrait: x = pitch, y = yaw, z = roll
       if (orientation == DeviceOrientation.portraitUp ||

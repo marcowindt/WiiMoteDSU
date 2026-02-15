@@ -17,6 +17,7 @@ Download and install the `.apk` file from the Releases section.
 Download the `.ipa` file from the Releases section.
 
 If you are jailbroken, you can install [AppSync Unified](https://cydia.akemi.ai/?page/net.angelxwind.appsyncunified) and then install the IPA file directly, just like on Android.
+To build the IPA, run `flutter build ipa --no-codesign`.
 
 If you are not jailbroken, you will need to sign the IPA first. You can do this for free using [AltStore](https://altstore.io/) or [Sideloadly](https://iosgods.com/topic/130167-windowsmacos-introducing-sideloadly-working-cydia-impactor-alternative/), but [restrictions](https://altstore.io/faq/) will apply, such as the need to reinstall every 7 days. If you own a signing certificate, you use it with [ios-app-signer](https://github.com/DanTheMan827/ios-app-signer) or similar for a more permanent solution.
 
