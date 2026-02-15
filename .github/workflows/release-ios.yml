@@ -90,7 +90,7 @@ jobs:
           zip -r WiiMoteDSU-${{ steps.setup.outputs.tag }}.ipa Payload
 
       - name: Upload assets
-        uses: AButler/upload-release-assets@v2.0
+        uses: AButler/upload-release-assets@v3.0
         with:
           files: build/ios/WiiMoteDSU-${{ steps.setup.outputs.tag }}.ipa
           release-tag: ${{ steps.setup.outputs.tag }}
