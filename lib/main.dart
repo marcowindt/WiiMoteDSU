@@ -12,7 +12,6 @@ import 'package:wiimote_dsu/ui/screens/device_screen.dart';
 import 'package:wiimote_dsu/ui/screens/faq_screen.dart';
 import 'package:wiimote_dsu/ui/screens/settings_screen.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
-import 'package:wiimote_dsu/ui/slot_display.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
