@@ -20,9 +20,7 @@ class XYABButtons extends StatelessWidget {
               height: 45,
               color: Colors.white,
             ),
-            SizedBox(
-              width: 45,
-            ),
+            SizedBox(width: 45),
             PadRoundButton(btnType: "a", width: 45, height: 45),
           ],
         ),
