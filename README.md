@@ -72,7 +72,7 @@ great value
 
 ## Screenshots
 
-<img src="screenshot.jpeg" alt="Screenshot of the application" width="250"/>
+<img src="screenshot.png" alt="Screenshot of the application" width="250"/>
 <img src="https://user-images.githubusercontent.com/9336858/216842253-9327329b-e906-4f58-a634-e839e8966d8d.jpeg" alt="Wii Classic Controller" height="250" />
-<img src="screenshot-settings.jpeg" alt="Screenshot of the available settings" width="250"/>
+<img src="screenshot-settings.png" alt="Screenshot of the available settings" width="250"/>
 
