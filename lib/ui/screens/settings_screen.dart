@@ -4,6 +4,7 @@ import 'package:network_info_plus/network_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wiimote_dsu/models/acc_settings.dart';
+import 'package:wiimote_dsu/models/app_theme_settings.dart';
 import 'package:wiimote_dsu/models/device_settings.dart';
 import 'package:wiimote_dsu/models/gyro_settings.dart';
 import 'package:wiimote_dsu/ui/screens/tutorial_screen.dart';
@@ -38,6 +39,19 @@ class _SettingsScreen extends State<SettingsScreen> {
                 Widget? child) {
           return ListView(
             children: [
+              ListTile(
+                title: Text('Black Wii controller theme'),
+                subtitle: Text(
+                  'Use colors inspired by the black Wii Remote. App follows device light/dark when off.',
+                ),
+                leading: Icon(Icons.palette_outlined),
+                trailing: Consumer<AppThemeSettings>(
+                  builder: (context, themeSettings, _) => Switch(
+                    value: themeSettings.useBlackWiiTheme,
+                    onChanged: themeSettings.setUseBlackWiiTheme,
+                  ),
+                ),
+              ),
               ListTile(
                 title: Text('Show tutorial again'),
                 leading: Icon(Icons.school_outlined),
@@ -192,7 +206,8 @@ class _SettingsScreen extends State<SettingsScreen> {
                         ),
                         padding: const EdgeInsets.symmetric(
                             vertical: 15.0, horizontal: 10.0),
-                        textStyle: TextStyle(color: Colors.white),
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        foregroundColor: Theme.of(context).colorScheme.onPrimary,
                       ),
                       onPressed: () => clearCachedSettings(
                           accSettings, gyroSettings, deviceSettings),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:wiimote_dsu/models/device_settings.dart';
+import 'package:wiimote_dsu/ui/theme/wii_controller_theme.dart';
 import 'package:wiimote_dsu/server/events/button_event.dart';
 
 class PadRectangleButton extends StatelessWidget {
@@ -18,6 +19,7 @@ class PadRectangleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final wiiTheme = context.wiiControllerTheme;
     return Consumer<DeviceSettings>(
         builder: (BuildContext context, DeviceSettings settings, Widget? child) {
       return Listener(
@@ -42,15 +44,17 @@ class PadRectangleButton extends StatelessWidget {
                 ? Text(
                     btnType,
                     style: TextStyle(
-                        fontSize: (width < height ? width : height) * 0.3),
+                        fontSize: (width < height ? width : height) * 0.3,
+                        color: wiiTheme.buttonForeground),
                   )
                 : Icon(
                     icon,
                     size: (width < height ? width : height) * 0.7,
+                    color: wiiTheme.buttonForeground,
                   ),
             height: height,
             minWidth: width,
-            color: Colors.white70,
+            color: wiiTheme.buttonColor,
           ),
         ),
       );

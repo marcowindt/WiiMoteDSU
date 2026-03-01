@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:wiimote_dsu/ui/theme/wii_controller_theme.dart';
 
 class ThumbStick extends StatefulWidget {
   final double radius;
@@ -79,6 +80,7 @@ class _ThumbStickState extends State<ThumbStick> {
   }
 
   Widget build(BuildContext context) {
+    final wiiTheme = context.wiiControllerTheme;
     return Listener(
       behavior: HitTestBehavior.opaque,
       onPointerMove: _onPointerMove,
@@ -90,7 +92,7 @@ class _ThumbStickState extends State<ThumbStick> {
         clipBehavior: Clip.none,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(widget.radius),
-          color: Colors.grey.shade100,
+          color: wiiTheme.thumbstickBackground,
         ),
         child: Stack(
           clipBehavior: Clip.none,
@@ -102,7 +104,7 @@ class _ThumbStickState extends State<ThumbStick> {
                 width: widget.stickRadius * 2,
                 height: widget.stickRadius * 2,
                 decoration: BoxDecoration(
-                  color: Colors.black12,
+                  color: wiiTheme.thumbstickStick,
                   borderRadius: BorderRadius.circular(widget.stickRadius),
                 ),
               ),
