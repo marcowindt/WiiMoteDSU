@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wiimote_dsu/models/acc_settings.dart';
 import 'package:wiimote_dsu/models/device_settings.dart';
 import 'package:wiimote_dsu/models/gyro_settings.dart';
+import 'package:wiimote_dsu/ui/screens/tutorial_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   _SettingsScreen createState() => _SettingsScreen();
@@ -37,6 +38,19 @@ class _SettingsScreen extends State<SettingsScreen> {
                 Widget? child) {
           return ListView(
             children: [
+              ListTile(
+                title: Text('Show tutorial again'),
+                leading: Icon(Icons.school_outlined),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => TutorialScreen(
+                        onComplete: (context) => Navigator.of(context).pop(),
+                      ),
+                    ),
+                  );
+                },
+              ),
               ListTile(
                 title: Text('Slot'),
                 trailing: DropdownButton<int>(
@@ -173,7 +187,6 @@ class _SettingsScreen extends State<SettingsScreen> {
                       vertical: 10.0, horizontal: 10.0),
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blueAccent,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(18.0),
                         ),

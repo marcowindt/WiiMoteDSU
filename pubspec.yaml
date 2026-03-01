@@ -29,6 +29,7 @@ dependencies:
   provider: ^6.1.5+1
   shared_preferences: ^2.2.2
   network_info_plus: ^6.0.0
+  url_launcher: ^6.2.5
   flutter:
     sdk: flutter
 

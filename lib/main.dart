@@ -10,7 +10,10 @@ import 'package:wiimote_dsu/models/gyro_settings.dart';
 import 'package:wiimote_dsu/server/server_isolate.dart';
 import 'package:wiimote_dsu/ui/screens/device_screen.dart';
 import 'package:wiimote_dsu/ui/screens/settings_screen.dart';
+import 'package:wiimote_dsu/ui/screens/tutorial_screen.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
+
+const String _kTutorialCompletedKey = 'tutorial_completed';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,19 +26,28 @@ void main() async {
 
   final mainToIsolateStream = await ServerIsolate.init();
 
-  final dsuDevice =
-      Device(gyroSettings, accSettings, deviceSettings, mainToIsolateStream);
+  final dsuDevice = Device(
+    gyroSettings,
+    accSettings,
+    deviceSettings,
+    mainToIsolateStream,
+  );
   mainToIsolateStream.send(dsuDevice);
   dsuDevice.start();
 
   WakelockPlus.enable();
 
-  runApp(MultiProvider(providers: [
-    ChangeNotifierProvider<GyroSettings>.value(value: gyroSettings),
-    ChangeNotifierProvider<AccSettings>.value(value: accSettings),
-    ChangeNotifierProvider<DeviceSettings>.value(value: deviceSettings),
-    Provider<SendPort>.value(value: mainToIsolateStream),
-  ], child: WiiMoteDSUApp(prefs)));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<GyroSettings>.value(value: gyroSettings),
+        ChangeNotifierProvider<AccSettings>.value(value: accSettings),
+        ChangeNotifierProvider<DeviceSettings>.value(value: deviceSettings),
+        Provider<SendPort>.value(value: mainToIsolateStream),
+      ],
+      child: WiiMoteDSUApp(prefs),
+    ),
+  );
 }
 
 class WiiMoteDSUApp extends StatelessWidget {
@@ -48,19 +60,54 @@ class WiiMoteDSUApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'WiiMoteDSU',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(
-        title: 'WiiMoteDSU',
-        preferences: preferences,
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: _TutorialGate(title: 'WiiMoteDSU', preferences: preferences),
     );
   }
 }
 
+class _TutorialGate extends StatefulWidget {
+  final SharedPreferences preferences;
+  final String title;
+
+  const _TutorialGate({required this.preferences, required this.title});
+
+  @override
+  State<_TutorialGate> createState() => _TutorialGateState();
+}
+
+class _TutorialGateState extends State<_TutorialGate> {
+  bool _showTutorial = false;
+
+  @override
+  void initState() {
+    super.initState();
+    final completed = widget.preferences.getBool(_kTutorialCompletedKey);
+    _showTutorial = completed != true;
+  }
+
+  void _openHome(BuildContext context) {
+    widget.preferences.setBool(_kTutorialCompletedKey, true);
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (_) =>
+            MyHomePage(title: widget.title, preferences: widget.preferences),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_showTutorial) {
+      return TutorialScreen(onComplete: _openHome);
+    }
+    return MyHomePage(title: widget.title, preferences: widget.preferences);
+  }
+}
+
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title, required this.preferences}) : super(key: key);
+  MyHomePage({Key? key, required this.title, required this.preferences})
+    : super(key: key);
 
   final String title;
   final SharedPreferences preferences;
@@ -78,17 +125,20 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.dark,
-        child: Scaffold(
-          backgroundColor: Colors.white,
-          body: Stack(children: <Widget>[
+      value: SystemUiOverlayStyle.dark,
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: Stack(
+          children: <Widget>[
             DeviceScreen(),
             Positioned(
-                top: 30.0,
-                left: 2.0,
-                child: IconButton(
-                    icon: Icon(Icons.settings),
-                    onPressed: () => _openSettings(context))),
+              top: 30.0,
+              left: 2.0,
+              child: IconButton(
+                icon: Icon(Icons.settings),
+                onPressed: () => _openSettings(context),
+              ),
+            ),
             Positioned(
               top: 30.0,
               right: 2.0,
@@ -98,21 +148,28 @@ class _MyHomePageState extends State<MyHomePage> {
                     icon: Text(
                       "${settings.slot}",
                       style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 16.0),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0,
+                      ),
                     ),
                     onPressed: null,
                   );
                 },
               ),
-            )
-          ]),
-        ));
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   void _openSettings(BuildContext context) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (BuildContext context) {
-      return SettingsScreen();
-    }));
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (BuildContext context) {
+          return SettingsScreen();
+        },
+      ),
+    );
   }
 }
