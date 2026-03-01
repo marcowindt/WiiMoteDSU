@@ -26,23 +26,27 @@ class TutorialPageContent extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(slide.icon, size: 72, color: Theme.of(context).primaryColor),
+              Icon(
+                slide.icon,
+                size: 72,
+                color: Theme.of(context).colorScheme.primary,
+              ),
               const SizedBox(height: 24),
               Text(
                 slide.title,
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 12),
               Text(
                 slide.body,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Colors.grey[700],
-                      height: 1.4,
-                    ),
+                  color: Theme.of(context).colorScheme.onSurface,
+                  height: 1.4,
+                ),
               ),
             ],
           ),

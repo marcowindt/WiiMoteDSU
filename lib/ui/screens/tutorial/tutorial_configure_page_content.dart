@@ -32,24 +32,24 @@ class TutorialConfigurePageContent extends StatelessWidget {
               Icon(
                 slide.icon,
                 size: 72,
-                color: Theme.of(context).primaryColor,
+                color: Theme.of(context).colorScheme.primary,
               ),
               const SizedBox(height: 24),
               Text(
                 slide.title,
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 12),
               Text(
                 slide.body,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Colors.grey[700],
-                      height: 1.4,
-                    ),
+                  color: Theme.of(context).colorScheme.onSurface,
+                  height: 1.4,
+                ),
               ),
               const SizedBox(height: 16),
               FutureBuilder<String?>(
@@ -60,9 +60,9 @@ class TutorialConfigurePageContent extends StatelessWidget {
                       'Your IP: ${snapshot.data}',
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: Theme.of(context).primaryColor,
-                          ),
+                        fontWeight: FontWeight.w600,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                     );
                   }
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -77,8 +77,9 @@ class TutorialConfigurePageContent extends StatelessWidget {
                         const SizedBox(width: 8),
                         Text(
                           'Getting your IP…',
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: Colors.grey[700],
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: Theme.of(context).colorScheme.onSurface,
                               ),
                         ),
                       ],
@@ -96,10 +97,14 @@ class TutorialConfigurePageContent extends StatelessWidget {
                     horizontal: 20,
                   ),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor.withValues(alpha: 0.08),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.primary.withValues(alpha: 0.08),
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: Theme.of(context).primaryColor.withValues(alpha: 0.3),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.primary.withValues(alpha: 0.3),
                     ),
                   ),
                   child: Row(
@@ -108,14 +113,15 @@ class TutorialConfigurePageContent extends StatelessWidget {
                       Icon(
                         Icons.list_alt,
                         size: 28,
-                        color: Theme.of(context).primaryColor,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
                           'Tap for step-by-step instructions',
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: Theme.of(context).primaryColor,
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: Theme.of(context).colorScheme.primary,
                                 fontWeight: FontWeight.w500,
                               ),
                           textAlign: TextAlign.center,
