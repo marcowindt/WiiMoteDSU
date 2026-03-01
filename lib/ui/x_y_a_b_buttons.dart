@@ -10,7 +10,6 @@ class XYABButtons extends StatelessWidget {
           btnType: "x",
           width: 45,
           height: 45,
-          color: Colors.white,
         ),
         Row(
           children: [
@@ -18,7 +17,6 @@ class XYABButtons extends StatelessWidget {
               btnType: "y",
               width: 45,
               height: 45,
-              color: Colors.white,
             ),
             SizedBox(
               width: 45,

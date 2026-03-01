@@ -51,13 +51,10 @@ class DeviceSettings extends ChangeNotifier {
     switch (this.deviceName) {
       case WiiMoteLayout.name:
         return WiiMoteLayout();
-        break;
       case OnlyDpadLayout.name:
         return OnlyDpadLayout();
-        break;
       case WiiClassicLayout.name:
         return WiiClassicLayout();
-        break;
       default:
         return WiiMoteLayout();
     }
@@ -67,13 +64,10 @@ class DeviceSettings extends ChangeNotifier {
     switch (this.deviceName) {
       case WiiMoteLayout.name:
         return [WiiMoteLayout.preferredOrientation];
-        break;
       case OnlyDpadLayout.name:
         return [OnlyDpadLayout.preferredOrientation];
-        break;
       case WiiClassicLayout.name:
         return [WiiClassicLayout.preferredOrientation];
-        break;
       default:
         return [WiiMoteLayout.preferredOrientation];
     }

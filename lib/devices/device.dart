@@ -1,7 +1,8 @@
+import 'dart:async';
 import 'dart:isolate';
 
 import 'package:flutter/services.dart';
-import 'package:motion_sensors/motion_sensors.dart';
+import 'package:dchs_motion_sensors/dchs_motion_sensors.dart';
 import 'package:wiimote_dsu/models/acc_settings.dart';
 import 'package:wiimote_dsu/models/device_settings.dart';
 import 'package:wiimote_dsu/models/gyro_settings.dart';
@@ -14,7 +15,7 @@ class Device {
 
   String get deviceName => name;
 
-  SendPort serverSendPort;
+  late SendPort serverSendPort;
   var disconnected = false;
   var mac = [0xFA, 0xCE, 0xB0, 0x0C, 0x00, 0x11];
   var model = 0x01;
@@ -22,10 +23,13 @@ class Device {
   static const double PI = 3.1415926535897932;
   static const double METER_PER_SECOND_SQUARED_TO_G = 9.8066;
 
-  GyroscopeEvent previousGyroEvent;
-  GyroSettings gyroSettings;
-  AccSettings accSettings;
-  DeviceSettings deviceSettings;
+  GyroscopeEvent? previousGyroEvent;
+  late GyroSettings gyroSettings;
+  late AccSettings accSettings;
+  late DeviceSettings deviceSettings;
+
+  StreamSubscription<AccelerometerEvent>? accSubscription;
+  StreamSubscription<GyroscopeEvent>? gyroSubscription;
 
   // Gyroscope specific
   bool adjustToDeviceOrientation = false;
@@ -77,6 +81,7 @@ class Device {
     "x": "button_triangle",
     "a": "button_cross",
     "b": "button_circle",
+    "recenter": "touch_button"
   };
 
   var state = {
@@ -108,24 +113,26 @@ class Device {
     "orientation_yaw": 0x00,
     "orientation_pitch": 0x00,
     "timestamp": 0x00,
-    "battery": 0x05
+    "battery": 0x05,
+    "touch_button": 0x00
   };
 
   void setState(String btnType, int state) {
-    this.state[this.keyMap[btnType]] = state;
+    this.state[this.keyMap[btnType]!] = state;
   }
 
   void setStates(Map<String, int> btnTypeStates) {
     this.state.addAll(
-        btnTypeStates.map((key, value) => MapEntry(this.keyMap[key], value)));
+      btnTypeStates.map((key, value) => MapEntry(this.keyMap[key]!, value)),
+    );
   }
 
-  Device(GyroSettings gyroSettings, AccSettings accSettings,
-      DeviceSettings deviceSettings, SendPort stream) {
-    this.gyroSettings = gyroSettings;
-    this.accSettings = accSettings;
-    this.deviceSettings = deviceSettings;
-    this.serverSendPort = stream;
+  Device(
+    this.gyroSettings,
+    this.accSettings,
+    this.deviceSettings,
+    this.serverSendPort,
+  ) {
     this.gyroSettings.addListener(onGyroSettingsChanged);
     this.accSettings.addListener(onAccSettingsChanged);
     this.deviceSettings.addListener(onDeviceSettingsChanged);
@@ -178,7 +185,8 @@ class Device {
   void start() {
     motionSensors.accelerometerUpdateInterval = 10000;
     motionSensors.gyroscopeUpdateInterval = 10000;
-    motionSensors.accelerometer.listen((AccelerometerEvent event) {
+    accSubscription =
+        motionSensors.accelerometer.listen((AccelerometerEvent event) {
       // Values are in m/s^2, but we need in g's (1 g approx 9.8 m/s^2)
       if (!accEnabled) {
         return;
@@ -202,7 +210,7 @@ class Device {
       serverSendPort.send(AccEvent(slot, accX, accY, accZ));
     });
 
-    motionSensors.gyroscope.listen((GyroscopeEvent event) {
+    gyroSubscription = motionSensors.gyroscope.listen((GyroscopeEvent event) {
       // Values are in rad/s, but we need deg/s (2pi rad/s = 360 deg/s)
       // When in portrait: x = pitch, y = yaw, z = roll
       if (orientation == DeviceOrientation.portraitUp ||
