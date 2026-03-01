@@ -5,6 +5,7 @@ import 'package:wiimote_dsu/ui/dpad.dart';
 import 'package:wiimote_dsu/ui/l_zl_r_zr_buttons.dart';
 import 'package:wiimote_dsu/ui/layouts/device_layout.dart';
 import 'package:wiimote_dsu/ui/minus_home_plus_buttons.dart';
+import 'package:wiimote_dsu/ui/slot_display.dart';
 import 'package:wiimote_dsu/ui/x_y_a_b_buttons.dart';
 
 class WiiClassicLayout extends StatelessWidget implements DeviceLayout {
@@ -14,42 +15,40 @@ class WiiClassicLayout extends StatelessWidget implements DeviceLayout {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return SizedBox(
-        width: screenSize.width,
-        height: screenSize.height,
-        child: Column(children: [
-          SizedBox(
-            height: 20,
-          ),
+      width: screenSize.width,
+      height: screenSize.height,
+      child: Column(
+        children: [
+          SizedBox(height: 20),
           LZLRZRButtons(),
-          SizedBox(
-            height: 35,
-          ),
+          SizedBox(height: 35),
           Flex(
             direction: Axis.horizontal,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Dpad(
-                size: 120,
-              ),
-              SizedBox(
-                width: 85,
-              ),
+              Dpad(size: 120),
+              SizedBox(width: 85),
               MinusHomePlusButtons(),
-              SizedBox(
-                width: 85,
-              ),
+              SizedBox(width: 85),
               XYABButtons(),
             ],
           ),
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            AnalogThumbStick(radius: 50.0, stickRadius: 35),
-            SizedBox(
-              width: 150.0,
-            ),
-            AnalogThumbStick(
-                btnType: "RIGHT_ANALOG", radius: 50.0, stickRadius: 35),
-          ])
-        ]));
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AnalogThumbStick(radius: 50.0, stickRadius: 35),
+              SizedBox(width: 150.0),
+              AnalogThumbStick(
+                btnType: "RIGHT_ANALOG",
+                radius: 50.0,
+                stickRadius: 35,
+              ),
+            ],
+          ),
+          SlotDisplay(height: 25.0, padding: 10.0),
+        ],
+      ),
+    );
   }
 
   static const DeviceOrientation preferredOrientation =
