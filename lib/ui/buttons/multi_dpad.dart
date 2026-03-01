@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wiimote_dsu/ui/theme/wii_controller_theme.dart';
 import 'dart:math' as math;
 
 import 'package:flutter/services.dart';
@@ -14,7 +15,7 @@ class DPad extends StatefulWidget {
   final double size;
   final Function onUpdate;
 
-  const DPad({Key key, @required this.size, @required this.onUpdate})
+  const DPad({Key? key, required this.size, required this.onUpdate})
       : super(key: key);
 
   @override
@@ -38,6 +39,7 @@ class _DPadState extends State<DPad> {
 
   @override
   Widget build(BuildContext context) {
+    final wiiTheme = context.wiiControllerTheme;
     return SizedBox(
       width: widget.size,
       height: widget.size,
@@ -51,7 +53,7 @@ class _DPadState extends State<DPad> {
           clipBehavior: Clip.none,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(_radius),
-            color: Colors.grey.shade100,
+            color: wiiTheme.dpadBackground,
           ),
           child: Stack(
             children: [
@@ -61,8 +63,8 @@ class _DPadState extends State<DPad> {
                   child: Container(
                       decoration: BoxDecoration(
                           color: _pressedDirections.contains(Direction.up)
-                              ? Colors.black26
-                              : Colors.white,
+                              ? wiiTheme.dpadArrowPressed
+                              : wiiTheme.dpadArrowDefault,
                           borderRadius: BorderRadius.circular(10.0)),
                       width: _radius / 2,
                       height: _radius - 24.0,
@@ -70,8 +72,8 @@ class _DPadState extends State<DPad> {
                         Icons.arrow_upward,
                         size: 24.0,
                         color: _pressedDirections.contains(Direction.up)
-                            ? Colors.blue
-                            : Colors.blueGrey,
+                            ? wiiTheme.dpadArrowIconPressed
+                            : wiiTheme.dpadArrowIconDefault,
                       ))),
               Positioned(
                   top: _radius - _radius / 4,
@@ -79,8 +81,8 @@ class _DPadState extends State<DPad> {
                   child: Container(
                       decoration: BoxDecoration(
                           color: _pressedDirections.contains(Direction.left)
-                              ? Colors.black26
-                              : Colors.white,
+                              ? wiiTheme.dpadArrowPressed
+                              : wiiTheme.dpadArrowDefault,
                           borderRadius: BorderRadius.circular(10.0)),
                       width: _radius - 24.0,
                       height: _radius / 2,
@@ -88,8 +90,8 @@ class _DPadState extends State<DPad> {
                         Icons.arrow_back,
                         size: 24.0,
                         color: _pressedDirections.contains(Direction.left)
-                            ? Colors.blue
-                            : Colors.blueGrey,
+                            ? wiiTheme.dpadArrowIconPressed
+                            : wiiTheme.dpadArrowIconDefault,
                       ))),
               Positioned(
                 top: _radius - _radius / 4,
@@ -97,8 +99,8 @@ class _DPadState extends State<DPad> {
                 child: Container(
                     decoration: BoxDecoration(
                         color: _pressedDirections.contains(Direction.right)
-                            ? Colors.black26
-                            : Colors.white,
+                            ? wiiTheme.dpadArrowPressed
+                            : wiiTheme.dpadArrowDefault,
                         borderRadius: BorderRadius.circular(10.0)),
                     width: _radius - 24.0,
                     height: _radius / 2,
@@ -106,8 +108,8 @@ class _DPadState extends State<DPad> {
                       Icons.arrow_forward,
                       size: 24.0,
                       color: _pressedDirections.contains(Direction.right)
-                          ? Colors.blue
-                          : Colors.blueGrey,
+                          ? wiiTheme.dpadArrowIconPressed
+                          : wiiTheme.dpadArrowIconDefault,
                     )),
               ),
               Positioned(
@@ -116,8 +118,8 @@ class _DPadState extends State<DPad> {
                   child: Container(
                       decoration: BoxDecoration(
                           color: _pressedDirections.contains(Direction.down)
-                              ? Colors.black26
-                              : Colors.white,
+                              ? wiiTheme.dpadArrowPressed
+                              : wiiTheme.dpadArrowDefault,
                           borderRadius: BorderRadius.circular(10.0)),
                       width: _radius / 2,
                       height: _radius - 24.0,
@@ -125,8 +127,8 @@ class _DPadState extends State<DPad> {
                         Icons.arrow_downward,
                         size: 24.0,
                         color: _pressedDirections.contains(Direction.down)
-                            ? Colors.blue
-                            : Colors.blueGrey,
+                            ? wiiTheme.dpadArrowIconPressed
+                            : wiiTheme.dpadArrowIconDefault,
                       )))
             ],
           ),

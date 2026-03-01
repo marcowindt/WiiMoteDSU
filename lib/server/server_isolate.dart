@@ -27,7 +27,7 @@ class ServerIsolate {
     });
 
     await Isolate.spawn(_serverIsolate, [isolateToMainStream.sendPort, server]);
-    return completer.future;
+    return completer.future as Future<SendPort>;
   }
 
   static void _serverIsolate(List<dynamic> args) {
@@ -51,11 +51,13 @@ class ServerIsolate {
       } else if (data is MultiButtonEvent) {
         server.slots[data.slot]?.setStates(data.value);
         debugPrint(
-            '${DateTime.now().millisecondsSinceEpoch} [main->isolate] value: ${data.value}');
+          '${DateTime.now().millisecondsSinceEpoch} [main->isolate] value: ${data.value}',
+        );
       } else if (data is ButtonEvent) {
         server.slots[data.slot]?.setState(data.btnType, data.value);
         debugPrint(
-            '${DateTime.now().millisecondsSinceEpoch} [main->isolate] pressed ${data.btnType}, value: ${data.value}');
+          '${DateTime.now().millisecondsSinceEpoch} [main->isolate] pressed ${data.btnType}, value: ${data.value}',
+        );
       } else {
         print('${DateTime.now().millisecondsSinceEpoch} [main->isolate] $data');
       }

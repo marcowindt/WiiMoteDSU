@@ -4,15 +4,17 @@ import 'package:network_info_plus/network_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wiimote_dsu/models/acc_settings.dart';
+import 'package:wiimote_dsu/models/app_theme_settings.dart';
 import 'package:wiimote_dsu/models/device_settings.dart';
 import 'package:wiimote_dsu/models/gyro_settings.dart';
+import 'package:wiimote_dsu/ui/screens/tutorial_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   _SettingsScreen createState() => _SettingsScreen();
 }
 
 class _SettingsScreen extends State<SettingsScreen> {
-  TextEditingController controller;
+  late TextEditingController controller;
   final networkInfo = NetworkInfo();
 
   @override
@@ -34,16 +36,42 @@ class _SettingsScreen extends State<SettingsScreen> {
                 GyroSettings gyroSettings,
                 AccSettings accSettings,
                 DeviceSettings deviceSettings,
-                Widget child) {
+                Widget? child) {
           return ListView(
             children: [
+              ListTile(
+                title: Text('Black Wii controller theme'),
+                subtitle: Text(
+                  'Use colors inspired by the black Wii Remote. App follows device light/dark when off.',
+                ),
+                leading: Icon(Icons.palette_outlined),
+                trailing: Consumer<AppThemeSettings>(
+                  builder: (context, themeSettings, _) => Switch(
+                    value: themeSettings.useBlackWiiTheme,
+                    onChanged: themeSettings.setUseBlackWiiTheme,
+                  ),
+                ),
+              ),
+              ListTile(
+                title: Text('Show tutorial again'),
+                leading: Icon(Icons.school_outlined),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => TutorialScreen(
+                        onComplete: (context) => Navigator.of(context).pop(),
+                      ),
+                    ),
+                  );
+                },
+              ),
               ListTile(
                 title: Text('Slot'),
                 trailing: DropdownButton<int>(
                   hint: Text("Select slot"),
                   value: Provider.of<DeviceSettings>(context).slot,
-                  onChanged: (int slot) {
-                    context.read<DeviceSettings>().setSlot(slot);
+                  onChanged: (int? slot) {
+                    context.read<DeviceSettings>().setSlot(slot!);
                   },
                   items: [0, 1, 2, 3].map((slot) {
                     return DropdownMenuItem<int>(
@@ -58,10 +86,10 @@ class _SettingsScreen extends State<SettingsScreen> {
                 trailing: DropdownButton<DeviceOrientation>(
                   hint: Text("Select orientation"),
                   value: Provider.of<DeviceSettings>(context).orientation,
-                  onChanged: (DeviceOrientation orientation) {
+                  onChanged: (DeviceOrientation? orientation) {
                     context
                         .read<DeviceSettings>()
-                        .setDeviceOrientation(orientation);
+                        .setDeviceOrientation(orientation!);
                   },
                   items: DeviceOrientation.values.map((orientation) {
                     return DropdownMenuItem<DeviceOrientation>(
@@ -75,49 +103,52 @@ class _SettingsScreen extends State<SettingsScreen> {
                 title: Text('Acc Enabled'),
                 trailing: Checkbox(
                   value: accSettings.enabled,
-                  onChanged: (bool value) => accSettings.setAccEnabled(value),
+                  onChanged: (bool? value) => accSettings.setAccEnabled(value!),
                 ),
               ),
               ListTile(
                 title: Text('Invert Acc X'),
                 trailing: Checkbox(
                   value: accSettings.invertAccX,
-                  onChanged: (bool value) => accSettings.setInvertAccX(value),
+                  onChanged: (bool? value) => accSettings.setInvertAccX(value!),
                 ),
               ),
               ListTile(
                 title: Text('Invert Acc Y'),
                 trailing: Checkbox(
                   value: accSettings.invertAccY,
-                  onChanged: (bool value) => accSettings.setInvertAccY(value),
+                  onChanged: (bool? value) => accSettings.setInvertAccY(value!),
                 ),
               ),
               ListTile(
                 title: Text('Invert Acc Z'),
                 trailing: Checkbox(
                   value: accSettings.invertAccZ,
-                  onChanged: (bool value) => accSettings.setInvertAccZ(value),
+                  onChanged: (bool? value) => accSettings.setInvertAccZ(value!),
                 ),
               ),
               ListTile(
                 title: Text('Invert Gyro X'),
                 trailing: Checkbox(
                   value: gyroSettings.invertGyroX,
-                  onChanged: (bool value) => gyroSettings.setInvertGyroX(value),
+                  onChanged: (bool? value) =>
+                      gyroSettings.setInvertGyroX(value!),
                 ),
               ),
               ListTile(
                 title: Text('Invert Gyro Y'),
                 trailing: Checkbox(
                   value: gyroSettings.invertGyroY,
-                  onChanged: (bool value) => gyroSettings.setInvertGyroY(value),
+                  onChanged: (bool? value) =>
+                      gyroSettings.setInvertGyroY(value!),
                 ),
               ),
               ListTile(
                 title: Text('Invert Gyro Z'),
                 trailing: Checkbox(
                   value: gyroSettings.invertGyroZ,
-                  onChanged: (bool value) => gyroSettings.setInvertGyroZ(value),
+                  onChanged: (bool? value) =>
+                      gyroSettings.setInvertGyroZ(value!),
                 ),
               ),
               ListTile(
@@ -138,8 +169,8 @@ class _SettingsScreen extends State<SettingsScreen> {
                 trailing: DropdownButton<String>(
                   hint: Text("Select device"),
                   value: Provider.of<DeviceSettings>(context).deviceName,
-                  onChanged: (String name) {
-                    context.read<DeviceSettings>().setDeviceByName(name);
+                  onChanged: (String? name) {
+                    context.read<DeviceSettings>().setDeviceByName(name!);
                   },
                   items: DeviceSettings.available.map((String deviceName) {
                     return DropdownMenuItem<String>(
@@ -153,9 +184,9 @@ class _SettingsScreen extends State<SettingsScreen> {
                 title: Text('IP Address'),
                 trailing: FutureBuilder(
                   future: networkInfo.getWifiIP(),
-                  builder: (BuildContext context, AsyncSnapshot<String> ip) {
+                  builder: (BuildContext context, AsyncSnapshot<String?> ip) {
                     if (ip.hasData) {
-                      return Text('${ip.data}');
+                      return Text('${ip.data!}');
                     }
                     return CircularProgressIndicator();
                   },
@@ -170,13 +201,13 @@ class _SettingsScreen extends State<SettingsScreen> {
                       vertical: 10.0, horizontal: 10.0),
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blueAccent,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(18.0),
                         ),
                         padding: const EdgeInsets.symmetric(
                             vertical: 15.0, horizontal: 10.0),
-                        textStyle: TextStyle(color: Colors.white),
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        foregroundColor: Theme.of(context).colorScheme.onPrimary,
                       ),
                       onPressed: () => clearCachedSettings(
                           accSettings, gyroSettings, deviceSettings),
@@ -186,7 +217,7 @@ class _SettingsScreen extends State<SettingsScreen> {
         }));
   }
 
-  Future<void> clearCachedSettings(AccSettings accSettings,
+  Future<bool> clearCachedSettings(AccSettings accSettings,
       GyroSettings gyroSettings, DeviceSettings deviceSettings) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     bool cleared = await preferences.clear();

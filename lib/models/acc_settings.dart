@@ -70,22 +70,22 @@ class AccSettings extends ChangeNotifier {
     return AccSettings(
       preferences,
       preferences.getBool('acc_enabled') != null
-          ? preferences.getBool('acc_enabled')
+          ? preferences.getBool('acc_enabled')!
           : true,
       preferences.getBool('adjust_acc_orientation') != null
-          ? preferences.getBool('adjust_acc_orientation')
+          ? preferences.getBool('adjust_acc_orientation')!
           : false,
       preferences.getBool('invert_acc_x') != null
-          ? preferences.getBool('invert_acc_x')
+          ? preferences.getBool('invert_acc_x')!
           : true,
       preferences.getBool('invert_acc_y') != null
-          ? preferences.getBool('invert_acc_y')
+          ? preferences.getBool('invert_acc_y')!
           : true,
       preferences.getBool('invert_acc_z') != null
-          ? preferences.getBool('invert_acc_z')
+          ? preferences.getBool('invert_acc_z')!
           : false,
       preferences.getDouble('acc_sensitivity') != null
-          ? preferences.getDouble('acc_sensitivity')
+          ? preferences.getDouble('acc_sensitivity')!
           : 1.0,
     );
   }
