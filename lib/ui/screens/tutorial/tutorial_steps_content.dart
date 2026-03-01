@@ -112,7 +112,7 @@ class TutorialStepsContent extends StatelessWidget {
     final theme = Theme.of(context);
     final bodyStyle =
         theme.textTheme.bodyMedium?.copyWith(
-          color: Colors.grey[700],
+          color: theme.colorScheme.onSurface,
           height: 1.4,
         ) ??
         const TextStyle();
@@ -192,7 +192,7 @@ class TutorialStepsContent extends StatelessWidget {
                           'Open repository (setup guide and profile download)',
                       url: tutorialRepoUrl,
                       style: bodyStyle.copyWith(
-                        color: theme.primaryColor,
+                        color: theme.colorScheme.primary,
                         decoration: TextDecoration.underline,
                         fontWeight: FontWeight.w500,
                       ),

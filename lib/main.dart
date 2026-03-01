@@ -5,7 +5,9 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wiimote_dsu/devices/device.dart';
 import 'package:wiimote_dsu/models/acc_settings.dart';
+import 'package:wiimote_dsu/models/app_theme_settings.dart';
 import 'package:wiimote_dsu/models/device_settings.dart';
+import 'package:wiimote_dsu/ui/theme/app_themes.dart';
 import 'package:wiimote_dsu/models/gyro_settings.dart';
 import 'package:wiimote_dsu/server/server_isolate.dart';
 import 'package:wiimote_dsu/ui/screens/device_screen.dart';
@@ -23,6 +25,7 @@ void main() async {
   final gyroSettings = GyroSettings.getSettings(prefs);
   final accSettings = AccSettings.getSettings(prefs);
   final deviceSettings = DeviceSettings.getSettings(prefs);
+  final appThemeSettings = AppThemeSettings.getSettings(prefs);
 
   final mainToIsolateStream = await ServerIsolate.init();
 
@@ -43,6 +46,7 @@ void main() async {
         ChangeNotifierProvider<GyroSettings>.value(value: gyroSettings),
         ChangeNotifierProvider<AccSettings>.value(value: accSettings),
         ChangeNotifierProvider<DeviceSettings>.value(value: deviceSettings),
+        ChangeNotifierProvider<AppThemeSettings>.value(value: appThemeSettings),
         Provider<SendPort>.value(value: mainToIsolateStream),
       ],
       child: WiiMoteDSUApp(prefs),
@@ -57,11 +61,19 @@ class WiiMoteDSUApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'WiiMoteDSU',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: _TutorialGate(title: 'WiiMoteDSU', preferences: preferences),
+    return Consumer<AppThemeSettings>(
+      builder: (context, themeSettings, _) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'WiiMoteDSU',
+          theme: AppThemes.lightTheme,
+          darkTheme: themeSettings.useBlackWiiTheme
+              ? AppThemes.blackWiiTheme
+              : AppThemes.darkTheme,
+          themeMode: themeSettings.themeMode,
+          home: _TutorialGate(title: 'WiiMoteDSU', preferences: preferences),
+        );
+      },
     );
   }
 }
@@ -124,10 +136,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.dark,
+      value: isDark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: Stack(
           children: <Widget>[
             DeviceScreen(),

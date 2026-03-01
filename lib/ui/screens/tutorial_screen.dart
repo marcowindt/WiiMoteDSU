@@ -18,7 +18,8 @@ class _TutorialScreenState extends State<TutorialScreen> {
     TutorialSlide(
       icon: Icons.wifi,
       title: 'Dolphin on your network',
-      body: 'This app works with the Dolphin emulator running on another device on the same Wi-Fi. It sends controller input over the network.',
+      body:
+          'This app works with the Dolphin emulator running on another device on the same Wi-Fi. It sends controller input over the network.',
     ),
     TutorialSlide(
       icon: Icons.info_outline,
@@ -28,7 +29,8 @@ class _TutorialScreenState extends State<TutorialScreen> {
     TutorialSlide(
       icon: Icons.settings,
       title: 'Configure Dolphin',
-      body: 'In Dolphin: Controller Settings → Alternate Input Sources. Use your phone\'s IP and port 26760.',
+      body:
+          'In Dolphin: Controller Settings → Alternate Input Sources. Use your phone\'s IP and port 26760.',
       isConfigurePage: true,
     ),
   ];
@@ -74,7 +76,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
   Widget build(BuildContext context) {
     final isLastPage = _currentPage == _slides.length - 1;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Column(
           children: [
@@ -116,7 +118,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
                   height: 8,
                   decoration: BoxDecoration(
                     color: _currentPage == i
-                        ? Theme.of(context).primaryColor
+                        ? Theme.of(context).colorScheme.primary
                         : Colors.grey[300],
                     borderRadius: BorderRadius.circular(4),
                   ),
@@ -131,6 +133,8 @@ class _TutorialScreenState extends State<TutorialScreen> {
                 child: ElevatedButton(
                   onPressed: _onNext,
                   style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
