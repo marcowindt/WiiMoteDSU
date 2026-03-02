@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           token: ${{ secrets.API_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
 
@@ -27,7 +27,7 @@ jobs:
 
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           token: ${{ secrets.API_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
 
@@ -54,7 +54,7 @@ jobs:
 
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
         with:
           token: ${{ secrets.API_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
 
@@ -86,7 +86,7 @@ jobs:
 
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           token: ${{ secrets.API_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
 
