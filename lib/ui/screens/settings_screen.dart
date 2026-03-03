@@ -3,11 +3,16 @@ import 'package:flutter/services.dart';
 import 'package:network_info_plus/network_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:wiimote_dsu/models/acc_settings.dart';
 import 'package:wiimote_dsu/models/app_theme_settings.dart';
 import 'package:wiimote_dsu/models/device_settings.dart';
 import 'package:wiimote_dsu/models/gyro_settings.dart';
 import 'package:wiimote_dsu/ui/screens/tutorial_screen.dart';
+
+final _repoIssuesUri = Uri.parse(
+  'https://github.com/marcowindt/WiiMoteDSU/issues',
+);
 
 class SettingsScreen extends StatefulWidget {
   _SettingsScreen createState() => _SettingsScreen();
@@ -63,6 +68,17 @@ class _SettingsScreen extends State<SettingsScreen> {
                       ),
                     ),
                   );
+                },
+              ),
+              ListTile(
+                title: Text('Feedback'),
+                subtitle: Text('Report a bug or suggest an improvement'),
+                leading: Icon(Icons.feedback_outlined),
+                onTap: () async {
+                  if (await canLaunchUrl(_repoIssuesUri)) {
+                    await launchUrl(
+                        _repoIssuesUri, mode: LaunchMode.externalApplication);
+                  }
                 },
               ),
               ListTile(
