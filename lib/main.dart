@@ -145,7 +145,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             DeviceScreen(),
             Positioned(
-              top: 30.0,
+              top: 42.0,
               left: 2.0,
               child: IconButton(
                 icon: Icon(Icons.settings),
@@ -153,7 +153,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             Positioned(
-              top: 30.0,
+              top: 42.0,
               right: 2.0,
               child: Consumer<DeviceSettings>(
                 builder: (context, settings, child) {
