@@ -17,20 +17,21 @@ class _TutorialScreenState extends State<TutorialScreen> {
   static const _slides = <TutorialSlide>[
     TutorialSlide(
       icon: Icons.wifi,
-      title: 'Dolphin on your network',
+      title: 'DSU server on your network',
       body:
-          'This app works with the Dolphin emulator running on another device on the same Wi-Fi. It sends controller input over the network.',
+          'This app acts as a DSU protocol server, sending controller and motion input over Wi-Fi to any compatible application on your network.',
     ),
     TutorialSlide(
       icon: Icons.info_outline,
-      title: 'Not for a real Wii',
-      body: 'Designed for Dolphin only—not for an actual Wii console.',
+      title: 'Not for a real game console',
+      body:
+          'Designed for compatible emulators only—not for an actual game console.',
     ),
     TutorialSlide(
       icon: Icons.settings,
-      title: 'Configure Dolphin',
+      title: 'Configure your client',
       body:
-          'In Dolphin: Controller Settings → Alternate Input Sources. Use your phone\'s IP and port 26760.',
+          'In your DSU client application, add this device as an input source. Use your phone\'s IP and port 26760.',
       isConfigurePage: true,
     ),
   ];

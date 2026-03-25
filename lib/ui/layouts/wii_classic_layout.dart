@@ -8,7 +8,7 @@ import 'package:wiimote_dsu/ui/minus_home_plus_buttons.dart';
 import 'package:wiimote_dsu/ui/x_y_a_b_buttons.dart';
 
 class WiiClassicLayout extends StatelessWidget implements DeviceLayout {
-  static const String name = "WiiClassic";
+  static const String name = "Classic";
 
   @override
   Widget build(BuildContext context) {

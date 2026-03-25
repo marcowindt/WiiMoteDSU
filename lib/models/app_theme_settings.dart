@@ -15,7 +15,7 @@ class AppThemeSettings extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Theme follows device light/dark; when [useBlackWiiTheme] is true we use dark (Black Wii).
+  /// Theme follows device light/dark; when [useBlackWiiTheme] is true we use dark.
   ThemeMode get themeMode =>
       useBlackWiiTheme ? ThemeMode.dark : ThemeMode.system;
 

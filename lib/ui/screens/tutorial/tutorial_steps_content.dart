@@ -101,7 +101,7 @@ class TutorialLinkText extends StatelessWidget {
   }
 }
 
-/// Repository URL: setup guide and WiiMoteDSU.ini profile download.
+/// Repository URL: setup guide and controller profile download.
 const String tutorialRepoUrl = 'https://github.com/marcowindt/WiiMoteDSU';
 
 class TutorialStepsContent extends StatelessWidget {
@@ -125,7 +125,7 @@ class TutorialStepsContent extends StatelessWidget {
         children: [
           const SizedBox(height: 8),
           Text(
-            'Dolphin setup steps',
+            'Client setup steps',
             textAlign: TextAlign.center,
             style: theme.textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
@@ -142,24 +142,25 @@ class TutorialStepsContent extends StatelessWidget {
               ),
               TutorialStep(
                 number: 2,
-                text: 'Click Alternate Input Sources.',
+                text:
+                    'Look for alternative input sources or DSU client settings and enable them.',
                 style: bodyStyle,
               ),
               TutorialStep(number: 3, text: 'Check Enable.', style: bodyStyle),
               TutorialStep(number: 4, text: 'Click Add.', style: bodyStyle),
               TutorialStep(
                 number: 5,
-                text:
-                    'Enter your phone\'s IP address, port number 26760, and give it a description.',
+                text: 'Add a new DSU server entry.',
                 style: bodyStyle,
               ),
               TutorialPhoneIpStep(bodyStyle: bodyStyle),
               TutorialStep(
                 number: 6,
                 text:
-                    'Select Emulated Wii Remote for Wii Remote 1, then Configure.',
+                    'Enter your phone\'s IP address, port number 26760, and give it a description.',
                 style: bodyStyle,
               ),
+              TutorialPhoneIpStep(bodyStyle: bodyStyle),
               TutorialStep(
                 number: 7,
                 text:
@@ -178,12 +179,12 @@ class TutorialStepsContent extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '• Map buttons manually in Dolphin\'s controller config, or',
+                      '• Map buttons manually in your client\'s controller config, or',
                       style: bodyStyle,
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      '• Download the WiiMoteDSU.ini profile from the repository:',
+                      '• Download a controller profile from the repository:',
                       style: bodyStyle,
                     ),
                     const SizedBox(height: 6),

@@ -29,7 +29,7 @@
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>To query network details</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Keep network connection open with Dolphin</string>
+	<string>Keep network connection open with DSU client</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

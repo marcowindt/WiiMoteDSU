@@ -45,9 +45,9 @@ class _SettingsScreen extends State<SettingsScreen> {
           return ListView(
             children: [
               ListTile(
-                title: Text('Black Wii controller theme'),
+                title: Text('Dark controller theme'),
                 subtitle: Text(
-                  'Use colors inspired by the black Wii Remote. App follows device light/dark when off.',
+                  'Use a dark color scheme inspired by classic game controllers. App follows device light/dark when off.',
                 ),
                 leading: Icon(Icons.palette_outlined),
                 trailing: Consumer<AppThemeSettings>(
