@@ -27,7 +27,7 @@ dependencies:
   dchs_motion_sensors: ^2.0.1
   udp: ^5.0.3
   provider: ^6.1.5+1
-  shared_preferences: ^2.2.2
+  shared_preferences: ^2.5.5
   network_info_plus: ^7.0.0
   url_launcher: ^6.2.5
   flutter:
